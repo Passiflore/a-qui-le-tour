@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+	/* Fonts */
+	--font-display: "Archivo Black", sans-serif;
+	--font-body: "Inter", sans-serif;
+
+	/* Colors */
+	--color-background: #0d0b10;
+	--color-text: #edebe5;
+	--color-description: #545267;
+	--color-accentuation: #eb5a1d;
+	--color-accentuation2: #6529fa;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+	margin: 0;
+	min-height: 100%;
+}
+
+body {
+	min-width: 320px;
+	min-height: 100vh;
+	background-color: #0f0e11;
+	color: var(----color-text);
+}

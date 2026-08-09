@@ -1,0 +1,135 @@
+.home {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.homeContent {
+	width: min(100% - 32px, 400px);
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+}
+
+.homeLogo {
+	display: flex;
+	gap: 8px;
+}
+
+.logoOrange,
+.logoPurple {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+}
+
+.logoOrange {
+	background-color: var(--color-accentuation);
+	animation: floatOrange 2.3s ease-in-out infinite;
+}
+
+.logoPurple {
+	background-color: var(--color-accentuation2);
+	animation: floatPurple 2.3s ease-in-out infinite;
+}
+
+@keyframes floatOrange {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-5px);
+	}
+}
+
+@keyframes floatPurple {
+	0%,
+	100% {
+		transform: translateY(-5px);
+	}
+
+	50% {
+		transform: translateY(0);
+	}
+}
+
+.homeTitle {
+	font-family: var(--font-display);
+	font-size: 85px;
+	font-weight: 900;
+	text-transform: uppercase;
+	line-height: 80px;
+	letter-spacing: -0.04em;
+	margin: 0;
+	color: var(--color-text);
+}
+
+.homeDescription {
+	font-family: var(--font-body);
+	color: var(--color-description);
+}
+
+.homeForm {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 38px;
+}
+
+.homeInputContainer {
+	display: flex;
+	flex-direction: column;
+	text-transform: uppercase;
+	gap: 13px;
+	color: var(--color-accentuation);
+	font-family: var(--font-display);
+	font-size: 12px;
+	letter-spacing: 0.16em;
+}
+
+.homeInput {
+	border-radius: 18px;
+	border: 1px solid var(--color-description);
+	background-color: #151417;
+	color: var(--color-text);
+	padding: 14px;
+
+	&:focus {
+		border-color: var(--color-accentuation);
+		outline: none;
+	}
+}
+
+.homeButton {
+	font-family: var(--font-display);
+	font-size: 18px;
+	text-transform: uppercase;
+	color: var(--color-text);
+	padding: 20px 0;
+	background-color: var(--color-accentuation);
+	border: none;
+	border-radius: 18px;
+
+	transition: transform 300ms ease-in-out;
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	&:not(:disabled):hover {
+		transform: scale(1.03);
+	}
+
+	&:active {
+		transform: scale(0.98);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-text);
+		outline-offset: 3px;
+	}
+}
