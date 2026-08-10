@@ -1,12 +1,15 @@
 import { useState } from "react";
 
 import "./HomePage.css";
+import { useNavigate } from "react-router";
 
 function HomePage() {
 	const [firstName, setFirstName] = useState("");
+	const navigate = useNavigate();
 
 	const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		navigate("/invite");
 
 		console.log("Création d'une partie pour :", firstName);
 	};
