@@ -1,12 +1,4 @@
-.home {
-	min-height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
 .homeContent {
-	width: min(100% - 32px, 400px);
 	display: flex;
 	flex-direction: column;
 	gap: 28px;
@@ -26,33 +18,49 @@
 
 .logoOrange {
 	background-color: var(--color-accentuation);
-	animation: floatOrange 2.3s ease-in-out infinite;
+	animation: floatOrange 3.7s ease-in-out infinite;
 }
 
 .logoPurple {
 	background-color: var(--color-accentuation2);
-	animation: floatPurple 2.3s ease-in-out infinite;
+	animation: floatPurple 4.3s ease-in-out infinite;
 }
 
 @keyframes floatOrange {
 	0%,
 	100% {
-		transform: translateY(0);
+		transform: translate(0, 0) scale(1);
 	}
 
-	50% {
-		transform: translateY(-5px);
+	25% {
+		transform: translate(2px, -5px) scale(1.05);
+	}
+
+	55% {
+		transform: translate(-1px, -2px) scale(0.97);
+	}
+
+	80% {
+		transform: translate(1px, 2px) scale(1.02);
 	}
 }
 
 @keyframes floatPurple {
 	0%,
 	100% {
-		transform: translateY(-5px);
+		transform: translate(0, -2px) scale(1);
+	}
+
+	20% {
+		transform: translate(-2px, 2px) scale(0.98);
 	}
 
 	50% {
-		transform: translateY(0);
+		transform: translate(1px, -4px) scale(1.04);
+	}
+
+	75% {
+		transform: translate(2px, 1px) scale(1);
 	}
 }
 
@@ -68,7 +76,6 @@
 }
 
 .homeDescription {
-	font-family: var(--font-body);
 	color: var(--color-description);
 }
 
@@ -83,7 +90,7 @@
 	display: flex;
 	flex-direction: column;
 	text-transform: uppercase;
-	gap: 13px;
+	gap: 12px;
 	color: var(--color-accentuation);
 	font-family: var(--font-display);
 	font-size: 12px;

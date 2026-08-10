@@ -28,5 +28,10 @@ body {
 	min-width: 320px;
 	min-height: 100vh;
 	background-color: #0f0e11;
-	color: var(----color-text);
+	color: var(--color-text);
+}
+
+p {
+	font-family: var(--font-body);
+	font-size: 14px;
 }
