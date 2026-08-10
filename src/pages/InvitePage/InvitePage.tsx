@@ -1,13 +1,15 @@
 import "./InvitePage.css";
 
-function InvitePage() {
+interface InviteProps {
+	firstName: string;
+}
+
+function InvitePage({ firstName }: InviteProps) {
 	return (
 		<main className="inviteContent">
-			<div className="inviteBadge" aria-hidden="true">
+			<div className="inviteBadge">
 				<span className="orangeCircle" />
-				<span className="userName">
-					test vkjbvqfhjdfhvjdvfbhjzh bjbehjv bhjdfvhjfdbhj dhvdhbvdfjjbvdfjh
-				</span>
+				<span className="userName">{firstName}</span>
 			</div>
 			<div className="inviteText">
 				<h1 className="inviteTitle">Invite l'autre joueur</h1>

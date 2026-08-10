@@ -3,9 +3,9 @@ import "./CenteredPageLayout.css";
 
 function CenteredPageLayout({ children }: { children: ReactNode }) {
 	return (
-		<main className="layoutContainer">
+		<div className="layoutContainer">
 			<div className="layoutContent">{children}</div>
-		</main>
+		</div>
 	);
 }
 

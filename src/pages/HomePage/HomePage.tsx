@@ -1,25 +1,24 @@
-import { useState } from "react";
-
+import ActionButton from "../../components/ActionButton/ActionButton";
+import Logo from "../../components/Logo/Logo";
 import "./HomePage.css";
 import { useNavigate } from "react-router";
 
-function HomePage() {
-	const [firstName, setFirstName] = useState("");
+interface HomePageProps {
+	firstName: string;
+	setFirstName: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function HomePage({ firstName, setFirstName }: HomePageProps) {
 	const navigate = useNavigate();
 
 	const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		navigate("/invite");
-
-		console.log("Création d'une partie pour :", firstName);
+		navigate("/invite", { viewTransition: true });
 	};
 
 	return (
 		<main className="homeContent">
-			<div className="homeLogo" aria-hidden="true">
-				<span className="logoOrange" />
-				<span className="logoPurple" />
-			</div>
+			<Logo />
 			<div className="homeText">
 				<h1 className="homeTitle">à qui le tour ?</h1>
 				<p className="homeDescription">
@@ -39,13 +38,11 @@ function HomePage() {
 						onChange={(event) => setFirstName(event.target.value)}
 					/>
 				</div>
-				<button
-					className="homeButton"
-					type="submit"
+				<ActionButton
+					text="Créer la partie"
+					type={"submit"}
 					disabled={!firstName.trim()}
-				>
-					Créer la partie
-				</button>
+				/>
 			</form>
 		</main>
 	);
