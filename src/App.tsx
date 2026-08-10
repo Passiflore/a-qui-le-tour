@@ -1,11 +1,12 @@
 import "./App.css";
 import CenteredPageLayout from "./layouts/CenteredPageLayout/CenteredPageLayout";
-import HomePage from "./pages/HomePages/HomePage";
+
+import InvitePage from "./pages/InvitePage/InvitePage";
 
 function App() {
 	return (
 		<CenteredPageLayout>
-			<HomePage />
+			<InvitePage />
 		</CenteredPageLayout>
 	);
 }

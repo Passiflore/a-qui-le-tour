@@ -1,0 +1,78 @@
+.inviteContent {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+}
+
+.inviteBadge {
+	background-color: var(--color-accentuation-transparent);
+	width: fit-content;
+	max-width: 100%;
+	padding: 10px 15px;
+	display: flex;
+	align-items: center;
+	border-radius: 14px;
+	gap: 6px;
+}
+
+.userName {
+	font-family: var(--font-display);
+	font-size: 12px;
+	letter-spacing: 0.16em;
+	color: var(--color-accentuation);
+	text-transform: uppercase;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.orangeCircle {
+	background-color: var(--color-accentuation);
+	width: 8px;
+	height: 8px;
+	border-radius: 100%;
+	flex-shrink: 0;
+}
+.inviteTitle {
+	font-family: var(--font-display);
+	font-size: 85px;
+	font-weight: 900;
+	text-transform: uppercase;
+	line-height: 80px;
+	letter-spacing: -0.04em;
+	margin: 0;
+	color: var(--color-text);
+}
+
+.inviteDescription {
+	color: var(--color-description);
+}
+
+.invitationLinkContainer {
+	background-color: var(--color-accentuation2-transparent);
+	border-radius: 12px;
+	border: 1px solid var(--color-accentuation2);
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.inviteLinkTitle {
+	margin: 0;
+	color: var(--color-accentuation2);
+	text-transform: uppercase;
+	font-family: var(--font-display);
+	font-size: 14px;
+}
+
+.copyButton {
+	font-family: var(--font-display);
+	width: 100%;
+	font-size: 18px;
+	text-transform: uppercase;
+	color: var(--color-text);
+	padding: 20px 0;
+	background-color: var(--color-accentuation2);
+	border: none;
+	border-radius: 30px;
+}
