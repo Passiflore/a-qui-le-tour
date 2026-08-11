@@ -3,9 +3,17 @@ import "./InvitePage.css";
 
 interface InviteProps {
 	firstName: string;
+	inviationLink: string;
 }
 
 function InvitePage({ firstName }: InviteProps) {
+	const invitationLink =
+		"https://fa6dc00f-c1d0-49b2-87ab-dd249697f511-v3-figmaiframepreview.figma.site/?join=78SUS&p1=njfde";
+
+	function handleInvite(invitationLink: string) {
+		navigator.clipboard.writeText(invitationLink);
+	}
+
 	return (
 		<main className="inviteContent">
 			<NameTag firstName={firstName} />
@@ -18,10 +26,13 @@ function InvitePage({ firstName }: InviteProps) {
 			</div>
 			<div className="invitationLinkContainer">
 				<h3 className="inviteLinkTitle">Lien d'invitaiton</h3>
-				<p>
-					https://fa6dc00f-c1d0-49b2-87ab-dd249697f511-v3-figmaiframepreview.figma.site/?join=78SUS&p1=njfde
-				</p>
-				<button className="copyButton">Copier le lien</button>
+				<p>{invitationLink}</p>
+				<button
+					className="copyButton"
+					onClick={() => handleInvite(invitationLink)}
+				>
+					Copier le lien
+				</button>
 			</div>
 		</main>
 	);
