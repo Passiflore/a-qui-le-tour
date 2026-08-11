@@ -6,12 +6,13 @@ import HomePage from "./pages/HomePage/HomePage";
 import InvitePage from "./pages/InvitePage/InvitePage";
 import { Navigate, Route, Routes } from "react-router";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import DecisionPage from "./pages/DecisionPage/DecisionPage";
 
 function App() {
 	const [firstName, setFirstName] = useState("");
 	return (
-		<CenteredPageLayout>
-			<Routes>
+		<Routes>
+			<Route element={<CenteredPageLayout />}>
 				<Route
 					path="/"
 					element={
@@ -29,8 +30,12 @@ function App() {
 					}
 				/>
 				<Route path="*" element={<NotFoundPage />} />
-			</Routes>
-		</CenteredPageLayout>
+			</Route>
+
+			<Route element={<CenteredPageLayout tone="orange" />}>
+				<Route path="/decision" element={<DecisionPage />} />
+			</Route>
+		</Routes>
 	);
 }
 

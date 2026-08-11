@@ -1,10 +1,16 @@
-import type { ReactNode } from "react";
+import { Outlet } from "react-router";
 import "./CenteredPageLayout.css";
 
-function CenteredPageLayout({ children }: { children: ReactNode }) {
+interface LayoutProps {
+	tone?: "orange" | "dark";
+}
+
+function CenteredPageLayout({ tone = "dark" }: LayoutProps) {
 	return (
-		<div className="layoutContainer">
-			<div className="layoutContent">{children}</div>
+		<div className="layoutContainer" data-tone={tone}>
+			<div className="layoutContent">
+				<Outlet />
+			</div>
 		</div>
 	);
 }

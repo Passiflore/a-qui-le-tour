@@ -8,7 +8,7 @@ function NotFoundPage() {
 	return (
 		<main className="errorContent">
 			<Logo />
-			<div className="errorText">
+			<div>
 				<h1 className="errorTitle">404</h1>
 				<p className="errorDescription">
 					Cette page n'existe pas. Peut-être un lien cassé ?

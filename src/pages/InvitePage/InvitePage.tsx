@@ -1,3 +1,4 @@
+import NameTag from "../../components/NameTag/NameTag";
 import "./InvitePage.css";
 
 interface InviteProps {
@@ -7,11 +8,8 @@ interface InviteProps {
 function InvitePage({ firstName }: InviteProps) {
 	return (
 		<main className="inviteContent">
-			<div className="inviteBadge">
-				<span className="orangeCircle" />
-				<span className="userName">{firstName}</span>
-			</div>
-			<div className="inviteText">
+			<NameTag firstName={firstName} />
+			<div>
 				<h1 className="inviteTitle">Invite l'autre joueur</h1>
 				<p className="inviteDescription">
 					Envoie ce lien à ton partenaire. Il aura une page pour entrer son

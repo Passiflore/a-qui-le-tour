@@ -1,0 +1,38 @@
+.orange {
+	--tag-bg: var(--color-accentuation-transparent);
+	--tag-text: var(--color-accentuation);
+}
+
+.white {
+	--tag-bg: var(--color-white-transparent);
+	--tag-text: var(--color-white);
+}
+
+.inviteBadge {
+	background-color: var(--tag-bg);
+	width: fit-content;
+	max-width: 100%;
+	padding: 10px 15px;
+	display: flex;
+	align-items: center;
+	border-radius: 14px;
+	gap: 6px;
+}
+
+.userName {
+	font-family: var(--font-display);
+	font-size: 12px;
+	letter-spacing: 0.16em;
+	color: var(--tag-text);
+	text-transform: uppercase;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.orangeCircle {
+	background-color: var(--tag-text);
+	width: 8px;
+	height: 8px;
+	border-radius: 100%;
+	flex-shrink: 0;
+}

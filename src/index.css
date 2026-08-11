@@ -11,9 +11,11 @@
 	--color-description: #545267;
 	--color-accentuation: #eb5a1d;
 	--color-accentuation2: #6529fa;
+	--color-white: #ffffff;
 
 	--color-accentuation-transparent: #eb5a1d12;
 	--color-accentuation2-transparent: #6529fa12;
+	--color-white-transparent: #ffffff12;
 }
 
 * {

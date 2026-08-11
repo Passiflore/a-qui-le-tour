@@ -1,10 +1,16 @@
+.layoutContainer[data-tone="orange"] {
+	--page-bg: var(--color-accentuation);
+	--color-text: var(--color-white);
+}
+
 .layoutContainer {
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	background-color: var(--page-bg);
 }
 
 .layoutContent {
-	width: min(calc(100% - 32px), 400px);
+	width: min(calc(100% - 32px), 420px);
 }

@@ -19,7 +19,7 @@ function HomePage({ firstName, setFirstName }: HomePageProps) {
 	return (
 		<main className="homeContent">
 			<Logo />
-			<div className="homeText">
+			<div>
 				<h1 className="homeTitle">à qui le tour ?</h1>
 				<p className="homeDescription">
 					Toi et quelqu'un d'autre. L'appli tranche qui doit décider à chaque
