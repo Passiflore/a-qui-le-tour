@@ -11,12 +11,12 @@
 }
 
 .logoOrange {
-	background-color: var(--color-accentuation);
+	background-color: var(--color-secondary);
 	animation: floatOrange 3.7s ease-in-out infinite;
 }
 
 .logoPurple {
-	background-color: var(--color-accentuation2);
+	background-color: var(--color-terciary);
 	animation: floatPurple 4.3s ease-in-out infinite;
 }
 

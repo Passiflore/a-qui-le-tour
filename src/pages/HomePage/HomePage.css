@@ -7,7 +7,6 @@
 .homeTitle {
 	font-family: var(--font-display);
 	font-size: 85px;
-	font-weight: 900;
 	text-transform: uppercase;
 	line-height: 80px;
 	letter-spacing: -0.04em;
@@ -31,7 +30,7 @@
 	flex-direction: column;
 	text-transform: uppercase;
 	gap: 12px;
-	color: var(--color-accentuation);
+	color: var(--color-secondary);
 	font-family: var(--font-display);
 	font-size: 12px;
 	letter-spacing: 0.16em;
@@ -45,7 +44,7 @@
 	padding: 14px;
 
 	&:focus {
-		border-color: var(--color-accentuation);
+		border-color: var(--color-secondary);
 		outline: none;
 	}
 }

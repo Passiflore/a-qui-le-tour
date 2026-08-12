@@ -1,6 +1,6 @@
 .orange {
-	--tag-bg: var(--color-accentuation-transparent);
-	--tag-text: var(--color-accentuation);
+	--tag-bg: var(--color-secondary-transparent);
+	--tag-text: var(--color-secondary);
 }
 
 .white {

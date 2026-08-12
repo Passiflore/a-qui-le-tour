@@ -1,14 +1,14 @@
 .orange {
-	--btn-bg: var(--color-accentuation);
+	--btn-bg: var(--color-secondary);
 	--btn-fg: var(--color-text);
 }
 .purple {
-	--btn-bg: var(--color-accentuation2);
+	--btn-bg: var(--color-terciary);
 	--btn-fg: var(--color-text);
 }
 .white {
 	--btn-bg: var(--color-text);
-	--btn-fg: var(--color-accentuation);
+	--btn-fg: var(--color-secondary);
 }
 
 .actionButton {
