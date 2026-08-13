@@ -1,0 +1,57 @@
+.copyButton {
+	font-family: var(--font-display);
+	width: 100%;
+	font-size: 18px;
+	text-transform: uppercase;
+	color: var(--color-text);
+	padding: 20px 0;
+	background-color: var(--color-terciary);
+	border: none;
+	border-radius: 30px;
+	transition:
+		transform 300ms ease-in-out,
+		background-color 300ms ease-in-out;
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	&:not(:disabled):hover {
+		transform: scale(1.03);
+	}
+
+	&:active {
+		transform: scale(0.98);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-text);
+		outline-offset: 3px;
+	}
+}
+
+@keyframes pop {
+	0% {
+		transform: scale(1);
+	}
+	40% {
+		transform: scale(1.08);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.idle {
+	background-color: var(--color-terciary);
+}
+
+.activated {
+	background-color: var(--color-success);
+	animation: pop 400ms ease-out;
+}
+
+.error {
+	background-color: var(--color-error);
+}
