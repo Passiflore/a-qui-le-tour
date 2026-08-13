@@ -46,7 +46,9 @@
 	background-color: var(--color-terciary);
 	border: none;
 	border-radius: 30px;
-	transition: transform 300ms ease-in-out;
+	transition:
+		transform 300ms ease-in-out,
+		background-color 300ms ease-in-out;
 
 	&:disabled {
 		opacity: 0.4;
@@ -65,4 +67,21 @@
 		outline: 2px solid var(--color-text);
 		outline-offset: 3px;
 	}
+}
+
+@keyframes pop {
+	0% {
+		transform: scale(1);
+	}
+	40% {
+		transform: scale(1.08);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.activated {
+	background-color: var(--color-success);
+	animation: pop 400ms ease-out;
 }
