@@ -85,3 +85,7 @@
 	background-color: var(--color-success);
 	animation: pop 400ms ease-out;
 }
+
+.error {
+	background-color: var(--color-error);
+}

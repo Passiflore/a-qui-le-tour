@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import NameTag from "../../components/NameTag/NameTag";
 import "./InvitePage.css";
-import { useRef } from "react";
 
 interface InviteProps {
 	firstName: string;
 	inviationLink: string;
 }
+
+const ButtonStatus = {
+	idle: { class: "", text: "Copier le lien" },
+	success: { class: "activated", text: "Copié" },
+	error: { class: "error", text: "Pas copié" },
+};
 
 function InvitePage({ firstName }: InviteProps) {
 	const timerRef = useRef<number | null>(null);
@@ -14,16 +19,22 @@ function InvitePage({ firstName }: InviteProps) {
 	const invitationLink =
 		"https://fa6dc00f-c1d0-49b2-87ab-dd249697f511-v3-figmaiframepreview.figma.site/?join=78SUS&p1=njfde";
 
-	const [buttonToggle, setButtonToggle] = useState(false);
+	const [copyStatus, setCopyStatus] =
+		useState<keyof typeof ButtonStatus>("idle");
 
-	function handleInvite(invitationLink: string) {
-		navigator.clipboard.writeText(invitationLink);
-		setButtonToggle(true);
+	async function handleInvite(invitationLink: string) {
+		try {
+			await navigator.clipboard.writeText(invitationLink);
+			setCopyStatus("success");
+		} catch (error) {
+			console.error(error, "test");
+			setCopyStatus("error");
+		}
 
 		if (timerRef.current) {
 			clearTimeout(timerRef.current);
 		}
-		timerRef.current = setTimeout(() => setButtonToggle(false), 2000);
+		timerRef.current = setTimeout(() => setCopyStatus("idle"), 2000);
 	}
 
 	return (
@@ -40,10 +51,10 @@ function InvitePage({ firstName }: InviteProps) {
 				<h3 className="inviteLinkTitle">Lien d'invitaiton</h3>
 				<p>{invitationLink}</p>
 				<button
-					className={`copyButton${buttonToggle ? " activated" : ""}`}
+					className={`copyButton ${ButtonStatus[copyStatus].class}`}
 					onClick={() => handleInvite(invitationLink)}
 				>
-					{buttonToggle ? "Copié" : "Copier le lien"}
+					{ButtonStatus[copyStatus].text}
 				</button>
 			</div>
 		</main>
