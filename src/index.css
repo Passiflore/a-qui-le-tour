@@ -39,6 +39,11 @@ body {
 	color: var(--color-text);
 }
 
+h1 {
+	font-family: var(--font-display);
+	text-transform: uppercase;
+}
+
 p {
 	font-family: var(--font-body);
 	font-size: 14px;

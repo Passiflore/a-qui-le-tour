@@ -2,14 +2,20 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 20px;
+	gap: 30px;
+}
+
+.decisionTextContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 35px;
 }
 
 .decisionTitle {
 	font-family: var(--font-display);
 	font-size: 150px;
 	text-transform: uppercase;
-	line-height: 128px;
+	line-height: 136px;
 	letter-spacing: -0.04em;
 	text-align: center;
 	margin: 0;
@@ -17,6 +23,6 @@
 }
 
 .decisionDescription {
-	padding: 0 80px;
+	padding: 0 135px;
 	text-align: center;
 }

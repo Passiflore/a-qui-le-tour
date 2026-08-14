@@ -7,6 +7,7 @@ import InvitePage from "./pages/InvitePage/InvitePage";
 import { Navigate, Route, Routes } from "react-router";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import DecisionPage from "./pages/DecisionPage/DecisionPage";
+import WaitingPage from "./pages/WaitingPage/WaitingPage";
 
 function App() {
 	const [firstName, setFirstName] = useState("");
@@ -30,6 +31,10 @@ function App() {
 					}
 				/>
 				<Route path="*" element={<NotFoundPage />} />
+			</Route>
+
+			<Route element={<CenteredPageLayout tone="purple" />}>
+				<Route path="/waiting" element={<WaitingPage />}></Route>
 			</Route>
 
 			<Route element={<CenteredPageLayout tone="orange" />}>
