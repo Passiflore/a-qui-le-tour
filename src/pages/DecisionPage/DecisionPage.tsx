@@ -1,8 +1,15 @@
+import { useNavigate } from "react-router";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import NameTag from "../../components/NameTag/NameTag";
 import style from "./DecisionPage.module.css";
 
 function DecisionPage() {
+	const navigate = useNavigate();
+
+	function handleClick() {
+		navigate("/waiting", { viewTransition: true });
+	}
+
 	return (
 		<main className={style.decisionContainer}>
 			<NameTag firstName="test" color="white" />
@@ -12,7 +19,7 @@ function DecisionPage() {
 					À toi de trancher. Une fois décidé appuie ci-dessous
 				</p>
 			</div>
-			<ActionButton text={"J'ai décidé!"} color="white" />
+			<ActionButton text={"J'ai décidé!"} color="white" onClick={handleClick} />
 		</main>
 	);
 }
