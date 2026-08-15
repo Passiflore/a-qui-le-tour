@@ -1,0 +1,145 @@
+.DrawerContainer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding: 40px 24px;
+	background-color: #141418;
+	border-radius: 24px 24px 0 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.drawerTitle {
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	font-size: 26px;
+	letter-spacing: -0.02em;
+	line-height: 28px;
+}
+
+.formContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+}
+
+.formContainer label,
+.formContainer .groupLabel {
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	font-size: 12px;
+	letter-spacing: 0.04em;
+	color: var(--color-description);
+}
+
+.formContainer input {
+	border-radius: 18px;
+	border: 1px solid var(--color-white-transparent);
+	background-color: #0f0e11;
+	color: var(--color-description);
+	padding: 14px;
+
+	&:focus {
+		border-color: var(--color-secondary);
+		outline: none;
+	}
+}
+
+.inputContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.formContainer .primaryInputTitle {
+	color: var(--color-secondary);
+}
+
+.optionalText {
+	opacity: 0.4;
+}
+
+.difficultyGroup {
+	display: flex;
+	gap: 12px;
+}
+
+.difficultyOption {
+	position: relative;
+	flex: 1;
+	display: flex;
+}
+
+.formContainer .difficultyInput {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	border: none;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.formContainer .difficultyLabel {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+	padding: 16px;
+	background-color: #1e1e26;
+	border: 1px solid transparent;
+	border-radius: 16px;
+	cursor: pointer;
+	transition:
+		background-color 0.3s ease-in,
+		border-color 0.3s ease-in,
+		color 0.3s ease-in;
+
+	&:hover {
+		background-color: #2a2835;
+	}
+}
+
+.difficultyInput:checked + .difficultyLabel {
+	border-color: var(--color-secondary);
+	color: var(--color-text);
+	background-color: #2a2835;
+}
+
+.difficultyInput:focus-visible + .difficultyLabel {
+	outline: 2px solid var(--color-text);
+	outline-offset: 2px;
+}
+
+.buttonBadge {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+.easy {
+	background-color: var(--color-success);
+}
+
+.hesitant {
+	background-color: var(--color-warning);
+}
+
+.hard {
+	background-color: var(--color-error);
+}
+
+.link {
+	text-align: center;
+	text-decoration: none;
+	color: var(--color-description);
+	font-family: var(--font-body);
+	font-size: 12px;
+	transition: 0.3s ease-in;
+
+	&:hover {
+		color: var(--color-white);
+	}
+}

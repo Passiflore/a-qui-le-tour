@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import NameTag from "../../components/NameTag/NameTag";
 import style from "./DecisionPage.module.css";
+import DecisionDrawer from "../../components/DecisionDrawer/DecisionDrawer";
 
 function DecisionPage() {
 	const navigate = useNavigate();
@@ -20,6 +21,7 @@ function DecisionPage() {
 				</p>
 			</div>
 			<ActionButton text={"J'ai décidé!"} color="white" onClick={handleClick} />
+			<DecisionDrawer />
 		</main>
 	);
 }

@@ -6,6 +6,7 @@ interface ButtonProps {
 	type?: "button" | "submit";
 	disabled?: boolean;
 	color?: "orange" | "purple" | "white";
+	size?: "large" | "medium";
 }
 
 function ActionButton({
@@ -14,6 +15,7 @@ function ActionButton({
 	type = "button",
 	disabled,
 	color = "orange",
+	size = "large",
 }: ButtonProps) {
 	const colorClasses = {
 		orange: styles.orange,
@@ -21,9 +23,14 @@ function ActionButton({
 		white: styles.white,
 	};
 
+	const sizeClasses = {
+		medium: styles.medium,
+		large: styles.large,
+	};
+
 	return (
 		<button
-			className={`${styles.actionButton} ${colorClasses[color]}`}
+			className={`${styles.actionButton} ${colorClasses[color]} ${sizeClasses[size]}`}
 			onClick={onClick}
 			type={type}
 			disabled={disabled}

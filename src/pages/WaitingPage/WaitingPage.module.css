@@ -81,6 +81,7 @@
 	text-align: center;
 	line-height: 138px;
 	color: var(--color-terciary);
+	line-break: anywhere;
 }
 
 .turnAction {

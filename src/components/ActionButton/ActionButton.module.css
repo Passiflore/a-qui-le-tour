@@ -11,11 +11,21 @@
 	--btn-fg: var(--color-secondary);
 }
 
+.medium {
+	--fnt-size: 16px;
+	--padding: 16px;
+}
+
+.large {
+	--fnt-size: 18px;
+	--padding: 20px 18px;
+}
+
 .actionButton {
 	font-family: var(--font-display);
-	font-size: 18px;
+	font-size: var(--fnt-size);
 	text-transform: uppercase;
-	padding: 20px 18px;
+	padding: var(--padding);
 	min-width: 250px;
 	background-color: var(--btn-bg);
 	color: var(--btn-fg);
