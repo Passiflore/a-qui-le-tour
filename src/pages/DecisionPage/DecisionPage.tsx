@@ -1,14 +1,15 @@
-import { useNavigate } from "react-router";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import NameTag from "../../components/NameTag/NameTag";
 import style from "./DecisionPage.module.css";
 import DecisionDrawer from "../../components/DecisionDrawer/DecisionDrawer";
+import { useRef } from "react";
 
 function DecisionPage() {
-	const navigate = useNavigate();
+	const drawerRef = useRef<HTMLDialogElement>(null);
 
 	function handleClick() {
-		navigate("/waiting", { viewTransition: true });
+		// navigate("/waiting", { viewTransition: true });
+		drawerRef.current?.showModal();
 	}
 
 	return (
@@ -21,7 +22,7 @@ function DecisionPage() {
 				</p>
 			</div>
 			<ActionButton text={"J'ai décidé!"} color="white" onClick={handleClick} />
-			<DecisionDrawer />
+			<DecisionDrawer drawerRef={drawerRef} />
 		</main>
 	);
 }
