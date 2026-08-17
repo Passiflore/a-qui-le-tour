@@ -35,6 +35,7 @@ function DecisionDrawer({ drawerRef }: DrawerProps) {
 			ref={drawerRef}
 			onClose={() => formRef.current?.reset()}
 			onClick={(e) => {
+				console.log(e.target, drawerRef.current);
 				if (e.target === drawerRef.current) closeDrawer();
 			}}
 		>
