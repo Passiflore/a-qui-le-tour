@@ -1,8 +1,25 @@
 import express from "express";
 import { pinoHttp } from "pino-http";
+import { randomUUID } from "node:crypto";
 
 const app = express();
 const port = 3000;
+
+interface Player {
+	id: string;
+	firstName: string;
+}
+
+interface Game {
+	id: string;
+	hostPlayerId: string;
+	guestPlayerId?: string;
+	inviteToken: string;
+	inviteUsed: boolean;
+}
+
+const players: Player[] = [];
+const games: Game[] = [];
 
 function isValidFirstName(firstName: unknown): boolean {
 	if (typeof firstName === "string") {
@@ -26,7 +43,20 @@ app.get("/healthz", (request, response) => {
 app.post("/games", (request, response) => {
 	const firstName = request.body.firstName;
 	if (isValidFirstName(firstName)) {
-		response.send(firstName);
+		const player: Player = {
+			id: randomUUID(),
+			firstName: firstName.trim(),
+		};
+		const game: Game = {
+			id: randomUUID(),
+			hostPlayerId: player.id,
+			inviteToken: randomUUID(),
+			inviteUsed: false,
+		};
+
+		players.push(player);
+		games.push(game);
+		response.status(201).json({ player, game });
 	} else {
 		response.sendStatus(400);
 	}
