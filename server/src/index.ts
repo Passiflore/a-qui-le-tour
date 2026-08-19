@@ -3,7 +3,7 @@ import { pinoHttp } from "pino-http";
 import { randomUUID } from "node:crypto";
 
 const app = express();
-const port = 3000;
+const port = Number(process.env.PORT) || 3000;
 
 interface Player {
 	id: string;
@@ -21,16 +21,18 @@ interface Game {
 const players: Player[] = [];
 const games: Game[] = [];
 
-function isValidFirstName(firstName: unknown): boolean {
-	if (typeof firstName === "string") {
-		const trimmedFirstName = firstName.trim();
-
-		if (trimmedFirstName !== "" && trimmedFirstName.length <= 50) {
-			return true;
-		}
+function getValidFirstName(firstName: unknown): string | null {
+	if (typeof firstName !== "string") {
+		return null;
 	}
 
-	return false;
+	const trimmedFirstName = firstName.trim();
+
+	if (trimmedFirstName === "" || trimmedFirstName.length > 50) {
+		return null;
+	}
+
+	return trimmedFirstName;
 }
 
 app.use(pinoHttp());
@@ -41,25 +43,69 @@ app.get("/healthz", (request, response) => {
 });
 
 app.post("/games", (request, response) => {
-	const firstName = request.body.firstName;
-	if (isValidFirstName(firstName)) {
-		const player: Player = {
-			id: randomUUID(),
-			firstName: firstName.trim(),
-		};
-		const game: Game = {
-			id: randomUUID(),
-			hostPlayerId: player.id,
-			inviteToken: randomUUID(),
-			inviteUsed: false,
-		};
+	const firstName = request.body?.firstName;
+	const validFirstName = getValidFirstName(firstName);
 
-		players.push(player);
-		games.push(game);
-		response.status(201).json({ player, game });
-	} else {
-		response.sendStatus(400);
+	if (validFirstName === null) {
+		return response.sendStatus(400);
 	}
+
+	const player: Player = {
+		id: randomUUID(),
+		firstName: validFirstName,
+	};
+	const game: Game = {
+		id: randomUUID(),
+		hostPlayerId: player.id,
+		inviteToken: randomUUID(),
+		inviteUsed: false,
+	};
+
+	players.push(player);
+	games.push(game);
+	response.status(201).json({ player, game });
+});
+
+app.get("/invite/:token", (request, response) => {
+	const token = request.params.token;
+
+	const game = games.find((game) => {
+		return game.inviteToken === token;
+	});
+
+	if (game && !game.inviteUsed) {
+		response.sendStatus(200);
+	} else {
+		response.sendStatus(404);
+	}
+});
+
+app.post("/invite/:token", (request, response) => {
+	const token = request.params.token;
+	const firstName = request.body?.firstName;
+	const validFirstName = getValidFirstName(firstName);
+
+	const game = games.find((game) => {
+		return game.inviteToken === token;
+	});
+
+	if (!game || game.inviteUsed) {
+		return response.sendStatus(404);
+	}
+
+	if (validFirstName === null) {
+		return response.sendStatus(400);
+	}
+
+	const player: Player = {
+		id: randomUUID(),
+		firstName: validFirstName,
+	};
+
+	game.guestPlayerId = player.id;
+	players.push(player);
+	game.inviteUsed = true;
+	return response.status(201).json({ player, game });
 });
 
 app.listen(port);
