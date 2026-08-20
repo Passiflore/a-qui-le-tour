@@ -16,6 +16,9 @@ interface Game {
 	guestPlayerId?: string;
 	inviteToken: string;
 	inviteUsed: boolean;
+
+	currentDeciderPlayerId?: string;
+	decisionHistory: string[];
 }
 
 const players: Player[] = [];
@@ -33,6 +36,34 @@ function getValidFirstName(firstName: unknown): string | null {
 	}
 
 	return trimmedFirstName;
+}
+
+function chooseNextPlayer(game: Game): string | undefined {
+	if (!game.guestPlayerId) {
+		return undefined;
+	}
+	const recentDecisions = game.decisionHistory.slice(-5);
+	let hostCount = 0;
+	let guestCount = 0;
+
+	for (const decision of recentDecisions) {
+		if (decision === game.hostPlayerId) {
+			hostCount += 1;
+		} else {
+			guestCount += 1;
+		}
+	}
+
+	const hostWeight = guestCount + 1;
+	const guestWeight = hostCount + 1;
+
+	const randomNumber = Math.floor(Math.random() * (hostWeight + guestWeight));
+
+	if (randomNumber < hostWeight) {
+		return game.hostPlayerId;
+	} else {
+		return game.guestPlayerId;
+	}
 }
 
 app.use(pinoHttp());
@@ -59,6 +90,7 @@ app.post("/games", (request, response) => {
 		hostPlayerId: player.id,
 		inviteToken: randomUUID(),
 		inviteUsed: false,
+		decisionHistory: [],
 	};
 
 	players.push(player);
@@ -104,7 +136,9 @@ app.post("/invite/:token", (request, response) => {
 
 	game.guestPlayerId = player.id;
 	players.push(player);
+	game.currentDeciderPlayerId = chooseNextPlayer(game);
 	game.inviteUsed = true;
+
 	return response.status(201).json({ player, game });
 });
 
