@@ -142,4 +142,26 @@ app.post("/invite/:token", (request, response) => {
 	return response.status(201).json({ player, game });
 });
 
+app.post("/games/:gameId/decision", (request, response) => {
+	const gameId = request.params.gameId;
+
+	const currentGame = games.find((game) => {
+		return game.id === gameId;
+	});
+
+	if (!currentGame) {
+		return response.sendStatus(404);
+	}
+
+	if (!currentGame.currentDeciderPlayerId) {
+		return response.sendStatus(409);
+	}
+
+	currentGame.decisionHistory.push(currentGame.currentDeciderPlayerId);
+
+	currentGame.currentDeciderPlayerId = chooseNextPlayer(currentGame);
+
+	return response.status(200).json({ currentGame });
+});
+
 app.listen(port);
