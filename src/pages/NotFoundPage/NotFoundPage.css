@@ -1,13 +1,13 @@
 .errorContent {
 	display: flex;
 	flex-direction: column;
-	gap: 28px;
+	gap: var(--space-xl);
 }
 
 .errorTitle {
-	font-size: 150px;
-	letter-spacing: -0.04em;
-	line-height: 150px;
+	font-size: var(--text-3xl);
+	letter-spacing: var(--tracking-display);
+	line-height: var(--leading-display);
 	margin: 0;
 	color: var(--color-text);
 }
@@ -18,5 +18,5 @@
 
 .divider {
 	width: 100%;
-	border: 0.5px solid var(--color-description);
+	border: 1px solid var(--color-description);
 }

@@ -1,13 +1,13 @@
 .inviteContent {
 	display: flex;
 	flex-direction: column;
-	gap: 28px;
+	gap: var(--space-xl);
 }
 
 .inviteTitle {
-	font-size: 85px;
-	line-height: 80px;
-	letter-spacing: -0.04em;
+	font-size: var(--text-2xl);
+	line-height: var(--leading-display);
+	letter-spacing: var(--tracking-display);
 	margin: 0;
 	color: var(--color-text);
 }
@@ -18,12 +18,12 @@
 
 .invitationLinkContainer {
 	background-color: var(--color-terciary-transparent);
-	border-radius: 12px;
+	border-radius: var(--radius-sm);
 	border: 1px solid var(--color-terciary);
-	padding: 20px;
+	padding: var(--space-md);
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: var(--space-md);
 }
 
 .inviteLinkTitle {
@@ -31,5 +31,5 @@
 	color: var(--color-terciary);
 	text-transform: uppercase;
 	font-family: var(--font-display);
-	font-size: 14px;
+	font-size: var(--text-xs);
 }

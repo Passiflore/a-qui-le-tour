@@ -5,6 +5,47 @@
 	--font-display: "Dela Gothic One", sans-serif;
 	--font-body: "Inter", sans-serif;
 
+	/* Font sizes */
+	--text-2xs: 12px;
+	--text-xs: 14px;
+	--text-sm: 16px;
+	--text-md: 18px;
+	--text-lg: 28px;
+	--text-xl: 56px;
+	--text-2xl: 88px;
+	--text-3xl: 152px;
+
+	/* Line heights */
+	--leading-display: 0.92;
+	--leading-tight: 1.1;
+
+	/* Letter spacing */
+	--tracking-display: -0.04em;
+	--tracking-tight: -0.02em;
+	--tracking-caps: 0.16em;
+
+	/* Spacing 4px */
+	--space-3xs: 4px;
+	--space-2xs: 8px;
+	--space-xs: 12px;
+	--space-sm: 16px;
+	--space-md: 20px;
+	--space-lg: 24px;
+	--space-xl: 32px;
+	--space-2xl: 40px;
+
+	/* Radius */
+	--radius-sm: 12px;
+	--radius-md: 16px;
+	--radius-lg: 24px;
+	--radius-pill: 999px;
+	--radius-round: 50%;
+
+	/* Durations */
+	--duration-fast: 200ms;
+	--duration-base: 300ms;
+	--duration-slow: 400ms;
+
 	/* Colors */
 	--color-background: #0d0b10;
 	--color-text: #edebe5;
@@ -13,13 +54,18 @@
 	--color-terciary: #6529fa;
 	--color-white: #ffffff;
 
+	--color-surface-sunken: #0f0e11;
+	--color-surface: #141418;
+	--color-surface-raised: #1e1e26;
+	--color-surface-hover: #2a2835;
+
 	--color-secondary-transparent: #eb5a1d12;
 	--color-terciary-transparent: #6529fa12;
 	--color-white-transparent: #ffffff12;
 
 	--color-success: #22c55f;
 	--color-warning: #e49c27;
-	--color-error: red;
+	--color-error: #ef4444;
 }
 
 * {
@@ -36,7 +82,7 @@ body,
 body {
 	min-width: 320px;
 	min-height: 100vh;
-	background-color: #0f0e11;
+	background-color: var(--color-surface-sunken);
 	color: var(--color-text);
 }
 
@@ -47,5 +93,5 @@ h1 {
 
 p {
 	font-family: var(--font-body);
-	font-size: 14px;
+	font-size: var(--text-xs);
 }

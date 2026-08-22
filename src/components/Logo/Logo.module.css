@@ -1,13 +1,13 @@
 .logoContainer {
 	display: flex;
-	gap: 8px;
+	gap: var(--space-2xs);
 }
 
 .logoOrange,
 .logoPurple {
-	width: 16px;
-	height: 16px;
-	border-radius: 50%;
+	width: var(--space-sm);
+	height: var(--space-sm);
+	border-radius: var(--radius-round);
 }
 
 .logoOrange {

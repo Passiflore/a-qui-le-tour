@@ -1,13 +1,13 @@
 .homeContent {
 	display: flex;
 	flex-direction: column;
-	gap: 28px;
+	gap: var(--space-xl);
 }
 
 .homeTitle {
-	font-size: 85px;
-	line-height: 80px;
-	letter-spacing: -0.04em;
+	font-size: var(--text-2xl);
+	line-height: var(--leading-display);
+	letter-spacing: var(--tracking-display);
 	margin: 0;
 	color: var(--color-text);
 }
@@ -20,26 +20,26 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	gap: 38px;
+	gap: var(--space-2xl);
 }
 
 .homeInputContainer {
 	display: flex;
 	flex-direction: column;
 	text-transform: uppercase;
-	gap: 12px;
+	gap: var(--space-xs);
 	color: var(--color-secondary);
 	font-family: var(--font-display);
-	font-size: 12px;
-	letter-spacing: 0.16em;
+	font-size: var(--text-2xs);
+	letter-spacing: var(--tracking-caps);
 }
 
 .homeInput {
-	border-radius: 18px;
+	border-radius: var(--radius-md);
 	border: 1px solid var(--color-description);
-	background-color: #151417;
+	background-color: var(--color-surface);
 	color: var(--color-text);
-	padding: 14px;
+	padding: var(--space-sm);
 
 	&:focus {
 		border-color: var(--color-secondary);

@@ -12,17 +12,17 @@
 	background-color: var(--tag-bg);
 	width: fit-content;
 	max-width: 100%;
-	padding: 10px 15px;
+	padding: var(--space-xs) var(--space-sm);
 	display: flex;
 	align-items: center;
-	border-radius: 14px;
-	gap: 6px;
+	border-radius: var(--radius-md);
+	gap: var(--space-2xs);
 }
 
 .userName {
 	font-family: var(--font-display);
-	font-size: 12px;
-	letter-spacing: 0.16em;
+	font-size: var(--text-2xs);
+	letter-spacing: var(--tracking-caps);
 	color: var(--tag-text);
 	text-transform: uppercase;
 	min-width: 0;
@@ -31,8 +31,8 @@
 
 .orangeCircle {
 	background-color: var(--tag-text);
-	width: 8px;
-	height: 8px;
-	border-radius: 100%;
+	width: var(--space-2xs);
+	height: var(--space-2xs);
+	border-radius: var(--radius-round);
 	flex-shrink: 0;
 }

@@ -1,16 +1,16 @@
 .copyButton {
 	font-family: var(--font-display);
 	width: 100%;
-	font-size: 18px;
+	font-size: var(--text-md);
 	text-transform: uppercase;
 	color: var(--color-text);
-	padding: 20px 0;
+	padding: var(--space-md) 0;
 	background-color: var(--color-terciary);
 	border: none;
-	border-radius: 30px;
+	border-radius: var(--radius-pill);
 	transition:
-		transform 300ms ease-in-out,
-		background-color 300ms ease-in-out;
+		transform var(--duration-base) ease-in-out,
+		background-color var(--duration-base) ease-in-out;
 
 	&:disabled {
 		opacity: 0.4;
@@ -49,7 +49,7 @@
 
 .activated {
 	background-color: var(--color-success);
-	animation: pop 400ms ease-out;
+	animation: pop var(--duration-slow) ease-out;
 }
 
 .error {

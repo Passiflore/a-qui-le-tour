@@ -35,5 +35,5 @@
 }
 
 .layoutContent {
-	width: min(calc(100% - 32px), 420px);
+	width: min(calc(100% - var(--space-xl)), 420px);
 }

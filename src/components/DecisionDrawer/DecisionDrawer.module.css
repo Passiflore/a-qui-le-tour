@@ -3,17 +3,17 @@
 	width: 100%;
 	max-width: 100%;
 	border: none;
-	background-color: #141418;
-	border-radius: 24px 24px 0 0;
+	background-color: var(--color-surface);
+	border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 
 	transform: translateY(100%);
 	opacity: 0;
 
 	transition:
-		transform 200ms ease-in,
-		opacity 200ms ease-in,
-		display 200ms allow-discrete,
-		overlay 200ms allow-discrete;
+		transform var(--duration-fast) ease-in,
+		opacity var(--duration-fast) ease-in,
+		display var(--duration-fast) allow-discrete,
+		overlay var(--duration-fast) allow-discrete;
 }
 
 .drawerDialog[open] {
@@ -21,10 +21,10 @@
 	opacity: 1;
 
 	transition:
-		transform 300ms ease-out,
-		opacity 300ms ease-out,
-		display 300ms allow-discrete,
-		overlay 300ms allow-discrete;
+		transform var(--duration-base) ease-out,
+		opacity var(--duration-base) ease-out,
+		display var(--duration-base) allow-discrete,
+		overlay var(--duration-base) allow-discrete;
 }
 
 @starting-style {
@@ -37,9 +37,9 @@
 .drawerDialog::backdrop {
 	background-color: rgb(0 0 0 / 0);
 	transition:
-		background-color 200ms ease-in,
-		display 200ms allow-discrete,
-		overlay 200ms allow-discrete;
+		background-color var(--duration-fast) ease-in,
+		display var(--duration-fast) allow-discrete,
+		overlay var(--duration-fast) allow-discrete;
 }
 
 .drawerDialog[open]::backdrop {
@@ -56,7 +56,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 40px 24px;
+	padding: var(--space-2xl) var(--space-lg);
 }
 
 .heroContainer {
@@ -66,7 +66,7 @@
 
 .closeButton {
 	display: flex;
-	padding: 12px;
+	padding: var(--space-xs);
 	color: var(--color-description);
 	background: none;
 	border: none;
@@ -81,32 +81,32 @@
 	font-family: var(--font-display);
 	color: var(--color-white);
 	text-transform: uppercase;
-	font-size: 26px;
-	letter-spacing: -0.02em;
-	line-height: 28px;
+	font-size: var(--text-lg);
+	letter-spacing: var(--tracking-tight);
+	line-height: var(--leading-tight);
 }
 
 .formContainer {
 	display: flex;
 	flex-direction: column;
-	gap: 28px;
+	gap: var(--space-xl);
 }
 
 .formContainer label,
 .formContainer .groupLabel {
 	font-family: var(--font-display);
 	text-transform: uppercase;
-	font-size: 12px;
-	letter-spacing: 0.04em;
+	font-size: var(--text-2xs);
+	letter-spacing: var(--tracking-caps);
 	color: var(--color-description);
 }
 
 .formContainer input {
-	border-radius: 18px;
+	border-radius: var(--radius-md);
 	border: 1px solid var(--color-white-transparent);
-	background-color: #0f0e11;
+	background-color: var(--color-surface-sunken);
 	color: var(--color-description);
-	padding: 14px;
+	padding: var(--space-sm);
 
 	&:focus {
 		border-color: var(--color-secondary);
@@ -117,7 +117,7 @@
 .inputContainer {
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: var(--space-xs);
 }
 
 .formContainer .primaryInputTitle {
@@ -130,7 +130,7 @@
 
 .difficultyGroup {
 	display: flex;
-	gap: 12px;
+	gap: var(--space-xs);
 }
 
 .difficultyOption {
@@ -154,26 +154,26 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 12px;
-	padding: 16px;
-	background-color: #1e1e26;
+	gap: var(--space-xs);
+	padding: var(--space-sm);
+	background-color: var(--color-surface-raised);
 	border: 1px solid transparent;
-	border-radius: 16px;
+	border-radius: var(--radius-md);
 	cursor: pointer;
 	transition:
-		background-color 0.3s ease-in,
-		border-color 0.3s ease-in,
-		color 0.3s ease-in;
+		background-color var(--duration-base) ease-in,
+		border-color var(--duration-base) ease-in,
+		color var(--duration-base) ease-in;
 
 	&:hover {
-		background-color: #2a2835;
+		background-color: var(--color-surface-hover);
 	}
 }
 
 .difficultyInput:checked + .difficultyLabel {
 	border-color: var(--color-secondary);
 	color: var(--color-text);
-	background-color: #2a2835;
+	background-color: var(--color-surface-hover);
 }
 
 .difficultyInput:focus-visible + .difficultyLabel {
@@ -182,9 +182,9 @@
 }
 
 .buttonBadge {
-	width: 12px;
-	height: 12px;
-	border-radius: 50%;
+	width: var(--space-xs);
+	height: var(--space-xs);
+	border-radius: var(--radius-round);
 }
 
 .easy {
@@ -204,8 +204,8 @@
 	text-decoration: none;
 	color: var(--color-description);
 	font-family: var(--font-body);
-	font-size: 12px;
-	transition: 0.3s ease-in;
+	font-size: var(--text-2xs);
+	transition: var(--duration-base) ease-in;
 
 	&:hover {
 		color: var(--color-white);
