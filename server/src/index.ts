@@ -73,6 +73,7 @@ app.get("/healthz", (request, response) => {
 	response.sendStatus(200);
 });
 
+//Create a game
 app.post("/games", (request, response) => {
 	const firstName = request.body?.firstName;
 	const validFirstName = getValidFirstName(firstName);
@@ -98,6 +99,7 @@ app.post("/games", (request, response) => {
 	response.status(201).json({ player, game });
 });
 
+//Is invitaion valid
 app.get("/invite/:token", (request, response) => {
 	const token = request.params.token;
 
@@ -112,6 +114,7 @@ app.get("/invite/:token", (request, response) => {
 	}
 });
 
+//Use invitation to join
 app.post("/invite/:token", (request, response) => {
 	const token = request.params.token;
 	const firstName = request.body?.firstName;
@@ -142,6 +145,7 @@ app.post("/invite/:token", (request, response) => {
 	return response.status(201).json({ player, game });
 });
 
+//Next turn
 app.post("/games/:gameId/decision", (request, response) => {
 	const gameId = request.params.gameId;
 
@@ -161,7 +165,20 @@ app.post("/games/:gameId/decision", (request, response) => {
 
 	currentGame.currentDeciderPlayerId = chooseNextPlayer(currentGame);
 
-	return response.status(200).json({ currentGame });
+	return response.status(200).json({ game: currentGame });
+});
+
+app.get("/games/:gameId", (request, response) => {
+	const gameId = request.params.gameId;
+
+	const currentGame = games.find((game) => {
+		return game.id === gameId;
+	});
+
+	if (!currentGame) {
+		return response.sendStatus(404);
+	}
+	return response.status(200).json({ game: currentGame });
 });
 
 app.listen(port);
