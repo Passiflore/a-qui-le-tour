@@ -66,6 +66,7 @@ function chooseNextPlayer(game: Game): string | undefined {
 	}
 }
 
+//Middleware RequireGame
 function requireGame(request: Request, response: Response, next: NextFunction) {
 	const gameId = request.params.gameId;
 
@@ -78,6 +79,27 @@ function requireGame(request: Request, response: Response, next: NextFunction) {
 	}
 
 	response.locals.game = currentGame;
+
+	next();
+}
+
+//Middleware RequireValidInvite
+function requireValidInvite(
+	request: Request,
+	response: Response,
+	next: NextFunction,
+) {
+	const token = request.params.token;
+
+	const game = games.find((game) => {
+		return game.inviteToken === token;
+	});
+
+	if (!game || game.inviteUsed) {
+		return response.sendStatus(404);
+	}
+
+	response.locals.game = game;
 
 	next();
 }
@@ -116,33 +138,15 @@ app.post("/games", (request, response) => {
 });
 
 //Is invitaion valid
-app.get("/invite/:token", (request, response) => {
-	const token = request.params.token;
-
-	const game = games.find((game) => {
-		return game.inviteToken === token;
-	});
-
-	if (game && !game.inviteUsed) {
-		response.sendStatus(200);
-	} else {
-		response.sendStatus(404);
-	}
+app.get("/invite/:token", requireValidInvite, (request, response) => {
+	response.sendStatus(200);
 });
 
 //Use invitation to join
-app.post("/invite/:token", (request, response) => {
-	const token = request.params.token;
+app.post("/invite/:token", requireValidInvite, (request, response) => {
 	const firstName = request.body?.firstName;
 	const validFirstName = getValidFirstName(firstName);
-
-	const game = games.find((game) => {
-		return game.inviteToken === token;
-	});
-
-	if (!game || game.inviteUsed) {
-		return response.sendStatus(404);
-	}
+	const game = response.locals.game;
 
 	if (validFirstName === null) {
 		return response.sendStatus(400);
@@ -162,7 +166,7 @@ app.post("/invite/:token", (request, response) => {
 });
 
 //Next turn
-app.post("/games/:gameId/decision", requireGame, (request, response) => {
+app.post("/games/:gameId/decision", requireGame, (_, response) => {
 	const currentGame = response.locals.game;
 
 	if (!currentGame.currentDeciderPlayerId) {
@@ -176,7 +180,7 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 	return response.status(200).json({ game: currentGame });
 });
 
-app.get("/games/:gameId", requireGame, (request, response) => {
+app.get("/games/:gameId", requireGame, (_, response) => {
 	const currentGame = response.locals.game;
 
 	return response.status(200).json({ game: currentGame });
