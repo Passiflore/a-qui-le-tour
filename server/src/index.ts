@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Response, Request, NextFunction } from "express";
 import { pinoHttp } from "pino-http";
 import { randomUUID } from "node:crypto";
 
@@ -64,6 +64,22 @@ function chooseNextPlayer(game: Game): string | undefined {
 	} else {
 		return game.guestPlayerId;
 	}
+}
+
+function requireGame(request: Request, response: Response, next: NextFunction) {
+	const gameId = request.params.gameId;
+
+	const currentGame = games.find((game) => {
+		return game.id === gameId;
+	});
+
+	if (!currentGame) {
+		return response.sendStatus(404);
+	}
+
+	response.locals.game = currentGame;
+
+	next();
 }
 
 app.use(pinoHttp());
@@ -146,16 +162,8 @@ app.post("/invite/:token", (request, response) => {
 });
 
 //Next turn
-app.post("/games/:gameId/decision", (request, response) => {
-	const gameId = request.params.gameId;
-
-	const currentGame = games.find((game) => {
-		return game.id === gameId;
-	});
-
-	if (!currentGame) {
-		return response.sendStatus(404);
-	}
+app.post("/games/:gameId/decision", requireGame, (request, response) => {
+	const currentGame = response.locals.game;
 
 	if (!currentGame.currentDeciderPlayerId) {
 		return response.sendStatus(409);
@@ -168,16 +176,9 @@ app.post("/games/:gameId/decision", (request, response) => {
 	return response.status(200).json({ game: currentGame });
 });
 
-app.get("/games/:gameId", (request, response) => {
-	const gameId = request.params.gameId;
+app.get("/games/:gameId", requireGame, (request, response) => {
+	const currentGame = response.locals.game;
 
-	const currentGame = games.find((game) => {
-		return game.id === gameId;
-	});
-
-	if (!currentGame) {
-		return response.sendStatus(404);
-	}
 	return response.status(200).json({ game: currentGame });
 });
 
