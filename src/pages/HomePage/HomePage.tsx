@@ -1,3 +1,4 @@
+import { createGame, type Game, type Player } from "../../api";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import Logo from "../../components/Logo/Logo";
 import "./HomePage.css";
@@ -6,13 +7,23 @@ import { useNavigate } from "react-router";
 interface HomePageProps {
 	firstName: string;
 	setFirstName: React.Dispatch<React.SetStateAction<string>>;
+	setPlayer: React.Dispatch<React.SetStateAction<Player | null>>;
+	setGame: React.Dispatch<React.SetStateAction<Game | null>>;
 }
 
-function HomePage({ firstName, setFirstName }: HomePageProps) {
+function HomePage({
+	firstName,
+	setFirstName,
+	setPlayer,
+	setGame,
+}: HomePageProps) {
 	const navigate = useNavigate();
 
-	const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		const data = await createGame(firstName);
+		setPlayer(data.player);
+		setGame(data.game);
 		navigate("/invite", { viewTransition: true });
 	};
 
