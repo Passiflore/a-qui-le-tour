@@ -10,6 +10,14 @@ interface Player {
 	firstName: string;
 }
 
+interface Decision {
+	playerId: string;
+	decision: string;
+	comment?: string | null;
+	difficulty?: "easy" | "medium" | "hard";
+	createdAt: Date;
+}
+
 interface Game {
 	id: string;
 	hostPlayerId: string;
@@ -18,36 +26,41 @@ interface Game {
 	inviteUsed: boolean;
 
 	currentDeciderPlayerId?: string;
-	decisionHistory: string[];
+	decisionHistory: Decision[];
 }
 
 const players: Player[] = [];
 const games: Game[] = [];
 
-function getValidFirstName(firstName: unknown): string | null {
-	if (typeof firstName !== "string") {
+function getValidText(text: unknown, type?: "firstName"): string | null {
+	if (typeof text !== "string") {
 		return null;
 	}
 
-	const trimmedFirstName = firstName.trim();
+	const trimmedText = text.trim();
 
-	if (trimmedFirstName === "" || trimmedFirstName.length > 50) {
+	if (trimmedText === "") {
 		return null;
 	}
 
-	return trimmedFirstName;
+	if (type === "firstName" && trimmedText.length > 50) {
+		return null;
+	}
+
+	return trimmedText;
 }
 
 function chooseNextPlayer(game: Game): string | undefined {
 	if (!game.guestPlayerId) {
 		return undefined;
 	}
+
 	const recentDecisions = game.decisionHistory.slice(-5);
 	let hostCount = 0;
 	let guestCount = 0;
 
 	for (const decision of recentDecisions) {
-		if (decision === game.hostPlayerId) {
+		if (decision.playerId === game.hostPlayerId) {
 			hostCount += 1;
 		} else {
 			guestCount += 1;
@@ -114,7 +127,7 @@ app.get("/healthz", (request, response) => {
 //Create a game
 app.post("/games", (request, response) => {
 	const firstName = request.body?.firstName;
-	const validFirstName = getValidFirstName(firstName);
+	const validFirstName = getValidText(firstName, "firstName");
 
 	if (validFirstName === null) {
 		return response.sendStatus(400);
@@ -145,7 +158,7 @@ app.get("/invite/:token", requireValidInvite, (request, response) => {
 //Use invitation to join
 app.post("/invite/:token", requireValidInvite, (request, response) => {
 	const firstName = request.body?.firstName;
-	const validFirstName = getValidFirstName(firstName);
+	const validFirstName = getValidText(firstName, "firstName");
 	const game = response.locals.game;
 
 	if (validFirstName === null) {
@@ -166,14 +179,40 @@ app.post("/invite/:token", requireValidInvite, (request, response) => {
 });
 
 //Next turn
-app.post("/games/:gameId/decision", requireGame, (_, response) => {
+app.post("/games/:gameId/decision", requireGame, (request, response) => {
 	const currentGame = response.locals.game;
+	const decisionInfo = request.body?.decision;
+	const validDecision = getValidText(decisionInfo);
+	const comment = request.body?.comment;
+	const validComment = getValidText(comment);
+	const difficulty = request.body?.difficulty;
 
 	if (!currentGame.currentDeciderPlayerId) {
 		return response.sendStatus(409);
 	}
 
-	currentGame.decisionHistory.push(currentGame.currentDeciderPlayerId);
+	if (!validDecision) {
+		return response.sendStatus(400);
+	}
+
+	if (
+		difficulty !== undefined &&
+		difficulty !== "easy" &&
+		difficulty !== "medium" &&
+		difficulty !== "hard"
+	) {
+		return response.sendStatus(400);
+	}
+
+	const decision: Decision = {
+		playerId: currentGame.currentDeciderPlayerId,
+		decision: validDecision,
+		comment: validComment,
+		difficulty: difficulty,
+		createdAt: new Date(),
+	};
+
+	currentGame.decisionHistory.push(decision);
 
 	currentGame.currentDeciderPlayerId = chooseNextPlayer(currentGame);
 
