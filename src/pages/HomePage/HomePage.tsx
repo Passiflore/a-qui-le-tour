@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createGame, type Game, type Player } from "../../api";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import Logo from "../../components/Logo/Logo";
@@ -18,13 +19,23 @@ function HomePage({
 	setGame,
 }: HomePageProps) {
 	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const data = await createGame(firstName);
-		setPlayer(data.player);
-		setGame(data.game);
-		navigate("/invite", { viewTransition: true });
+		setError(null);
+		setIsLoading(true);
+		try {
+			const data = await createGame(firstName);
+			setPlayer(data.player);
+			setGame(data.game);
+			navigate("/invite", { viewTransition: true });
+		} catch {
+			setError("Impossible de créer la partie");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -52,9 +63,14 @@ function HomePage({
 				<ActionButton
 					text="Créer la partie"
 					type={"submit"}
-					disabled={!firstName.trim()}
+					disabled={!firstName.trim() || isLoading}
 				/>
 			</form>
+			{error && (
+				<div className="errorContainer">
+					<p className="errorText">{error}</p>
+				</div>
+			)}
 		</main>
 	);
 }
