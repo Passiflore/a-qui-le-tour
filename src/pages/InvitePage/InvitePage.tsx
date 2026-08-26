@@ -1,16 +1,15 @@
 import NameTag from "../../components/NameTag/NameTag";
 import "./InvitePage.css";
 import CopyButton from "../../components/CopyButton/CopyButton";
+import type { Game } from "../../api";
 
 interface InviteProps {
 	firstName: string;
-	inviationLink?: string;
+	game: Game;
 }
 
-function InvitePage({ firstName }: InviteProps) {
-	const invitationLink =
-		"https://fa6dc00f-c1d0-49b2-87ab-dd249697f511-v3-figmaiframepreview.figma.site/?join=78SUS&p1=njfde";
-
+function InvitePage({ firstName, game }: InviteProps) {
+	const invitationLink = `${window.location.origin}/join/${game.inviteToken}`;
 	return (
 		<main className="inviteContent">
 			<NameTag firstName={firstName} />

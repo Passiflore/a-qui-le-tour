@@ -31,8 +31,8 @@ function App() {
 				<Route
 					path="/invite"
 					element={
-						firstName.trim() ? (
-							<InvitePage firstName={firstName} />
+						game && firstName.trim() ? (
+							<InvitePage firstName={firstName} game={game} />
 						) : (
 							<Navigate to="/" replace />
 						)
