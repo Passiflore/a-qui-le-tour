@@ -1,14 +1,14 @@
 import { useState } from "react";
+import { Navigate, Route, Routes } from "react-router";
 import "./App.css";
 import type { Game, Player } from "./api";
 import CenteredPageLayout from "./layouts/CenteredPageLayout/CenteredPageLayout";
 import HomePage from "./pages/HomePage/HomePage";
-
 import InvitePage from "./pages/InvitePage/InvitePage";
-import { Navigate, Route, Routes } from "react-router";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import DecisionPage from "./pages/DecisionPage/DecisionPage";
 import WaitingPage from "./pages/WaitingPage/WaitingPage";
+import JoinPage from "./pages/JoinPage/JoinPage";
 
 function App() {
 	const [firstName, setFirstName] = useState("");
@@ -38,6 +38,7 @@ function App() {
 						)
 					}
 				/>
+				<Route path="/join/:token" element={<JoinPage />} />
 				<Route path="*" element={<NotFoundPage />} />
 			</Route>
 

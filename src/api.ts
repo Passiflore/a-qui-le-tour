@@ -48,3 +48,11 @@ export async function createGame(
 
 	return data;
 }
+
+export async function getInvite(token: string) {
+	const response = await fetch(`/api/invite/${token}`);
+
+	if (!response.ok) {
+		throw new Error("Invitation invalide ou déjà utilisée");
+	}
+}
