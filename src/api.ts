@@ -8,7 +8,7 @@ export interface Decision {
 	decision: string;
 	comment?: string | null;
 	difficulty?: "easy" | "medium" | "hard";
-	createdAt: Date;
+	createdAt: string;
 }
 
 export interface Game {
@@ -22,14 +22,14 @@ export interface Game {
 	decisionHistory: Decision[];
 }
 
-interface CreateGameResponse {
+interface GameSessionResponse {
 	player: Player;
 	game: Game;
 }
 
 export async function createGame(
 	firstName: string,
-): Promise<CreateGameResponse> {
+): Promise<GameSessionResponse> {
 	const response = await fetch("/api/games", {
 		method: "POST",
 		headers: {
@@ -55,4 +55,27 @@ export async function getInvite(token: string) {
 	if (!response.ok) {
 		throw new Error("Invitation invalide ou déjà utilisée");
 	}
+}
+
+export async function joinGame(
+	token: string,
+	firstName: string,
+): Promise<GameSessionResponse> {
+	const response = await fetch(`/api/invite/${token}`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			firstName,
+		}),
+	});
+
+	if (!response.ok) {
+		throw new Error("Impossible de rejoindre la partie");
+	}
+
+	const data = await response.json();
+
+	return data;
 }
