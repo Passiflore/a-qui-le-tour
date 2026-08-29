@@ -29,6 +29,13 @@ interface Game {
 	decisionHistory: Decision[];
 }
 
+interface GameResponse {
+	host: Player;
+	guest: Player | null;
+	currentDeciderPlayerId: string | null;
+	decisionHistory: Decision[];
+}
+
 const players: Player[] = [];
 const games: Game[] = [];
 
@@ -77,6 +84,12 @@ function chooseNextPlayer(game: Game): string | undefined {
 	} else {
 		return game.guestPlayerId;
 	}
+}
+
+function findPlayer(playerId: string) {
+	return players.find((player) => {
+		return player.id === playerId;
+	});
 }
 
 //Middleware RequireGame
@@ -221,8 +234,21 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 
 app.get("/games/:gameId", requireGame, (_, response) => {
 	const currentGame = response.locals.game;
+	const hostPlayer = findPlayer(currentGame.hostPlayerId);
+	const guestPlayer = findPlayer(currentGame.guestPlayerId) ?? null;
 
-	return response.status(200).json({ game: currentGame });
+	if (!hostPlayer) {
+		return response.sendStatus(500);
+	}
+
+	const game: GameResponse = {
+		host: hostPlayer,
+		guest: guestPlayer,
+		currentDeciderPlayerId: currentGame.currentDeciderPlayerId ?? null,
+		decisionHistory: currentGame.decisionHistory,
+	};
+
+	return response.status(200).json({ game: game });
 });
 
 app.listen(port);
