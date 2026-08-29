@@ -86,10 +86,25 @@ function chooseNextPlayer(game: Game): string | undefined {
 	}
 }
 
-function findPlayer(playerId: string) {
+function findPlayer(playerId: string | undefined) {
 	return players.find((player) => {
 		return player.id === playerId;
 	});
+}
+
+function buildGameResponse(game: Game): GameResponse | null {
+	const hostPlayer = findPlayer(game.hostPlayerId);
+
+	if (!hostPlayer) {
+		return null;
+	}
+
+	return {
+		host: hostPlayer,
+		guest: findPlayer(game.guestPlayerId) ?? null,
+		currentDeciderPlayerId: game.currentDeciderPlayerId ?? null,
+		decisionHistory: game.decisionHistory,
+	};
 }
 
 //Middleware RequireGame
@@ -229,26 +244,23 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 
 	currentGame.currentDeciderPlayerId = chooseNextPlayer(currentGame);
 
-	return response.status(200).json({ game: currentGame });
-});
+	const game = buildGameResponse(response.locals.game);
 
-app.get("/games/:gameId", requireGame, (_, response) => {
-	const currentGame = response.locals.game;
-	const hostPlayer = findPlayer(currentGame.hostPlayerId);
-	const guestPlayer = findPlayer(currentGame.guestPlayerId) ?? null;
-
-	if (!hostPlayer) {
+	if (!game) {
 		return response.sendStatus(500);
 	}
 
-	const game: GameResponse = {
-		host: hostPlayer,
-		guest: guestPlayer,
-		currentDeciderPlayerId: currentGame.currentDeciderPlayerId ?? null,
-		decisionHistory: currentGame.decisionHistory,
-	};
+	return response.status(200).json({ game });
+});
 
-	return response.status(200).json({ game: game });
+app.get("/games/:gameId", requireGame, (_, response) => {
+	const game = buildGameResponse(response.locals.game);
+
+	if (!game) {
+		return response.sendStatus(500);
+	}
+
+	return response.status(200).json({ game });
 });
 
 app.listen(port);
