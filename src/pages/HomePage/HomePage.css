@@ -46,22 +46,3 @@
 		outline: none;
 	}
 }
-
-.errorContainer {
-	background-color: var(--color-error-transparent);
-	text-align: center;
-	border: solid 1px var(--color-error);
-	border-radius: var(--radius-md);
-	opacity: 1;
-	transition:
-		opacity var(--duration-slow),
-		transform var(--duration-slow);
-	transform: translateY(0%);
-}
-
-@starting-style {
-	.errorContainer {
-		transform: translateY(10px);
-		opacity: 0;
-	}
-}
