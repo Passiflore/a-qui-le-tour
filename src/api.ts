@@ -22,60 +22,54 @@ export interface Game {
 	decisionHistory: Decision[];
 }
 
-interface GameSessionResponse {
+export interface GameResponse {
+	host: Player;
+	guest: Player | null;
+	currentDeciderPlayerId: string | null;
+	decisionHistory: Decision[];
+}
+
+export interface GameSessionResponse {
 	player: Player;
 	game: Game;
+}
+
+async function request<T>(path: string, options?: RequestInit): Promise<T> {
+	const response = await fetch(`/api${path}`, {
+		headers: { "Content-Type": "application/json" },
+		...options,
+	});
+
+	if (!response.ok) {
+		throw new Error(`Requête échouée (${response.status})`);
+	}
+
+	return response.json();
 }
 
 export async function createGame(
 	firstName: string,
 ): Promise<GameSessionResponse> {
-	const response = await fetch("/api/games", {
+	return request<GameSessionResponse>("/games", {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			firstName,
-		}),
+		body: JSON.stringify({ firstName }),
 	});
-
-	if (!response.ok) {
-		throw new Error("Impossible de créer la partie");
-	}
-
-	const data = await response.json();
-
-	return data;
 }
 
 export async function getInvite(token: string) {
-	const response = await fetch(`/api/invite/${token}`);
-
-	if (!response.ok) {
-		throw new Error("Invitation invalide ou déjà utilisée");
-	}
+	return request<void>(`/invite/${token}`);
 }
 
 export async function joinGame(
 	token: string,
 	firstName: string,
 ): Promise<GameSessionResponse> {
-	const response = await fetch(`/api/invite/${token}`, {
+	return request<GameSessionResponse>(`/invite/${token}`, {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			firstName,
-		}),
+		body: JSON.stringify({ firstName }),
 	});
+}
 
-	if (!response.ok) {
-		throw new Error("Impossible de rejoindre la partie");
-	}
-
-	const data = await response.json();
-
-	return data;
+export async function getGame(gameId: string) {
+	return request<{ game: GameResponse }>(`/games/${gameId}`);
 }
