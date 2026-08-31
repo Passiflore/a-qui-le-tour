@@ -180,7 +180,7 @@ app.post("/games", (request, response) => {
 
 //Is invitaion valid
 app.get("/invite/:token", requireValidInvite, (request, response) => {
-	response.sendStatus(200);
+	response.status(200).json({ valid: true });
 });
 
 //Use invitation to join

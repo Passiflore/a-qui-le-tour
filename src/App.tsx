@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import "./App.css";
-import type { Game, Player } from "./api";
 import CenteredPageLayout from "./layouts/CenteredPageLayout/CenteredPageLayout";
 import HomePage from "./pages/HomePage/HomePage";
 import InvitePage from "./pages/InvitePage/InvitePage";
@@ -11,28 +9,15 @@ import WaitingPage from "./pages/WaitingPage/WaitingPage";
 import JoinPage from "./pages/JoinPage/JoinPage";
 
 function App() {
-	const [firstName, setFirstName] = useState("");
-	const [player, setPlayer] = useState<Player | null>(null);
-	const [game, setGame] = useState<Game | null>(null);
 	return (
 		<Routes>
 			<Route element={<CenteredPageLayout />}>
-				<Route
-					path="/"
-					element={
-						<HomePage
-							firstName={firstName}
-							setFirstName={setFirstName}
-							setPlayer={setPlayer}
-							setGame={setGame}
-						/>
-					}
-				/>
+				<Route path="/" element={<HomePage />} />
 				<Route
 					path="/invite"
 					element={
-						game && firstName.trim() ? (
-							<InvitePage firstName={firstName} game={game} />
+						localStorage.getItem("gameId") ? (
+							<InvitePage />
 						) : (
 							<Navigate to="/" replace />
 						)

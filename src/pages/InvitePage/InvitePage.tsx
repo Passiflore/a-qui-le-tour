@@ -1,18 +1,27 @@
 import NameTag from "../../components/NameTag/NameTag";
 import "./InvitePage.css";
 import CopyButton from "../../components/CopyButton/CopyButton";
-import type { Game } from "../../api";
+import { useEffect, useState } from "react";
+import { getGame, type GameResponse } from "../../api";
 
-interface InviteProps {
-	firstName: string;
-	game: Game;
-}
+function InvitePage() {
+	const gameId = localStorage.getItem("gameId");
+	const inviteToken = localStorage.getItem("inviteToken");
+	const invitationLink = `${window.location.origin}/join/${inviteToken}`;
+	const [game, setGame] = useState<GameResponse | null>(null);
 
-function InvitePage({ firstName, game }: InviteProps) {
-	const invitationLink = `${window.location.origin}/join/${game.inviteToken}`;
+	useEffect(() => {
+		if (!gameId) {
+			return;
+		}
+		getGame(gameId).then((data) => {
+			setGame(data.game);
+		});
+	}, [gameId]);
 	return (
 		<main className="inviteContent">
-			<NameTag firstName={firstName} />
+			{game?.host && <NameTag firstName={game.host?.firstName} />}
+
 			<div>
 				<h1 className="inviteTitle">Invite l'autre joueur</h1>
 				<p className="inviteDescription">
