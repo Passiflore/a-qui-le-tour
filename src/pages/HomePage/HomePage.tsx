@@ -1,26 +1,15 @@
 import { useState } from "react";
-import { createGame, type Game, type Player } from "../../api";
+import { createGame } from "../../api";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import Logo from "../../components/Logo/Logo";
 import "./HomePage.css";
 import { useNavigate } from "react-router";
 
-interface HomePageProps {
-	firstName: string;
-	setFirstName: React.Dispatch<React.SetStateAction<string>>;
-	setPlayer: React.Dispatch<React.SetStateAction<Player | null>>;
-	setGame: React.Dispatch<React.SetStateAction<Game | null>>;
-}
-
-function HomePage({
-	firstName,
-	setFirstName,
-	setPlayer,
-	setGame,
-}: HomePageProps) {
+function HomePage() {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [firstName, setFirstName] = useState("");
 
 	const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -28,8 +17,9 @@ function HomePage({
 		setIsLoading(true);
 		try {
 			const data = await createGame(firstName);
-			setPlayer(data.player);
-			setGame(data.game);
+			localStorage.setItem("playerId", data.player.id);
+			localStorage.setItem("gameId", data.game.id);
+			localStorage.setItem("inviteToken", data.game.inviteToken);
 			navigate("/invite", { viewTransition: true });
 		} catch {
 			setError("Impossible de créer la partie");

@@ -1,6 +1,6 @@
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { getInvite } from "../../api";
+import { getInvite, joinGame } from "../../api";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import Logo from "../../components/Logo/Logo";
 import "./JoinPage.css";
@@ -8,6 +8,8 @@ import "./JoinPage.css";
 function JoinPage() {
 	const { token } = useParams();
 	const [error, setError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const navigate = useNavigate();
 
 	const [firstName, setFirstName] = useState("");
 	useEffect(() => {
@@ -18,6 +20,34 @@ function JoinPage() {
 		});
 	}, [token]);
 
+	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+		e.preventDefault();
+		setError(null);
+		setIsLoading(true);
+		if (!token) {
+			setIsLoading(false);
+			return setError("Cette invitation est invalide ou a déjà été utilisée");
+		}
+		try {
+			const data = await joinGame(token, firstName);
+
+			localStorage.setItem("playerId", data.player.id);
+			localStorage.setItem("gameId", data.game.id);
+
+			if (data.game.currentDeciderPlayerId === data.player.id) {
+				navigate("/decision", { viewTransition: true });
+			} else {
+				navigate("/waiting", { viewTransition: true });
+			}
+		} catch {
+			setError(
+				"Impossible de rejoindre la partie. Vérifie ta connexion et réessaie.",
+			);
+		} finally {
+			setIsLoading(false);
+		}
+	}
+
 	return (
 		<main className="joinContent">
 			<Logo />
@@ -27,7 +57,7 @@ function JoinPage() {
 					Entre ton prénom. L'appli désignera ensuite qui décide, à chaque fois.
 				</p>
 			</div>
-			<form className="joinForm">
+			<form className="joinForm" onSubmit={handleSubmit}>
 				<div className="joinInputContainer">
 					<label htmlFor="firstName">ton prénom</label>
 					<input
@@ -42,7 +72,7 @@ function JoinPage() {
 				<ActionButton
 					text="Rejoindre"
 					type={"submit"}
-					disabled={!firstName.trim()}
+					disabled={!firstName.trim() || isLoading}
 				/>
 			</form>
 			{error && (
