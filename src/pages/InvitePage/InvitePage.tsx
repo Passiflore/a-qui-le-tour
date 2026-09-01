@@ -3,12 +3,34 @@ import "./InvitePage.css";
 import CopyButton from "../../components/CopyButton/CopyButton";
 import { useEffect, useState } from "react";
 import { getGame, type GameResponse } from "../../api";
+import { useNavigate } from "react-router";
 
 function InvitePage() {
+	const navigate = useNavigate();
 	const gameId = localStorage.getItem("gameId");
 	const inviteToken = localStorage.getItem("inviteToken");
 	const invitationLink = `${window.location.origin}/join/${inviteToken}`;
 	const [game, setGame] = useState<GameResponse | null>(null);
+	const playerId = localStorage.getItem("playerId");
+
+	useEffect(() => {
+		if (!gameId) return;
+
+		const interval = setInterval(() => {
+			getGame(gameId).then((data) => {
+				setGame(data.game);
+				if (data.game.guest) {
+					if (data.game.currentDeciderPlayerId === playerId) {
+						navigate("/decision", { viewTransition: true });
+					} else {
+						navigate("/waiting", { viewTransition: true });
+					}
+				}
+			});
+		}, 3000);
+
+		return () => clearInterval(interval);
+	}, [gameId, navigate, playerId]);
 
 	useEffect(() => {
 		if (!gameId) {
@@ -18,6 +40,7 @@ function InvitePage() {
 			setGame(data.game);
 		});
 	}, [gameId]);
+
 	return (
 		<main className="inviteContent">
 			{game?.host && <NameTag firstName={game.host?.firstName} />}
