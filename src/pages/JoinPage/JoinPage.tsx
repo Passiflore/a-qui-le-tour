@@ -43,6 +43,7 @@ function JoinPage() {
 			setError(
 				"Impossible de rejoindre la partie. Vérifie ta connexion et réessaie.",
 			);
+			console.error(error);
 		} finally {
 			setIsLoading(false);
 		}

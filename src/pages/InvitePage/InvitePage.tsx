@@ -53,7 +53,7 @@ function InvitePage() {
 				</p>
 			</div>
 			<div className="invitationLinkContainer">
-				<h3 className="inviteLinkTitle">Lien d'invitaiton</h3>
+				<h3 className="inviteLinkTitle">Lien d'invitation</h3>
 				<p>{invitationLink}</p>
 				<CopyButton invitationLink={invitationLink} />
 			</div>

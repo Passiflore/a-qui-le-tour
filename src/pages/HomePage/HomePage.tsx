@@ -23,6 +23,7 @@ function HomePage() {
 			navigate("/invite", { viewTransition: true });
 		} catch {
 			setError("Impossible de créer la partie");
+			console.error(error);
 		} finally {
 			setIsLoading(false);
 		}
