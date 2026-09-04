@@ -73,3 +73,13 @@ export async function joinGame(
 export async function getGame(gameId: string) {
 	return request<{ game: GameResponse }>(`/games/${gameId}`);
 }
+
+export async function nextTurn(
+	decisionInfo: Omit<Decision, "playerId" | "createdAt">,
+	gameId: string,
+) {
+	return request<{ game: GameResponse }>(`/games/${gameId}/decision`, {
+		method: "POST",
+		body: JSON.stringify(decisionInfo),
+	});
+}
