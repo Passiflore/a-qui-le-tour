@@ -11,7 +11,7 @@ interface DrawerProps {
 
 const Difficulties = [
 	{ value: "easy", label: "Évident" },
-	{ value: "hesitant", label: "Hésitant" },
+	{ value: "medium", label: "Hésitant" },
 	{ value: "hard", label: "Difficile" },
 ];
 
@@ -69,13 +69,13 @@ function DecisionDrawer({ drawerRef }: DrawerProps) {
 						/>
 					</div>
 					<div className={styles.inputContainer}>
-						<label htmlFor={"commentary"}>
+						<label htmlFor={"comment"}>
 							Commentaire{" "}
 							<span className={styles.optionalText}>(optionnel)</span>
 						</label>
 						<input
-							id="commentary"
-							name="commentary"
+							id="comment"
+							name="comment"
 							placeholder="Pourquoi ce choix ? Une précision"
 						/>
 					</div>
