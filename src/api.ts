@@ -57,7 +57,7 @@ export async function createGame(
 }
 
 export async function getInvite(token: string) {
-	return request<void>(`/invite/${token}`);
+	return request<boolean>(`/invite/${token}`);
 }
 
 export async function joinGame(

@@ -178,7 +178,7 @@ app.post("/games", (request, response) => {
 	response.status(201).json({ player, game });
 });
 
-//Is invitaion valid
+//Is invitation valid
 app.get("/invite/:token", requireValidInvite, (request, response) => {
 	response.status(200).json({ valid: true });
 });

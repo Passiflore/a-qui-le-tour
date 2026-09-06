@@ -113,7 +113,7 @@ function DecisionDrawer({ drawerRef }: DrawerProps) {
 					</div>
 					<ActionButton text="Confirmer" type="submit" size="medium" />
 					<Link to="/waiting" className={styles.link}>
-						Passer sans rensigner
+						Passer sans renseigner
 					</Link>
 				</form>
 			</div>
