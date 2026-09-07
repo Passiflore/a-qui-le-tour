@@ -8,6 +8,7 @@ import { nextTurn } from "../../api";
 
 interface DrawerProps {
 	drawerRef: React.RefObject<HTMLDialogElement | null>;
+	firstName: string;
 }
 
 const Difficulties = [
@@ -16,7 +17,7 @@ const Difficulties = [
 	{ value: "hard", label: "Difficile" },
 ];
 
-function DecisionDrawer({ drawerRef }: DrawerProps) {
+function DecisionDrawer({ drawerRef, firstName }: DrawerProps) {
 	const navigate = useNavigate();
 	const formRef = useRef<HTMLFormElement>(null);
 	const gameId = localStorage.getItem("gameId");
@@ -27,8 +28,8 @@ function DecisionDrawer({ drawerRef }: DrawerProps) {
 
 	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
+		const playerId = localStorage.getItem("playerId");
 		const formData = new FormData(e.currentTarget);
-		// console.log(e.currentTarget);
 		const decision = String(formData.get("decision") ?? "");
 		const comment = String(formData.get("comment") ?? "");
 		const rawDifficulty = String(formData.get("difficulty") ?? "");
@@ -44,11 +45,14 @@ function DecisionDrawer({ drawerRef }: DrawerProps) {
 			difficulty: difficulty,
 		};
 
-		nextTurn(decisionInfo, gameId).then(() => {
-			closeDrawer();
+		const result = await nextTurn(decisionInfo, gameId);
+		closeDrawer();
 
+		if (playerId !== result.game.currentDeciderPlayerId) {
 			navigate("/waiting", { viewTransition: true });
-		});
+		} else {
+			navigate("/decision", { viewTransition: true });
+		}
 	}
 
 	return (
@@ -62,7 +66,7 @@ function DecisionDrawer({ drawerRef }: DrawerProps) {
 		>
 			<div className={styles.drawerContainer}>
 				<div className={styles.heroContainer}>
-					<NameTag firstName="test" />
+					<NameTag firstName={firstName} />
 					<button
 						className={styles.closeButton}
 						aria-label="Fermer"
