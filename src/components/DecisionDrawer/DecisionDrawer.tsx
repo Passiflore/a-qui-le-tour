@@ -4,6 +4,7 @@ import NameTag from "../NameTag/NameTag";
 import styles from "./DecisionDrawer.module.css";
 import CrossIcon from "../CrossIcon/CrossIcon";
 import { useRef } from "react";
+import { nextTurn } from "../../api";
 
 interface DrawerProps {
 	drawerRef: React.RefObject<HTMLDialogElement | null>;
@@ -18,15 +19,36 @@ const Difficulties = [
 function DecisionDrawer({ drawerRef }: DrawerProps) {
 	const navigate = useNavigate();
 	const formRef = useRef<HTMLFormElement>(null);
+	const gameId = localStorage.getItem("gameId");
 
 	function closeDrawer() {
 		drawerRef.current?.close();
 	}
 
-	function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
-		closeDrawer();
-		navigate("/waiting", { viewTransition: true });
+		const formData = new FormData(e.currentTarget);
+		// console.log(e.currentTarget);
+		const decision = String(formData.get("decision") ?? "");
+		const comment = String(formData.get("comment") ?? "");
+		const rawDifficulty = String(formData.get("difficulty") ?? "");
+		const validDifficulties = ["easy", "medium", "hard"] as const;
+
+		const difficulty = validDifficulties.find((d) => d === rawDifficulty);
+
+		if (!decision || !gameId) return;
+
+		const decisionInfo = {
+			decision: decision,
+			comment: comment,
+			difficulty: difficulty,
+		};
+
+		nextTurn(decisionInfo, gameId).then(() => {
+			closeDrawer();
+
+			navigate("/waiting", { viewTransition: true });
+		});
 	}
 
 	return (
