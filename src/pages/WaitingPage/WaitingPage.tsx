@@ -1,30 +1,16 @@
-import { useEffect, useState } from "react";
 import styles from "./WaitingPage.module.css";
-import { getGame } from "../../api";
+import { useGamePolling } from "../../hooks/useGamePolling";
 
 function Waiting() {
-	const gameId = localStorage.getItem("gameId");
-	const [currentDecider, setCurrentDecider] = useState<string>();
-	const [otherPlayer, setOtherPlayer] = useState<string>();
+	const game = useGamePolling();
 
-	useEffect(() => {
-		if (!gameId) {
-			return;
-		}
-		getGame(gameId).then((data) => {
-			if (!data.game || !data.game.guest) {
-				return;
-			}
-
-			if (data.game.currentDeciderPlayerId === data.game.host.id) {
-				setCurrentDecider(data.game.host.firstName);
-				setOtherPlayer(data.game.guest.firstName);
-			} else {
-				setCurrentDecider(data.game.guest.firstName);
-				setOtherPlayer(data.game.host.firstName);
-			}
-		});
-	}, [gameId]);
+	const isHostDeciding = game?.currentDeciderPlayerId === game?.host.id;
+	const currentDecider = isHostDeciding
+		? game?.host.firstName
+		: game?.guest?.firstName;
+	const otherPlayer = isHostDeciding
+		? game?.guest?.firstName
+		: game?.host.firstName;
 
 	return (
 		<div className={styles.container}>
