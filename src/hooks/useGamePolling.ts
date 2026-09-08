@@ -8,12 +8,14 @@ export function useGamePolling() {
 	const playerId = localStorage.getItem("playerId");
 	const gameId = localStorage.getItem("gameId");
 	const currentPage = useLocation().pathname;
+	const [lastCheck, setLastCheck] = useState<Date | null>(null);
 
 	useEffect(() => {
 		function loadGame() {
 			if (!gameId) return;
 			getGame(gameId).then((data) => {
 				setGame(data.game);
+				setLastCheck(new Date());
 				if (data.game.guest) {
 					if (
 						data.game.currentDeciderPlayerId === playerId &&
@@ -38,5 +40,5 @@ export function useGamePolling() {
 		};
 	}, [gameId, currentPage, navigate, playerId]);
 
-	return game;
+	return { game, lastCheck };
 }

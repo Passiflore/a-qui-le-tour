@@ -7,7 +7,7 @@ import { useGamePolling } from "../../hooks/useGamePolling";
 
 function DecisionPage() {
 	const drawerRef = useRef<HTMLDialogElement>(null);
-	const game = useGamePolling();
+	const game = useGamePolling().game;
 
 	const currentDecider =
 		game?.currentDeciderPlayerId === game?.host.id

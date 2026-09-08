@@ -1,8 +1,10 @@
 import styles from "./WaitingPage.module.css";
 import { useGamePolling } from "../../hooks/useGamePolling";
+import { useElapsedSince } from "../../hooks/useElapsedSince";
 
 function Waiting() {
-	const game = useGamePolling();
+	const { game, lastCheck } = useGamePolling();
+
 	const history = game?.decisionHistory ?? [];
 	const playerId = localStorage.getItem("playerId");
 
@@ -13,8 +15,23 @@ function Waiting() {
 	const myScore = history.filter((d) => d.playerId === playerId).length;
 	const opponentScore = history.length - myScore;
 
+	const elapsedTime = useElapsedSince(lastCheck);
+
+	function getSyncLabel() {
+		if (!lastCheck) return "connexion…";
+		if (elapsedTime === 0) return "synchro à l'instant";
+		return `synchro il y a ${elapsedTime} s`;
+	}
+
 	return (
 		<div className={styles.container}>
+			<div className={styles.synchro}>
+				<div
+					className={`${styles.circle} ${elapsedTime === 0 ? styles.lit : ""}`}
+				/>
+
+				<span>{getSyncLabel()}</span>
+			</div>
 			<div className={styles.sphere}></div>
 			<h1 className={styles.pageTitle}>
 				<span className={styles.turnIntro}>En ce moment</span>

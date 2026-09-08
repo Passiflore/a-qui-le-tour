@@ -5,6 +5,37 @@
 	gap: var(--space-xl);
 }
 
+.synchro {
+	position: absolute;
+	top: var(--space-2xl);
+	display: flex;
+	align-items: center;
+	gap: var(--space-2xs);
+	background-color: var(--color-white-transparent);
+	border-color: 1px solid var(--color-description);
+	padding: var(--space-2xs);
+	border-radius: var(--radius-sm);
+	font-size: var(--text-2xs);
+	font-family: var(--font-body);
+	color: var(--color-text);
+}
+
+.circle {
+	width: var(--space-2xs);
+	height: var(--space-2xs);
+	border-radius: var(--radius-round);
+	background-color: var(--color-description);
+	transition:
+		background-color var(--duration-base) ease,
+		box-shadow var(--duration-base) ease;
+}
+
+.lit {
+	background-color: var(--color-success);
+	box-shadow:
+		0 0 6px 1px color-mix(in srgb, var(--color-success) 70%, transparent),
+		0 0 12px 4px color-mix(in srgb, var(--color-success) 30%, transparent);
+}
 .sphere {
 	width: var(--space-2xl);
 	height: var(--space-2xl);

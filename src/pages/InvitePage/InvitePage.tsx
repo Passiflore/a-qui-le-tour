@@ -7,7 +7,7 @@ function InvitePage() {
 	const inviteToken = localStorage.getItem("inviteToken");
 	const invitationLink = `${window.location.origin}/join/${inviteToken}`;
 
-	const game = useGamePolling();
+	const game = useGamePolling().game;
 
 	return (
 		<main className="inviteContent">
