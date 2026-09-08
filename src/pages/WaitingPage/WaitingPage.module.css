@@ -6,13 +6,13 @@
 }
 
 .synchro {
-	position: absolute;
+	position: fixed;
 	top: var(--space-2xl);
 	display: flex;
 	align-items: center;
 	gap: var(--space-2xs);
 	background-color: var(--color-white-transparent);
-	border-color: 1px solid var(--color-description);
+	border: 1px solid var(--color-description);
 	padding: var(--space-2xs);
 	border-radius: var(--radius-sm);
 	font-size: var(--text-2xs);

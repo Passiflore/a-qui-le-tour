@@ -27,7 +27,7 @@ function Waiting() {
 		<div className={styles.container}>
 			<div className={styles.synchro}>
 				<div
-					className={`${styles.circle} ${elapsedTime === 0 ? styles.lit : ""}`}
+					className={`${styles.circle} ${lastCheck && elapsedTime === 0 ? styles.lit : ""}`}
 				/>
 
 				<span>{getSyncLabel()}</span>
