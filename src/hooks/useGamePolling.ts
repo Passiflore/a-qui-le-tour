@@ -9,6 +9,7 @@ export function useGamePolling() {
 	const gameId = localStorage.getItem("gameId");
 	const currentPage = useLocation().pathname;
 	const [lastCheck, setLastCheck] = useState<Date | null>(null);
+	const isMyTurn = game?.currentDeciderPlayerId === playerId;
 
 	useEffect(() => {
 		function loadGame() {
@@ -39,6 +40,13 @@ export function useGamePolling() {
 			clearInterval(interval);
 		};
 	}, [gameId, currentPage, navigate, playerId]);
+
+	useEffect(() => {
+		document.title = isMyTurn ? "🔔 À toi de décider" : "À qui le tour ?";
+		return () => {
+			document.title = "À qui le tour ?";
+		};
+	}, [isMyTurn]);
 
 	return { game, lastCheck };
 }
