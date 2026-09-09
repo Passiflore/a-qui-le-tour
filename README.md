@@ -1,75 +1,92 @@
-# React + TypeScript + Vite
+# À qui le tour ?
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Une petite app à deux joueurs pour décider qui décide. À chaque tour, le serveur
+désigne celui qui doit trancher — le restaurant, le film, la sortie du week-end —
+puis enregistre sa décision et rend la main.
 
-Currently, two official plugins are available:
+Le tirage est pondéré : plus tu as décidé récemment, moins tu as de chances
+d'être redésigné. Mais rien n'empêche de tomber deux fois de suite sur la même
+personne.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Comment ça marche
 
-## React Compiler
+1. Le premier joueur crée une partie et récupère un lien d'invitation.
+2. Le second ouvre le lien, entre son prénom, et la partie démarre.
+3. Le joueur désigné voit l'écran de décision, l'autre attend.
+4. Une fois la décision enregistrée, le serveur tire le joueur suivant.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Les deux écrans interrogent le serveur toutes les 3 secondes, ce qui suffit pour
+un jeu joué côte à côte. Le joueur qui attend est prévenu de trois façons quand
+son tour arrive : le titre de l'onglet, une sonnerie, et un écran d'annonce.
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Front** — React 19, TypeScript, Vite, React Router, CSS Modules
+- **Serveur** — Express 5, TypeScript, `tsx` en développement
+- **Stockage** — en mémoire, dans le processus du serveur
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Les parties disparaissent au redémarrage du serveur. C'est volontaire à ce stade
+du projet.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Démarrer
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Le projet a besoin des deux processus. Dans un premier terminal :
 
+```bash
+cd server
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Le serveur écoute sur le port 3000.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Dans un second terminal, à la racine :
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
+```
+
+Vite sert le front et redirige `/api` vers `http://localhost:3000`, donc rien à
+configurer côté navigateur.
+
+## Scripts
+
+| Commande        | Effet                                          |
+| --------------- | ---------------------------------------------- |
+| `npm run dev`   | Lance Vite avec le rechargement à chaud         |
+| `npm run build` | Vérifie les types puis construit le front       |
+| `npm run lint`  | Passe ESLint sur tout le projet                 |
+| `npm run preview` | Sert le build de production en local          |
+
+Côté `server/`, `npm run dev` relance le serveur à chaque modification et
+`npm run build` compile vers `dist/`.
+
+## Structure
 
 ```
+src/
+  api.ts          Appels au serveur, typés
+  hooks/          useGamePolling, useElapsedSince
+  pages/          Une page par écran du jeu
+  components/     Éléments réutilisables
+  layouts/        Le cadre commun aux pages
+server/
+  src/index.ts    Toutes les routes de l'API
+```
+
+## API
+
+| Méthode | Route                        | Rôle                              |
+| ------- | ---------------------------- | --------------------------------- |
+| `POST`  | `/games`                     | Créer une partie                  |
+| `GET`   | `/invite/:token`             | Vérifier qu'une invitation est valide |
+| `POST`  | `/invite/:token`             | Rejoindre une partie              |
+| `GET`   | `/games/:gameId`             | Lire l'état d'une partie          |
+| `POST`  | `/games/:gameId/decision`    | Enregistrer une décision et passer au tour suivant |
+
+## Crédits
+
+Son « Clochette #1 » par GlaneurDeSons —
+<https://lasonotheque.org/clochette-1-s0292.html> — licence CC0 (équivalent
+domaine public), récupéré le 09/09/2026.
