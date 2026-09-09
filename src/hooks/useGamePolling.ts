@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { getGame, type GameResponse } from "../api";
 import { useLocation, useNavigate } from "react-router";
 
+const bell = new Audio("/bell.mp3");
+bell.volume = 0.4;
+function playBell() {
+	bell.currentTime = 0;
+	bell.play().catch(() => {});
+}
+
 export function useGamePolling() {
 	const [game, setGame] = useState<GameResponse | null>(null);
 	const navigate = useNavigate();
@@ -10,6 +17,7 @@ export function useGamePolling() {
 	const currentPage = useLocation().pathname;
 	const [lastCheck, setLastCheck] = useState<Date | null>(null);
 	const isMyTurn = game?.currentDeciderPlayerId === playerId;
+	const historyLength = game?.decisionHistory.length ?? 0;
 
 	useEffect(() => {
 		function loadGame() {
@@ -47,6 +55,12 @@ export function useGamePolling() {
 			document.title = "À qui le tour ?";
 		};
 	}, [isMyTurn]);
+
+	useEffect(() => {
+		if (isMyTurn) {
+			playBell();
+		}
+	}, [isMyTurn, historyLength]);
 
 	return { game, lastCheck };
 }
