@@ -16,6 +16,7 @@ function Waiting() {
 	const opponentScore = history.length - myScore;
 
 	const elapsedTime = useElapsedSince(lastCheck);
+	const lastDecision = game?.decisionHistory.at(-1);
 
 	function getSyncLabel() {
 		if (!lastCheck) return "connexion…";
@@ -43,17 +44,21 @@ function Waiting() {
 			</p>
 			<div className={styles.scoreContainer}>
 				<div className={styles.score}>
-					<span className={`${styles.scoreNumber} ${styles.playerOne}`}>
+					<span className={`${styles.scoreNumber} ${styles.myScore}`}>
 						{myScore}
 					</span>
 					<span className={styles.scoreText}>{me?.firstName}</span>
 				</div>
 				<div className={styles.score}>
-					<span className={`${styles.scoreNumber} ${styles.playerTwo}`}>
+					<span className={`${styles.scoreNumber} ${styles.opponentScore}`}>
 						{opponentScore}
 					</span>
 					<span className={styles.scoreText}>{opponent?.firstName}</span>
 				</div>
+			</div>
+			<div className={styles.lastDecisionContainer}>
+				<p className={styles.lastDecisionTitle}>Dernière décision</p>
+				<p className={styles.lastDecisionText}>{lastDecision?.decision}</p>
 			</div>
 		</div>
 	);
