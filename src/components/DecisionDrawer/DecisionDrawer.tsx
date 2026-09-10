@@ -2,13 +2,14 @@ import { Link, useNavigate } from "react-router";
 import ActionButton from "../ActionButton/ActionButton";
 import NameTag from "../NameTag/NameTag";
 import styles from "./DecisionDrawer.module.css";
-import CrossIcon from "../CrossIcon/CrossIcon";
 import { useRef } from "react";
 import { nextTurn } from "../../api";
+import Drawer from "../Drawer/Drawer";
 
-interface DrawerProps {
-	drawerRef: React.RefObject<HTMLDialogElement | null>;
+interface DecisionDrawerProps {
 	firstName: string;
+	isOpen: boolean;
+	onClose: () => void;
 }
 
 const Difficulties = [
@@ -17,14 +18,10 @@ const Difficulties = [
 	{ value: "hard", label: "Difficile" },
 ];
 
-function DecisionDrawer({ drawerRef, firstName }: DrawerProps) {
+function DecisionDrawer({ firstName, isOpen, onClose }: DecisionDrawerProps) {
 	const navigate = useNavigate();
 	const formRef = useRef<HTMLFormElement>(null);
 	const gameId = localStorage.getItem("gameId");
-
-	function closeDrawer() {
-		drawerRef.current?.close();
-	}
 
 	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -46,7 +43,7 @@ function DecisionDrawer({ drawerRef, firstName }: DrawerProps) {
 		};
 
 		const result = await nextTurn(decisionInfo, gameId);
-		closeDrawer();
+		handleClose();
 
 		if (playerId !== result.game.currentDeciderPlayerId) {
 			navigate("/waiting", { viewTransition: true });
@@ -55,95 +52,84 @@ function DecisionDrawer({ drawerRef, firstName }: DrawerProps) {
 		}
 	}
 
+	function handleClose() {
+		formRef.current?.reset();
+		onClose();
+	}
+
 	return (
-		<dialog
-			className={styles.drawerDialog}
-			ref={drawerRef}
-			onClose={() => formRef.current?.reset()}
-			onClick={(e) => {
-				if (e.target === drawerRef.current) closeDrawer();
-			}}
+		<Drawer
+			isOpen={isOpen}
+			onClose={handleClose}
+			hero={<NameTag firstName={firstName} />}
 		>
-			<div className={styles.drawerContainer}>
-				<div className={styles.heroContainer}>
-					<NameTag firstName={firstName} />
-					<button
-						className={styles.closeButton}
-						aria-label="Fermer"
-						onClick={closeDrawer}
-					>
-						<CrossIcon />
-					</button>
+			<h2 className={styles.drawerTitle}>
+				Qu'est-ce que <br /> tu as décidé ?
+			</h2>
+			<form
+				className={styles.formContainer}
+				onSubmit={handleSubmit}
+				ref={formRef}
+			>
+				<div className={styles.inputContainer}>
+					<label htmlFor={"decision"} className={styles.primaryInputTitle}>
+						La décision *
+					</label>
+					<input
+						id="decision"
+						name="decision"
+						placeholder="ex. On va chez Luigi ce soir"
+						required
+					/>
 				</div>
-				<h2 className={styles.drawerTitle}>
-					Qu'est-ce que <br /> tu as décidé ?
-				</h2>
-				<form
-					className={styles.formContainer}
-					onSubmit={handleSubmit}
-					ref={formRef}
-				>
-					<div className={styles.inputContainer}>
-						<label htmlFor={"decision"} className={styles.primaryInputTitle}>
-							La décision *
-						</label>
-						<input
-							id="decision"
-							name="decision"
-							placeholder="ex. On va chez Luigi ce soir"
-							required
-						/>
-					</div>
-					<div className={styles.inputContainer}>
-						<label htmlFor={"comment"}>
-							Commentaire{" "}
-							<span className={styles.optionalText}>(optionnel)</span>
-						</label>
-						<input
-							id="comment"
-							name="comment"
-							placeholder="Pourquoi ce choix ? Une précision"
-						/>
-					</div>
-					<div className={styles.inputContainer}>
-						<span id="difficultyLabel" className={styles.groupLabel}>
-							C'était facile ?{" "}
-							<span className={styles.optionalText}>(optionnel)</span>
-						</span>
-						<div
-							className={styles.difficultyGroup}
-							role="radiogroup"
-							aria-labelledby="difficultyLabel"
-						>
-							{Difficulties.map((difficulty) => (
-								<div key={difficulty.value} className={styles.difficultyOption}>
-									<input
-										type="radio"
-										id={`difficulty-${difficulty.value}`}
-										name="difficulty"
-										value={difficulty.value}
-										className={styles.difficultyInput}
+				<div className={styles.inputContainer}>
+					<label htmlFor={"comment"}>
+						Commentaire <span className={styles.optionalText}>(optionnel)</span>
+					</label>
+					<input
+						id="comment"
+						name="comment"
+						placeholder="Pourquoi ce choix ? Une précision"
+					/>
+				</div>
+				<div className={styles.inputContainer}>
+					<span id="difficultyLabel" className={styles.groupLabel}>
+						C'était facile ?{" "}
+						<span className={styles.optionalText}>(optionnel)</span>
+					</span>
+					<div
+						className={styles.difficultyGroup}
+						role="radiogroup"
+						aria-labelledby="difficultyLabel"
+					>
+						{Difficulties.map((difficulty) => (
+							<div key={difficulty.value} className={styles.difficultyOption}>
+								<input
+									type="radio"
+									id={`difficulty-${difficulty.value}`}
+									name="difficulty"
+									value={difficulty.value}
+									className={styles.difficultyInput}
+								/>
+								<label
+									htmlFor={`difficulty-${difficulty.value}`}
+									className={styles.difficultyLabel}
+								>
+									<span
+										className={`${styles.buttonBadge} ${styles[difficulty.value]}`}
 									/>
-									<label
-										htmlFor={`difficulty-${difficulty.value}`}
-										className={styles.difficultyLabel}
-									>
-										<span
-											className={`${styles.buttonBadge} ${styles[difficulty.value]}`}
-										/>
-										{difficulty.label}
-									</label>
-								</div>
-							))}
-						</div>
+									{difficulty.label}
+								</label>
+							</div>
+						))}
 					</div>
-					<ActionButton text="Confirmer" type="submit" size="medium" />
-					<Link to="/waiting" className={styles.link}>
-						Passer sans renseigner
-					</Link>
-				</form>
-			</div>
-		</dialog>
+				</div>
+				<ActionButton text="Confirmer" type="submit" size="medium" />
+				<Link to="/waiting" className={styles.link}>
+					Passer sans renseigner
+				</Link>
+			</form>
+		</Drawer>
 	);
 }
 

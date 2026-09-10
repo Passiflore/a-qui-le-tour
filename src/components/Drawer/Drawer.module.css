@@ -1,0 +1,79 @@
+.drawerDialog {
+	margin: auto auto 0;
+	width: 100%;
+	max-width: 100%;
+	padding: 0;
+	border: none;
+	background-color: var(--color-surface);
+	border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+
+	transform: translateY(100%);
+	opacity: 0;
+
+	transition:
+		transform var(--duration-fast) ease-in,
+		opacity var(--duration-fast) ease-in,
+		display var(--duration-fast) allow-discrete,
+		overlay var(--duration-fast) allow-discrete;
+}
+
+.drawerDialog[open] {
+	transform: translateY(0);
+	opacity: 1;
+
+	transition:
+		transform var(--duration-base) ease-out,
+		opacity var(--duration-base) ease-out,
+		display var(--duration-base) allow-discrete,
+		overlay var(--duration-base) allow-discrete;
+}
+
+@starting-style {
+	.drawerDialog[open] {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+}
+
+.drawerDialog::backdrop {
+	background-color: rgb(0 0 0 / 0);
+	transition:
+		background-color var(--duration-fast) ease-in,
+		display var(--duration-fast) allow-discrete,
+		overlay var(--duration-fast) allow-discrete;
+}
+
+.drawerDialog[open]::backdrop {
+	background-color: rgb(0 0 0 / 0.6);
+}
+
+@starting-style {
+	.drawerDialog[open]::backdrop {
+		background-color: rgb(0 0 0 / 0);
+	}
+}
+
+.drawerContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: var(--space-lg);
+}
+
+.heroContainer {
+	display: flex;
+	justify-content: space-between;
+}
+
+.closeButton {
+	display: flex;
+	padding: var(--space-xs);
+	color: var(--color-description);
+	background: none;
+	border: none;
+	cursor: pointer;
+
+	&:hover {
+		color: var(--color-text);
+	}
+}

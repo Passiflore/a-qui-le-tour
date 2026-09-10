@@ -2,15 +2,18 @@ import ActionButton from "../../components/ActionButton/ActionButton";
 import NameTag from "../../components/NameTag/NameTag";
 import style from "./DecisionPage.module.css";
 import DecisionDrawer from "../../components/DecisionDrawer/DecisionDrawer";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGamePolling } from "../../hooks/useGamePolling";
 
 function DecisionPage() {
-	const drawerRef = useRef<HTMLDialogElement>(null);
 	const game = useGamePolling().game;
 	const historyLength = game?.decisionHistory.length ?? 0;
 	const [dismissedAt, setDismissedAt] = useState<number | null>(null);
 	const lastDecision = game?.decisionHistory.at(-1);
+	const [isOpen, setIsOpen] = useState(false);
+	function onClose() {
+		setIsOpen(false);
+	}
 
 	const showAnnounce = dismissedAt !== historyLength;
 
@@ -20,7 +23,7 @@ function DecisionPage() {
 			: game?.guest?.firstName;
 
 	function handleClick() {
-		drawerRef.current?.showModal();
+		setIsOpen(true);
 	}
 
 	useEffect(() => {
@@ -41,7 +44,11 @@ function DecisionPage() {
 				</p>
 			</div>
 			<ActionButton text={"J'ai décidé!"} color="white" onClick={handleClick} />
-			<DecisionDrawer drawerRef={drawerRef} firstName={currentDecider ?? ""} />
+			<DecisionDrawer
+				firstName={currentDecider ?? ""}
+				isOpen={isOpen}
+				onClose={onClose}
+			/>
 			{showAnnounce && (
 				<div className={style.announce} role="status">
 					<span className={style.announceTitle}>À toi</span>
