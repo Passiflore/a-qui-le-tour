@@ -44,13 +44,19 @@ function Waiting() {
 			</p>
 			<div className={styles.scoreContainer}>
 				<div className={styles.score}>
-					<span className={`${styles.scoreNumber} ${styles.myScore}`}>
+					<span
+						key={myScore}
+						className={`${styles.scoreNumber} ${styles.myScore}`}
+					>
 						{myScore}
 					</span>
 					<span className={styles.scoreText}>{me?.firstName}</span>
 				</div>
 				<div className={styles.score}>
-					<span className={`${styles.scoreNumber} ${styles.opponentScore}`}>
+					<span
+						key={opponentScore}
+						className={`${styles.scoreNumber} ${styles.opponentScore}`}
+					>
 						{opponentScore}
 					</span>
 					<span className={styles.scoreText}>{opponent?.firstName}</span>
@@ -58,7 +64,9 @@ function Waiting() {
 			</div>
 			<div className={styles.lastDecisionContainer}>
 				<p className={styles.lastDecisionTitle}>Dernière décision</p>
-				<p className={styles.lastDecisionText}>{lastDecision?.decision}</p>
+				<p key={lastDecision?.createdAt} className={styles.lastDecisionText}>
+					{lastDecision?.decision}
+				</p>
 			</div>
 		</div>
 	);
