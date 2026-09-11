@@ -51,6 +51,7 @@
 	--color-background: #0d0b10;
 	--color-text: #edebe5;
 	--color-description: #545267;
+	--color-description-secondary: #26262a;
 	--color-secondary: #eb5a1d;
 	--color-terciary: #6529fa;
 	--color-white: #ffffff;
@@ -62,6 +63,7 @@
 
 	--color-secondary-transparent: #eb5a1d12;
 	--color-terciary-transparent: #6529fa12;
+	--color-description-transparent: #54526712;
 	--color-white-transparent: #ffffff12;
 	--color-error-transparent: #ef444412;
 
@@ -96,6 +98,7 @@ h1 {
 p {
 	font-family: var(--font-body);
 	font-size: var(--text-xs);
+	margin: 0;
 }
 
 .errorContainer {

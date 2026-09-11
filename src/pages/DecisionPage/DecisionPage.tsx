@@ -1,9 +1,10 @@
 import ActionButton from "../../components/ActionButton/ActionButton";
 import NameTag from "../../components/NameTag/NameTag";
-import style from "./DecisionPage.module.css";
+import styles from "./DecisionPage.module.css";
 import DecisionDrawer from "../../components/DecisionDrawer/DecisionDrawer";
 import { useEffect, useState } from "react";
 import { useGamePolling } from "../../hooks/useGamePolling";
+import HistoryDrawer from "../../components/HistoryDrawer/HistoryDrawer";
 
 function DecisionPage() {
 	const game = useGamePolling().game;
@@ -35,11 +36,16 @@ function DecisionPage() {
 	}, [historyLength]);
 
 	return (
-		<main className={style.decisionContainer}>
+		<main className={styles.decisionContainer}>
+			<HistoryDrawer
+				history={game?.decisionHistory ?? []}
+				host={game?.host ?? null}
+				guest={game?.guest ?? null}
+			/>
 			<NameTag firstName={currentDecider ?? ""} color="white" />
-			<div className={style.decisionTextContainer}>
-				<h1 className={style.decisionTitle}>C'est ton tour</h1>
-				<p className={style.decisionDescription}>
+			<div className={styles.decisionTextContainer}>
+				<h1 className={styles.decisionTitle}>C'est ton tour</h1>
+				<p className={styles.decisionDescription}>
 					À toi de trancher. Une fois décidé appuie ci-dessous
 				</p>
 			</div>
@@ -50,10 +56,10 @@ function DecisionPage() {
 				onClose={onClose}
 			/>
 			{showAnnounce && (
-				<div className={style.announce} role="status">
-					<span className={style.announceTitle}>À toi</span>
+				<div className={styles.announce} role="status">
+					<span className={styles.announceTitle}>À toi</span>
 					{lastDecision && (
-						<span className={style.announceSub}>
+						<span className={styles.announceSub}>
 							Dernier choix : {lastDecision.decision}
 						</span>
 					)}

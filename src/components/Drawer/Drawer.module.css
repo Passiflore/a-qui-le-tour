@@ -60,9 +60,20 @@
 	padding: var(--space-lg);
 }
 
+.drawerTitle {
+	font-family: var(--font-display);
+	color: var(--color-white);
+	text-transform: uppercase;
+	font-size: var(--text-lg);
+	letter-spacing: var(--tracking-tight);
+	line-height: var(--leading-tight);
+	margin: 0;
+}
+
 .heroContainer {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .closeButton {

@@ -1,0 +1,64 @@
+.iconHistory {
+	position: fixed;
+	top: 30px;
+	right: 30px;
+}
+
+.decisionsContainer {
+	display: flex;
+	justify-content: space-between;
+	margin: var(--space-xl) 0;
+	color: var(--color-white);
+}
+
+.decision {
+	display: flex;
+}
+
+.nameContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+.circle {
+	height: var(--space-2xs);
+	width: var(--space-2xs);
+	border-radius: var(--radius-round);
+	&.host {
+		background-color: var(--color-secondary);
+	}
+
+	&.guest {
+		background-color: var(--color-terciary);
+	}
+}
+
+.host {
+	color: var(--color-secondary);
+}
+
+.guest {
+	color: var(--color-terciary);
+}
+
+.decisionText {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	column-gap: var(--space-xs);
+	row-gap: var(--space-2xs);
+	align-items: center;
+}
+
+.decisionComment {
+	grid-column: 2;
+	color: var(--color-description);
+	font-style: italic;
+}
+
+hr {
+	border: none;
+	height: 1px;
+	background-color: var(--color-description-secondary);
+	margin: 0;
+}
