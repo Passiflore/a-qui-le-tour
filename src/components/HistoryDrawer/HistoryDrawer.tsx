@@ -42,11 +42,11 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 										className={`${styles.circle} ${isGuest ? styles.guest : styles.host}`}
 									/>
 									<div className={styles.decision}>
-										<p className={isGuest ? styles.guest : styles.host}>
+										<span className={isGuest ? styles.guest : styles.host}>
 											{player?.firstName}
-										</p>
-										<p>&nbsp;a décidé&nbsp;:&nbsp;</p>
-										<p>{decision.decision}</p>
+										</span>
+										<span>&nbsp;a décidé&nbsp;:&nbsp;</span>
+										<span>{decision.decision}</span>
 									</div>
 									{decision.comment && (
 										<p className={styles.decisionComment}>{decision.comment}</p>
@@ -57,8 +57,6 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 						</>
 					);
 				})}
-
-				<p>hello</p>
 			</Drawer>
 		</div>
 	);

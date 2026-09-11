@@ -13,6 +13,8 @@
 
 .decision {
 	display: flex;
+	font-family: var(--font-body);
+	font-size: var(--text-xs);
 }
 
 .nameContainer {
@@ -54,6 +56,7 @@
 	grid-column: 2;
 	color: var(--color-description);
 	font-style: italic;
+	margin: 0;
 }
 
 hr {
