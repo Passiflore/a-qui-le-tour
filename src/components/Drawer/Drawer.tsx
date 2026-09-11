@@ -1,5 +1,5 @@
 import styles from "./Drawer.module.css";
-import CrossIcon from "../CrossIcon/CrossIcon";
+import CrossIcon from "../Icons/CrossIcon";
 import { useEffect, useRef } from "react";
 
 interface DrawerProps {
