@@ -25,6 +25,7 @@
 .decisionDescription {
 	max-width: 24ch;
 	margin-inline: auto;
+	padding: var(--space-xs);
 	text-align: center;
 }
 .announce {

@@ -121,6 +121,7 @@
 
 .description {
 	text-align: center;
+	margin: var(--space-xs);
 }
 
 .scoreContainer {
