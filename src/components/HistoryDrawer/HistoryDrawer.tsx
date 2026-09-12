@@ -21,6 +21,17 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 		setIsOpen(false);
 	}
 
+	function formatDate(isoDate: string) {
+		const date = new Date(isoDate);
+
+		const weekday = date.toLocaleDateString("fr-Fr", { weekday: "short" });
+		const time = date.toLocaleTimeString("fr-FR", {
+			hour: "2-digit",
+			minute: "2-digit",
+		});
+		return `${weekday} ${time}`;
+	}
+
 	return (
 		<div>
 			<div onClick={handleClick} className={styles.iconHistory}>
@@ -32,11 +43,8 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 					const isGuest = decision.playerId === guest?.id;
 					const player = isGuest ? guest : host;
 					return (
-						<>
-							<div
-								key={decision.createdAt}
-								className={styles.decisionsContainer}
-							>
+						<div key={decision.createdAt}>
+							<div className={styles.decisionsContainer}>
 								<div className={styles.decisionText}>
 									<div
 										className={`${styles.circle} ${isGuest ? styles.guest : styles.host}`}
@@ -48,13 +56,21 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 										<span>&nbsp;a décidé&nbsp;:&nbsp;</span>
 										<span>{decision.decision}</span>
 									</div>
+									<span className={styles.decisionDate}>
+										{formatDate(decision.createdAt)}
+									</span>
+
 									{decision.comment && (
-										<p className={styles.decisionComment}>{decision.comment}</p>
+										<div>
+											<p className={styles.decisionComment}>
+												{decision.comment}
+											</p>
+										</div>
 									)}
 								</div>
 							</div>
 							<hr />
-						</>
+						</div>
 					);
 				})}
 			</Drawer>

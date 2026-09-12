@@ -46,17 +46,26 @@
 
 .decisionText {
 	display: grid;
-	grid-template-columns: auto 1fr;
+	grid-template-columns: auto 1fr auto;
+	flex: 1;
 	column-gap: var(--space-xs);
 	row-gap: var(--space-2xs);
 	align-items: center;
 }
 
 .decisionComment {
-	grid-column: 2;
+	grid-column: 2 / -1;
 	color: var(--color-description);
 	font-style: italic;
 	margin: 0;
+}
+
+.decisionDate {
+	grid-column: 3;
+	color: var(--color-description);
+	font-size: var(--text-2xs);
+	white-space: nowrap;
+	text-align: end;
 }
 
 hr {
