@@ -10,6 +10,27 @@ interface HistoryDrawerProps {
 	guest: Player | null;
 }
 
+const rtf = new Intl.RelativeTimeFormat("fr-FR", {
+	numeric: "auto",
+	style: "short",
+});
+
+const UNITS = [
+	["year", 31536000],
+	["month", 2592000],
+	["day", 86400],
+	["hour", 3600],
+	["minute", 60],
+	["second", 1],
+] as const;
+
+function calcDate(isoDate: string) {
+	const diffInSeconds = (new Date(isoDate).getTime() - Date.now()) / 1000;
+	const abs = Math.abs(diffInSeconds);
+	const [unit, secondsInUnit] = UNITS.find(([, s]) => abs >= s) ?? UNITS[5];
+	return rtf.format(Math.round(diffInSeconds / secondsInUnit), unit);
+}
+
 function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -24,7 +45,7 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 	function formatDate(isoDate: string) {
 		const date = new Date(isoDate);
 
-		const weekday = date.toLocaleDateString("fr-Fr", { weekday: "short" });
+		const weekday = date.toLocaleDateString("fr-FR", { weekday: "short" });
 		const time = date.toLocaleTimeString("fr-FR", {
 			hour: "2-digit",
 			minute: "2-digit",
@@ -56,16 +77,17 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 										<span>&nbsp;a décidé&nbsp;:&nbsp;</span>
 										<span>{decision.decision}</span>
 									</div>
-									<span className={styles.decisionDate}>
-										{formatDate(decision.createdAt)}
-									</span>
+									<div className={styles.dateContainer}>
+										<span className={styles.dateRelative}>
+											{calcDate(decision.createdAt)}
+										</span>
+										<span className={styles.dateAbsolute}>
+											{formatDate(decision.createdAt)}
+										</span>
+									</div>
 
 									{decision.comment && (
-										<div>
-											<p className={styles.decisionComment}>
-												{decision.comment}
-											</p>
-										</div>
+										<p className={styles.decisionComment}>{decision.comment}</p>
 									)}
 								</div>
 							</div>
