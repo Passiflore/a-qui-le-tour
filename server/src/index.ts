@@ -16,6 +16,7 @@ interface Decision {
 	comment?: string | null;
 	difficulty?: "easy" | "medium" | "hard";
 	createdAt: Date;
+	status: "waiting" | "accepted" | "refused";
 }
 
 interface Game {
@@ -34,6 +35,7 @@ interface GameResponse {
 	guest: Player | null;
 	currentDeciderPlayerId: string | null;
 	decisionHistory: Decision[];
+	pendingReviewBy: string | null;
 }
 
 const players: Player[] = [];
@@ -62,7 +64,11 @@ function chooseNextPlayer(game: Game): string | undefined {
 		return undefined;
 	}
 
-	const recentDecisions = game.decisionHistory.slice(-5);
+	const recentDecisionsAccepted = game.decisionHistory.filter(
+		(decision) => decision.status === "accepted",
+	);
+
+	const recentDecisions = recentDecisionsAccepted.slice(-5);
 	let hostCount = 0;
 	let guestCount = 0;
 
@@ -92,6 +98,18 @@ function findPlayer(playerId: string | undefined) {
 	});
 }
 
+function getPendingReviewBy(game: Game): string | null {
+	const lastDecision = game.decisionHistory.at(-1);
+
+	if (!lastDecision || lastDecision.status !== "waiting") {
+		return null;
+	}
+
+	return lastDecision.playerId === game.hostPlayerId
+		? (game.guestPlayerId ?? null)
+		: game.hostPlayerId;
+}
+
 function buildGameResponse(game: Game): GameResponse | null {
 	const hostPlayer = findPlayer(game.hostPlayerId);
 
@@ -104,6 +122,7 @@ function buildGameResponse(game: Game): GameResponse | null {
 		guest: findPlayer(game.guestPlayerId) ?? null,
 		currentDeciderPlayerId: game.currentDeciderPlayerId ?? null,
 		decisionHistory: game.decisionHistory,
+		pendingReviewBy: getPendingReviewBy(game),
 	};
 }
 
@@ -214,6 +233,11 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 	const comment = request.body?.comment;
 	const validComment = getValidText(comment);
 	const difficulty = request.body?.difficulty;
+	const lastDecision = currentGame.decisionHistory.at(-1);
+
+	if (lastDecision.status === "waiting") {
+		return response.sendStatus(409);
+	}
 
 	if (!currentGame.currentDeciderPlayerId) {
 		return response.sendStatus(409);
@@ -238,11 +262,54 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 		comment: validComment,
 		difficulty: difficulty,
 		createdAt: new Date(),
+		status: "waiting",
 	};
 
 	currentGame.decisionHistory.push(decision);
 
-	currentGame.currentDeciderPlayerId = chooseNextPlayer(currentGame);
+	const game = buildGameResponse(response.locals.game);
+
+	if (!game) {
+		return response.sendStatus(500);
+	}
+
+	return response.status(200).json({ game });
+});
+
+app.post("/games/:gameId/decision/review", requireGame, (request, response) => {
+	const currentGame = response.locals.game;
+	const playerId = getValidText(request.body?.playerId);
+	const accepted = request.body?.accepted;
+	const lastDecision = currentGame.decisionHistory.at(-1);
+
+	if (!playerId || typeof accepted !== "boolean") {
+		return response.sendStatus(400);
+	}
+
+	if (!lastDecision) {
+		return response.sendStatus(409);
+	}
+
+	if (lastDecision?.status !== "waiting") {
+		return response.sendStatus(409);
+	}
+
+	const isInGame =
+		playerId === currentGame.hostPlayerId ||
+		playerId === currentGame.guestPlayerId;
+	const isAuthor = playerId === lastDecision.playerId;
+
+	if (!isInGame || isAuthor) {
+		return response.sendStatus(403);
+	}
+
+	if (accepted) {
+		lastDecision.status = "accepted";
+		currentGame.currentDeciderPlayerId = chooseNextPlayer(currentGame);
+	} else {
+		lastDecision.status = "refused";
+		currentGame.currentDeciderPlayerId = lastDecision.playerId;
+	}
 
 	const game = buildGameResponse(response.locals.game);
 

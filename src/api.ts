@@ -9,6 +9,7 @@ export interface Decision {
 	comment?: string | null;
 	difficulty?: "easy" | "medium" | "hard";
 	createdAt: string;
+	status: "waiting" | "accepted" | "refused";
 }
 
 export interface Game {
@@ -27,6 +28,7 @@ export interface GameResponse {
 	guest: Player | null;
 	currentDeciderPlayerId: string | null;
 	decisionHistory: Decision[];
+	pendingReviewBy: string | null;
 }
 
 export interface GameSessionResponse {
