@@ -235,7 +235,7 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 	const difficulty = request.body?.difficulty;
 	const lastDecision = currentGame.decisionHistory.at(-1);
 
-	if (lastDecision.status === "waiting") {
+	if (lastDecision?.status === "waiting") {
 		return response.sendStatus(409);
 	}
 
