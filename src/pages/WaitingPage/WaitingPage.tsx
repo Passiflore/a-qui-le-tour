@@ -62,12 +62,14 @@ function Waiting() {
 					<span className={styles.scoreText}>{opponent?.firstName}</span>
 				</div>
 			</div>
-			<div className={styles.lastDecisionContainer}>
-				<p className={styles.lastDecisionTitle}>Dernière décision</p>
-				<p key={lastDecision?.createdAt} className={styles.lastDecisionText}>
-					{lastDecision?.decision}
-				</p>
-			</div>
+			{lastDecision && (
+				<div className={styles.lastDecisionContainer}>
+					<p className={styles.lastDecisionTitle}>Dernière décision</p>
+					<p key={lastDecision?.createdAt} className={styles.lastDecisionText}>
+						{lastDecision?.decision}
+					</p>
+				</div>
+			)}
 		</div>
 	);
 }
