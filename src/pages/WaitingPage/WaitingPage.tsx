@@ -1,16 +1,15 @@
 import styles from "./WaitingPage.module.css";
 import { useGamePolling } from "../../hooks/useGamePolling";
 import { useElapsedSince } from "../../hooks/useElapsedSince";
+import Sphere from "../../components/Sphere/Sphere";
 
 function Waiting() {
-	const { game, lastCheck } = useGamePolling();
+	const { game, lastCheck, me, opponent } = useGamePolling();
 
 	const history = game?.decisionHistory ?? [];
 	const playerId = localStorage.getItem("playerId");
 
 	const isHost = game?.host.id === playerId;
-	const me = isHost ? game?.host : game?.guest;
-	const opponent = isHost ? game?.guest : game?.host;
 
 	const myScore = history.filter((d) => d.playerId === playerId).length;
 	const opponentScore = history.length - myScore;
@@ -33,7 +32,7 @@ function Waiting() {
 
 				<span>{getSyncLabel()}</span>
 			</div>
-			<div className={styles.sphere}></div>
+			<Sphere color={isHost ? "orange" : "purple"} />
 			<h1 className={styles.pageTitle}>
 				<span className={styles.turnIntro}>En ce moment</span>
 				<span className={styles.playerName}>{opponent?.firstName}</span>

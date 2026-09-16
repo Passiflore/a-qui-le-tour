@@ -18,6 +18,9 @@ export function useGamePolling() {
 	const [lastCheck, setLastCheck] = useState<Date | null>(null);
 	const isMyTurn = game?.currentDeciderPlayerId === playerId;
 	const historyLength = game?.decisionHistory.length ?? 0;
+	const isHost = game?.host.id === playerId;
+	const me = isHost ? game?.host : game?.guest;
+	const opponent = isHost ? game?.guest : game?.host;
 
 	useEffect(() => {
 		function loadGame() {
@@ -62,5 +65,5 @@ export function useGamePolling() {
 		}
 	}, [isMyTurn, historyLength]);
 
-	return { game, lastCheck };
+	return { game, lastCheck, me, opponent };
 }

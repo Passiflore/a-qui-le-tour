@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router";
-import ActionButton from "../ActionButton/ActionButton";
-import NameTag from "../NameTag/NameTag";
+import ActionButton from "../../ActionButton/ActionButton";
+import NameTag from "../../NameTag/NameTag";
 import styles from "./DecisionDrawer.module.css";
 import { useRef } from "react";
-import { nextTurn } from "../../api";
+import { nextTurn } from "../../../api";
 import Drawer from "../Drawer/Drawer";
 
 interface DecisionDrawerProps {

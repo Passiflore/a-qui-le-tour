@@ -82,7 +82,7 @@ export async function getGame(gameId: string) {
 }
 
 export async function nextTurn(
-	decisionInfo: Omit<Decision, "playerId" | "createdAt">,
+	decisionInfo: Omit<Decision, "playerId" | "createdAt" | "status">,
 	gameId: string,
 ) {
 	return request<{ game: GameResponse }>(`/games/${gameId}/decision`, {

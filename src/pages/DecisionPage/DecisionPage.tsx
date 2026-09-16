@@ -1,10 +1,10 @@
 import ActionButton from "../../components/ActionButton/ActionButton";
 import NameTag from "../../components/NameTag/NameTag";
 import styles from "./DecisionPage.module.css";
-import DecisionDrawer from "../../components/DecisionDrawer/DecisionDrawer";
+import DecisionDrawer from "../../components/Drawers/DecisionDrawer/DecisionDrawer";
 import { useEffect, useState } from "react";
 import { useGamePolling } from "../../hooks/useGamePolling";
-import HistoryDrawer from "../../components/HistoryDrawer/HistoryDrawer";
+import HistoryDrawer from "../../components/Drawers/HistoryDrawer/HistoryDrawer";
 
 function DecisionPage() {
 	const game = useGamePolling().game;

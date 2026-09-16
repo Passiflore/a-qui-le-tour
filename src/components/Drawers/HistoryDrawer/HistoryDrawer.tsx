@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Drawer from "../Drawer/Drawer";
 import styles from "./HistoryDrawer.module.css";
-import HistoryIcon from "../Icons/HistoryIcon";
-import type { Decision, Player } from "../../api";
+import HistoryIcon from "../../Icons/HistoryIcon";
+import type { Decision, Player } from "../../../api";
 
 interface HistoryDrawerProps {
 	history: Decision[];
