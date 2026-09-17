@@ -1,3 +1,13 @@
+.green {
+	--btn-bg: var(--color-success);
+	--btn-fg: var(--color-white);
+}
+
+.red {
+	--btn-bg: var(--color-error-transparent);
+	--btn-fg: var(--color-error);
+}
+
 .orange {
 	--btn-bg: var(--color-secondary);
 	--btn-fg: var(--color-text);
