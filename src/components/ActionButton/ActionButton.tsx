@@ -5,7 +5,7 @@ interface ButtonProps {
 	onClick?: () => void;
 	type?: "button" | "submit";
 	disabled?: boolean;
-	color?: "orange" | "purple" | "white";
+	color?: "orange" | "purple" | "white" | "green" | "red";
 	size?: "large" | "medium";
 }
 
@@ -21,6 +21,8 @@ function ActionButton({
 		orange: styles.orange,
 		purple: styles.purple,
 		white: styles.white,
+		green: styles.green,
+		red: styles.red,
 	};
 
 	const sizeClasses = {
