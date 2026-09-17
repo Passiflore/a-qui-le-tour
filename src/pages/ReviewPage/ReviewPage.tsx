@@ -6,7 +6,7 @@ import styles from "./ReviewPage.module.css";
 function Review() {
 	const { game, opponent, me } = useGamePolling();
 	const playerId = localStorage.getItem("playerId");
-	const lastDecison = game?.decisionHistory.at(-1);
+	const lastDecision = game?.decisionHistory.at(-1);
 
 	const isHost = game?.host.id === playerId;
 
@@ -21,8 +21,8 @@ function Review() {
 					{opponent?.firstName}
 				</span>
 			</h1>
-			{lastDecison && (
-				<ReviewDrawer firstName={me?.firstName ?? ""} decision={lastDecison} />
+			{lastDecision && (
+				<ReviewDrawer firstName={me?.firstName ?? ""} decision={lastDecision} />
 			)}
 		</main>
 	);

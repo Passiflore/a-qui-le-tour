@@ -51,7 +51,7 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 				</h2>
 				<p className={styles.drawerSubtitle}>Acceptes-tu cette décision ?</p>
 				<div className={styles.decisionContainer}>
-					<p className={styles.decisionIntro}>Decision</p>
+					<p className={styles.decisionIntro}>Décision</p>
 					<p className={styles.title}>{decision.decision}</p>
 					<hr />
 					{decision.comment && (
