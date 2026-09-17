@@ -8,6 +8,7 @@ import DecisionPage from "./pages/DecisionPage/DecisionPage";
 import WaitingPage from "./pages/WaitingPage/WaitingPage";
 import JoinPage from "./pages/JoinPage/JoinPage";
 import ProtectedPage from "./pages/ProtectedPage";
+import Review from "./pages/ReviewPage/ReviewPage";
 
 function App() {
 	return (
@@ -25,6 +26,7 @@ function App() {
 			<Route element={<CenteredPageLayout tone="purple" />}>
 				<Route element={<ProtectedPage />}>
 					<Route path="/waiting" element={<WaitingPage />} />
+					<Route path="/review" element={<Review />} />
 				</Route>
 			</Route>
 
