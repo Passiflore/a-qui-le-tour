@@ -26,12 +26,15 @@
 	border-radius: var(--radius-md);
 	border: 1px solid var(--color-white-transparent);
 	background-color: var(--color-surface-sunken);
-	color: var(--color-description);
+	color: var(--color-text);
 	padding: var(--space-sm);
 
 	&:focus {
 		border-color: var(--color-secondary);
 		outline: none;
+	}
+	&::placeholder {
+		color: var(--color-description); /* le texte d'invite */
 	}
 }
 
