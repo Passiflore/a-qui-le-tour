@@ -10,6 +10,18 @@ interface ReviewDrawerProps {
 	decision: Decision;
 }
 
+const difficultyText = {
+	easy: "Evident à décider",
+	medium: "Hésitant à décider",
+	hard: "Dur à décider",
+};
+
+const difficultyClasses = {
+	easy: styles.easy,
+	medium: styles.medium,
+	hard: styles.hard,
+};
+
 function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -20,18 +32,6 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 	function onClose() {
 		setIsOpen(false);
 	}
-
-	const difficultyText = {
-		easy: "Evident à décider",
-		medium: "Hésitant à décider",
-		hard: "Dur à décider",
-	};
-
-	const difficultyClasses = {
-		easy: styles.easy,
-		medium: styles.medium,
-		hard: styles.hard,
-	};
 
 	return (
 		<div>
