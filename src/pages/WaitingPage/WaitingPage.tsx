@@ -11,8 +11,10 @@ function Waiting() {
 
 	const isHost = game?.host.id === playerId;
 
-	const myScore = history.filter((d) => d.playerId === playerId).length;
-	const opponentScore = history.length - myScore;
+	const acceptedHistory = history.filter((d) => d.status === "accepted");
+
+	const myScore = acceptedHistory.filter((d) => d.playerId === playerId).length;
+	const opponentScore = acceptedHistory.length - myScore;
 
 	const elapsedTime = useElapsedSince(lastCheck);
 	const lastDecision = game?.decisionHistory.at(-1);
