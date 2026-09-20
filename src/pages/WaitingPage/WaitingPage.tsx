@@ -4,16 +4,13 @@ import { useElapsedSince } from "../../hooks/useElapsedSince";
 import Sphere from "../../components/Sphere/Sphere";
 
 function Waiting() {
-	const { game, lastCheck, me, opponent } = useGamePolling();
+	const { game, lastCheck, me, opponent, isHost } = useGamePolling();
 
 	const history = game?.decisionHistory ?? [];
-	const playerId = localStorage.getItem("playerId");
-
-	const isHost = game?.host.id === playerId;
 
 	const acceptedHistory = history.filter((d) => d.status === "accepted");
 
-	const myScore = acceptedHistory.filter((d) => d.playerId === playerId).length;
+	const myScore = acceptedHistory.filter((d) => d.playerId === me?.id).length;
 	const opponentScore = acceptedHistory.length - myScore;
 
 	const elapsedTime = useElapsedSince(lastCheck);

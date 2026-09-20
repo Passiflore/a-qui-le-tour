@@ -4,11 +4,8 @@ import { useGamePolling } from "../../hooks/useGamePolling";
 import styles from "./ReviewPage.module.css";
 
 function Review() {
-	const { game, opponent, me } = useGamePolling();
-	const playerId = localStorage.getItem("playerId");
+	const { game, opponent, me, isHost } = useGamePolling();
 	const lastDecision = game?.decisionHistory.at(-1);
-
-	const isHost = game?.host.id === playerId;
 
 	return (
 		<main className={styles.container}>

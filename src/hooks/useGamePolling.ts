@@ -65,5 +65,5 @@ export function useGamePolling() {
 		}
 	}, [isMyTurn, historyLength]);
 
-	return { game, lastCheck, me, opponent };
+	return { game, lastCheck, me, opponent, isHost };
 }
