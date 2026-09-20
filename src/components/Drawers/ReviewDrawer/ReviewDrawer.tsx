@@ -11,7 +11,7 @@ interface ReviewDrawerProps {
 }
 
 const difficultyText = {
-	easy: "Evident à décider",
+	easy: "Évident à décider",
 	medium: "Hésitant à décider",
 	hard: "Dur à décider",
 };
