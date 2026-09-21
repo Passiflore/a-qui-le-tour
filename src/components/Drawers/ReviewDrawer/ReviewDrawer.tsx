@@ -3,7 +3,7 @@ import ActionButton from "../../ActionButton/ActionButton";
 import Drawer from "../Drawer/Drawer";
 import styles from "./ReviewDrawer.module.css";
 import NameTag from "../../NameTag/NameTag";
-import type { Decision } from "../../../api";
+import { reviewDecision, type Decision } from "../../../api";
 
 interface ReviewDrawerProps {
 	firstName: string;
@@ -24,12 +24,24 @@ const difficultyClasses = {
 
 function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const gameId = localStorage.getItem("gameId");
+	const playerId = localStorage.getItem("playerId");
 
 	function handleClick() {
 		setIsOpen(true);
 	}
 
 	function onClose() {
+		setIsOpen(false);
+	}
+
+	function handleReview(review: boolean) {
+		if (!playerId || !gameId) {
+			return;
+		}
+		const reviewBody = { playerId: playerId, accepted: review };
+
+		reviewDecision(reviewBody, gameId);
 		setIsOpen(false);
 	}
 
@@ -73,13 +85,13 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 						text="Refuser"
 						color="red"
 						size="medium"
-						onClick={handleClick}
+						onClick={() => handleReview(false)}
 					/>
 					<ActionButton
 						text="Accepter"
 						color="green"
 						size="medium"
-						onClick={handleClick}
+						onClick={() => handleReview(true)}
 					/>
 				</div>
 			</Drawer>
