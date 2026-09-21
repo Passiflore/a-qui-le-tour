@@ -2,6 +2,7 @@ import styles from "./WaitingPage.module.css";
 import { useGamePolling } from "../../hooks/useGamePolling";
 import { useElapsedSince } from "../../hooks/useElapsedSince";
 import Sphere from "../../components/Sphere/Sphere";
+import HistoryDrawer from "../../components/Drawers/HistoryDrawer/HistoryDrawer";
 
 function Waiting() {
 	const { game, lastCheck, me, opponent, isHost } = useGamePolling();
@@ -37,6 +38,7 @@ function Waiting() {
 
 	return (
 		<div className={styles.container}>
+			<HistoryDrawer game={game} />
 			<div className={styles.synchro}>
 				<div
 					className={`${styles.circle} ${lastCheck && elapsedTime === 0 ? styles.lit : ""}`}

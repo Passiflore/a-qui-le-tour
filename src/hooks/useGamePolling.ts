@@ -37,7 +37,6 @@ export function useGamePolling() {
 			getGame(gameId).then((data) => {
 				setGame(data.game);
 				setLastCheck(new Date());
-				const playerId = localStorage.getItem("playerId");
 				const targetPage = getTargetPage(data.game, playerId);
 				if (data.game.guest) {
 					if (targetPage !== currentPage) {
@@ -68,5 +67,5 @@ export function useGamePolling() {
 		}
 	}, [isMyTurn, historyLength]);
 
-	return { game, lastCheck, me, opponent, isHost, pendingReviewBy };
+	return { game, lastCheck, me, opponent, isHost };
 }

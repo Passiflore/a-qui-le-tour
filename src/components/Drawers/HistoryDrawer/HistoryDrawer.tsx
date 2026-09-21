@@ -2,18 +2,22 @@ import { useState } from "react";
 import Drawer from "../Drawer/Drawer";
 import styles from "./HistoryDrawer.module.css";
 import HistoryIcon from "../../Icons/HistoryIcon";
-import type { Decision, Player } from "../../../api";
+import type { GameResponse } from "../../../api";
 
 interface HistoryDrawerProps {
-	history: Decision[];
-	host: Player | null;
-	guest: Player | null;
+	game: GameResponse | null;
 }
 
 const rtf = new Intl.RelativeTimeFormat("fr-FR", {
 	numeric: "auto",
 	style: "short",
 });
+
+const difficultiesClasses = {
+	easy: styles.easy,
+	medium: styles.medium,
+	hard: styles.hard,
+};
 
 const UNITS = [
 	["year", 31536000],
@@ -31,8 +35,12 @@ function calcDate(isoDate: string) {
 	return rtf.format(Math.round(diffInSeconds / secondsInUnit), unit);
 }
 
-function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
+function HistoryDrawer({ game }: HistoryDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const history = game?.decisionHistory ?? [];
+	const historyTable = history.filter((d) => d.status !== "waiting");
+	const host = game?.host;
+	const guest = game?.guest;
 
 	function handleClick() {
 		setIsOpen(true);
@@ -60,7 +68,8 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 			</div>
 			<Drawer isOpen={isOpen} onClose={onClose} title={"Historique"}>
 				<hr />
-				{history.map((decision) => {
+
+				{historyTable.map((decision) => {
 					const isGuest = decision.playerId === guest?.id;
 					const player = isGuest ? guest : host;
 					return (
@@ -74,9 +83,34 @@ function HistoryDrawer({ history, host, guest }: HistoryDrawerProps) {
 										<span className={isGuest ? styles.guest : styles.host}>
 											{player?.firstName}
 										</span>
-										<span>&nbsp;a décidé&nbsp;:&nbsp;</span>
-										<span>{decision.decision}</span>
+										{decision.status === "refused" ? (
+											<div className={styles.refusedContainer}>
+												<span>&nbsp;a proposé&nbsp;:&nbsp;</span>
+												<span className={styles.refusedText}>
+													"{decision.decision}"
+												</span>
+											</div>
+										) : (
+											<>
+												<span>&nbsp;a décidé&nbsp;:&nbsp;</span>
+												<span>"{decision.decision}"</span>
+											</>
+										)}
 									</div>
+									{decision.difficulty && decision.status !== "refused" && (
+										<div
+											className={`${styles.circle} ${difficultiesClasses[decision.difficulty]} ${styles.difficulty}`}
+										/>
+									)}
+
+									{decision.status === "refused" && (
+										<div
+											className={`${styles.difficulty} ${styles.refusedTag}`}
+										>
+											<p>Refusé</p>
+										</div>
+									)}
+
 									<div className={styles.dateContainer}>
 										<span className={styles.dateRelative}>
 											{calcDate(decision.createdAt)}

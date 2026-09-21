@@ -1,3 +1,4 @@
+import HistoryDrawer from "../../components/Drawers/HistoryDrawer/HistoryDrawer";
 import ReviewDrawer from "../../components/Drawers/ReviewDrawer/ReviewDrawer";
 import Sphere from "../../components/Sphere/Sphere";
 import { useGamePolling } from "../../hooks/useGamePolling";
@@ -9,6 +10,7 @@ function Review() {
 
 	return (
 		<main className={styles.container}>
+			<HistoryDrawer game={game ?? null} />
 			<Sphere color={isHost ? "orange" : "purple"} />
 			<span className={styles.reviewIntro}>A toi de valider</span>
 			<h1 className={styles.pageTitle}>

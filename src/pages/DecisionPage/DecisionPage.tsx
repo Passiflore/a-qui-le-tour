@@ -37,11 +37,7 @@ function DecisionPage() {
 
 	return (
 		<main className={styles.decisionContainer}>
-			<HistoryDrawer
-				history={game?.decisionHistory ?? []}
-				host={game?.host ?? null}
-				guest={game?.guest ?? null}
-			/>
+			<HistoryDrawer game={game} />
 			<NameTag firstName={currentDecider ?? ""} color="white" />
 			<div className={styles.decisionTextContainer}>
 				<h1 className={styles.decisionTitle}>C'est ton tour</h1>
