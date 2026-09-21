@@ -68,6 +68,7 @@
 	letter-spacing: var(--tracking-tight);
 	line-height: var(--leading-tight);
 	margin: 0;
+	padding-bottom: var(--space-sm);
 }
 
 .heroContainer {

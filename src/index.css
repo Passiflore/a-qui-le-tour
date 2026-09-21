@@ -6,6 +6,7 @@
 	--font-body: "Inter", sans-serif;
 
 	/* Font sizes */
+	--text-3xs: 10px;
 	--text-2xs: 12px;
 	--text-xs: 14px;
 	--text-sm: 16px;
@@ -36,6 +37,7 @@
 	--space-2xl: 40px;
 
 	/* Radius */
+	--radius-xs: 6px;
 	--radius-sm: 12px;
 	--radius-md: 16px;
 	--radius-lg: 24px;

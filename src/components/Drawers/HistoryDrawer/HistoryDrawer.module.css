@@ -4,6 +4,16 @@
 	right: 30px;
 }
 
+.noHistory {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-description);
+	width: 100%;
+	padding: var(--space-2xl);
+}
+
 .decisionsContainer {
 	display: flex;
 	justify-content: space-between;

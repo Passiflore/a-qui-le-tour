@@ -3,6 +3,7 @@ import Drawer from "../Drawer/Drawer";
 import styles from "./HistoryDrawer.module.css";
 import HistoryIcon from "../../Icons/HistoryIcon";
 import type { GameResponse } from "../../../api";
+import SparklesIcon from "../../Icons/SparklesIcon";
 
 interface HistoryDrawerProps {
 	game: GameResponse | null;
@@ -68,67 +69,75 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 			</div>
 			<Drawer isOpen={isOpen} onClose={onClose} title={"Historique"}>
 				<hr />
+				{historyTable.length === 0 ? (
+					<div className={styles.noHistory}>
+						<SparklesIcon />
+						<p>Aucune décision encore prise</p>
+					</div>
+				) : (
+					historyTable.map((decision) => {
+						const isGuest = decision.playerId === guest?.id;
+						const player = isGuest ? guest : host;
+						return (
+							<div key={decision.createdAt}>
+								<div className={styles.decisionsContainer}>
+									<div className={styles.decisionText}>
+										<div
+											className={`${styles.circle} ${isGuest ? styles.guest : styles.host}`}
+										/>
+										<div className={styles.decision}>
+											<span className={isGuest ? styles.guest : styles.host}>
+												{player?.firstName}
+											</span>
+											{decision.status === "refused" ? (
+												<div className={styles.refusedContainer}>
+													<span>&nbsp;a proposé&nbsp;:&nbsp;</span>
+													<span className={styles.refusedText}>
+														"{decision.decision}"
+													</span>
+												</div>
+											) : (
+												<>
+													<span>&nbsp;a décidé&nbsp;:&nbsp;</span>
+													<span>"{decision.decision}"</span>
+												</>
+											)}
+										</div>
+										{decision.difficulty && decision.status !== "refused" && (
+											<div
+												className={`${styles.circle} ${difficultiesClasses[decision.difficulty]} ${styles.difficulty}`}
+											/>
+										)}
 
-				{historyTable.map((decision) => {
-					const isGuest = decision.playerId === guest?.id;
-					const player = isGuest ? guest : host;
-					return (
-						<div key={decision.createdAt}>
-							<div className={styles.decisionsContainer}>
-								<div className={styles.decisionText}>
-									<div
-										className={`${styles.circle} ${isGuest ? styles.guest : styles.host}`}
-									/>
-									<div className={styles.decision}>
-										<span className={isGuest ? styles.guest : styles.host}>
-											{player?.firstName}
-										</span>
-										{decision.status === "refused" ? (
-											<div className={styles.refusedContainer}>
-												<span>&nbsp;a proposé&nbsp;:&nbsp;</span>
-												<span className={styles.refusedText}>
-													"{decision.decision}"
-												</span>
+										{decision.status === "refused" && (
+											<div
+												className={`${styles.difficulty} ${styles.refusedTag}`}
+											>
+												<p>Refusé</p>
 											</div>
-										) : (
-											<>
-												<span>&nbsp;a décidé&nbsp;:&nbsp;</span>
-												<span>"{decision.decision}"</span>
-											</>
+										)}
+
+										<div className={styles.dateContainer}>
+											<span className={styles.dateRelative}>
+												{calcDate(decision.createdAt)}
+											</span>
+											<span className={styles.dateAbsolute}>
+												{formatDate(decision.createdAt)}
+											</span>
+										</div>
+
+										{decision.comment && (
+											<p className={styles.decisionComment}>
+												{decision.comment}
+											</p>
 										)}
 									</div>
-									{decision.difficulty && decision.status !== "refused" && (
-										<div
-											className={`${styles.circle} ${difficultiesClasses[decision.difficulty]} ${styles.difficulty}`}
-										/>
-									)}
-
-									{decision.status === "refused" && (
-										<div
-											className={`${styles.difficulty} ${styles.refusedTag}`}
-										>
-											<p>Refusé</p>
-										</div>
-									)}
-
-									<div className={styles.dateContainer}>
-										<span className={styles.dateRelative}>
-											{calcDate(decision.createdAt)}
-										</span>
-										<span className={styles.dateAbsolute}>
-											{formatDate(decision.createdAt)}
-										</span>
-									</div>
-
-									{decision.comment && (
-										<p className={styles.decisionComment}>{decision.comment}</p>
-									)}
 								</div>
+								<hr />
 							</div>
-							<hr />
-						</div>
-					);
-				})}
+						);
+					})
+				)}
 			</Drawer>
 		</div>
 	);
