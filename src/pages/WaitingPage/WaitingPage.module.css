@@ -59,6 +59,7 @@
 }
 
 .turnAction {
+	text-align: center;
 	font-size: var(--text-xl);
 }
 

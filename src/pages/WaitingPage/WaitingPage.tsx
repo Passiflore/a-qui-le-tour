@@ -15,11 +15,24 @@ function Waiting() {
 
 	const elapsedTime = useElapsedSince(lastCheck);
 	const lastDecision = game?.decisionHistory.at(-1);
+	let waitingText = {
+		intro: "En ce moment",
+		title: "décide",
+		subtitle: `Attends que ${opponent?.firstName} prenne sa décision`,
+	};
 
 	function getSyncLabel() {
 		if (!lastCheck) return "connexion…";
 		if (elapsedTime === 0) return "synchro à l'instant";
 		return `synchro il y a ${elapsedTime} s`;
+	}
+
+	if (lastDecision?.status === "waiting") {
+		waitingText = {
+			intro: "en attente",
+			title: "valide ta décision",
+			subtitle: `${opponent?.firstName} peut accepter ou refuser ta décision`,
+		};
 	}
 
 	return (
@@ -33,13 +46,11 @@ function Waiting() {
 			</div>
 			<Sphere color={isHost ? "orange" : "purple"} />
 			<h1 className={styles.pageTitle}>
-				<span className={styles.turnIntro}>En ce moment</span>
+				<span className={styles.turnIntro}>{waitingText.intro}</span>
 				<span className={styles.playerName}>{opponent?.firstName}</span>
-				<span className={styles.turnAction}>décide</span>
+				<span className={styles.turnAction}>{waitingText.title}</span>
 			</h1>
-			<p className={styles.description}>
-				Attends que {opponent?.firstName} prenne sa décision
-			</p>
+			<p className={styles.description}>{waitingText.subtitle}</p>
 			<div className={styles.scoreContainer}>
 				<div className={styles.score}>
 					<span
