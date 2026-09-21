@@ -9,6 +9,13 @@ function playBell() {
 	bell.play().catch(() => {});
 }
 
+function getTargetPage(game: GameResponse, playerId: string | null) {
+	if (game.pendingReviewBy === playerId) return "/review";
+	if (game.pendingReviewBy !== null) return "/waiting";
+	if (game.currentDeciderPlayerId === playerId) return "/decision";
+	return "/waiting";
+}
+
 export function useGamePolling() {
 	const [game, setGame] = useState<GameResponse | null>(null);
 	const navigate = useNavigate();
@@ -16,7 +23,9 @@ export function useGamePolling() {
 	const gameId = localStorage.getItem("gameId");
 	const currentPage = useLocation().pathname;
 	const [lastCheck, setLastCheck] = useState<Date | null>(null);
-	const isMyTurn = game?.currentDeciderPlayerId === playerId;
+	const pendingReviewBy = game?.pendingReviewBy;
+	const isMyTurn =
+		game?.currentDeciderPlayerId === playerId && pendingReviewBy === null;
 	const historyLength = game?.decisionHistory.length ?? 0;
 	const isHost = game?.host.id === playerId;
 	const me = isHost ? game?.host : game?.guest;
@@ -28,17 +37,11 @@ export function useGamePolling() {
 			getGame(gameId).then((data) => {
 				setGame(data.game);
 				setLastCheck(new Date());
+				const playerId = localStorage.getItem("playerId");
+				const targetPage = getTargetPage(data.game, playerId);
 				if (data.game.guest) {
-					if (
-						data.game.currentDeciderPlayerId === playerId &&
-						currentPage !== "/decision"
-					) {
-						navigate("/decision", { viewTransition: true });
-					} else if (
-						data.game.currentDeciderPlayerId !== playerId &&
-						currentPage !== "/waiting"
-					) {
-						navigate("/waiting", { viewTransition: true });
+					if (targetPage !== currentPage) {
+						navigate(targetPage, { viewTransition: true });
 					}
 				}
 			});
@@ -65,5 +68,5 @@ export function useGamePolling() {
 		}
 	}, [isMyTurn, historyLength]);
 
-	return { game, lastCheck, me, opponent, isHost };
+	return { game, lastCheck, me, opponent, isHost, pendingReviewBy };
 }
