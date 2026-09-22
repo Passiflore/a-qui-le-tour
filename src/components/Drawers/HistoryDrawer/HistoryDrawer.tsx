@@ -2,9 +2,10 @@ import { useState } from "react";
 import Drawer from "../Drawer/Drawer";
 import styles from "./HistoryDrawer.module.css";
 import HistoryIcon from "../../Icons/HistoryIcon";
-import type { GameResponse } from "../../../api";
+import { resetHistory, type GameResponse } from "../../../api";
 import SparklesIcon from "../../Icons/SparklesIcon";
-
+import DeleteIcon from "../../Icons/DeleteIcon";
+import ActionButton from "../../ActionButton/ActionButton";
 interface HistoryDrawerProps {
 	game: GameResponse | null;
 }
@@ -38,10 +39,14 @@ function calcDate(isoDate: string) {
 
 function HistoryDrawer({ game }: HistoryDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [isPopupOpen, setIsPopupOpen] = useState(false);
 	const history = game?.decisionHistory ?? [];
+	const lastDecision = history.at(-1);
 	const historyTable = history.filter((d) => d.status !== "waiting");
 	const host = game?.host;
 	const guest = game?.guest;
+	const gameId = localStorage.getItem("gameId");
+	const playerId = localStorage.getItem("playerId");
 
 	function handleClick() {
 		setIsOpen(true);
@@ -49,6 +54,21 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 
 	function onClose() {
 		setIsOpen(false);
+	}
+
+	function onPopupClose() {
+		setIsPopupOpen(false);
+	}
+
+	async function handleDelete() {
+		if (!playerId || !gameId) {
+			return;
+		}
+
+		const result = await resetHistory(gameId, { playerId });
+		onPopupClose();
+
+		return result;
 	}
 
 	function formatDate(isoDate: string) {
@@ -67,7 +87,53 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 			<div onClick={handleClick} className={styles.iconHistory}>
 				<HistoryIcon />
 			</div>
-			<Drawer isOpen={isOpen} onClose={onClose} title={"Historique"}>
+			{lastDecision?.status !== "waiting" && (
+				<Drawer
+					isOpen={isPopupOpen}
+					onClose={onPopupClose}
+					title={"Effacer l'historique ?"}
+					isPopup={true}
+				>
+					<div className={styles.popupContent}>
+						<p className={styles.popupText}>
+							Les {historyTable.length} décisions seront supprimées pour{" "}
+							{host?.firstName} comme pour {guest?.firstName}. C'est définitif.
+						</p>
+						<div className={styles.popupActions}>
+							<ActionButton
+								text="Annuler"
+								color="orange"
+								size="small"
+								onClick={onPopupClose}
+							/>
+							<ActionButton
+								text="Effacer"
+								color="red"
+								size="small"
+								onClick={() => handleDelete()}
+							/>
+						</div>
+					</div>
+				</Drawer>
+			)}
+			<Drawer
+				isOpen={isOpen}
+				onClose={onClose}
+				hero={
+					<div className={styles.drawerHeroContainer}>
+						<p className={styles.drawerTitle}>historique</p>
+						{lastDecision?.status !== "waiting" && (
+							<button
+								className={styles.deleteButton}
+								onClick={() => setIsPopupOpen(true)}
+							>
+								<DeleteIcon />
+								<p>Effacer l'historique</p>
+							</button>
+						)}
+					</div>
+				}
+			>
 				<hr />
 				{historyTable.length === 0 ? (
 					<div className={styles.noHistory}>

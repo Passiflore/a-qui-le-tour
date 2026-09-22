@@ -41,6 +41,10 @@ export interface Review {
 	accepted: boolean;
 }
 
+export interface Reset {
+	playerId: string;
+}
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
 	const response = await fetch(`/api${path}`, {
 		headers: { "Content-Type": "application/json" },
@@ -95,5 +99,12 @@ export async function reviewDecision(reviewBody: Review, gameId: string) {
 	return request<{ game: GameResponse }>(`/games/${gameId}/decision/review`, {
 		method: "POST",
 		body: JSON.stringify(reviewBody),
+	});
+}
+
+export async function resetHistory(gameId: string, playerId: Reset) {
+	return request<{ game: GameResponse }>(`/games/${gameId}/reset`, {
+		method: "POST",
+		body: JSON.stringify(playerId),
 	});
 }

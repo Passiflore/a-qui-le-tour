@@ -4,6 +4,22 @@
 	right: 30px;
 }
 
+.drawerHeroContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.drawerTitle {
+	font-family: var(--font-display);
+	color: var(--color-white);
+	text-transform: uppercase;
+	font-size: var(--text-lg);
+	letter-spacing: var(--tracking-tight);
+	line-height: var(--leading-tight);
+	margin: 0;
+}
 .noHistory {
 	display: flex;
 	flex-direction: column;
@@ -133,4 +149,47 @@ hr {
 	height: 1px;
 	background-color: var(--color-description-secondary);
 	margin: 0;
+}
+
+/* Delete Pop up */
+
+.deleteButton {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2xs);
+	color: var(--color-description);
+	background: none;
+	border: none;
+
+	&:hover {
+		color: var(--color-text);
+	}
+}
+
+.popupContent {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.popupTitle {
+	font-family: var(--font-display);
+	font-size: var(--text-md);
+	color: var(--color-white);
+	margin: 0;
+}
+
+.popupText {
+	color: var(--color-description);
+	font-size: var(--text-xs);
+	margin: 0;
+	text-align: center;
+}
+
+.popupActions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--space-sm);
+	margin-top: var(--space-sm);
 }
