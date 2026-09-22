@@ -10,7 +10,7 @@ function Review() {
 
 	return (
 		<main className={styles.container}>
-			<HistoryDrawer game={game ?? null} />
+			<HistoryDrawer game={game} />
 			<Sphere color={isHost ? "orange" : "purple"} />
 			<span className={styles.reviewIntro}>A toi de valider</span>
 			<h1 className={styles.pageTitle}>
