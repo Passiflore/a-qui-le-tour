@@ -87,7 +87,7 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 			<div onClick={handleClick} className={styles.iconHistory}>
 				<HistoryIcon />
 			</div>
-			{lastDecision?.status !== "waiting" && (
+			{lastDecision?.status !== "waiting" && historyTable.length !== 0 && (
 				<Drawer
 					isOpen={isPopupOpen}
 					onClose={onPopupClose}
@@ -122,15 +122,16 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 				hero={
 					<div className={styles.drawerHeroContainer}>
 						<p className={styles.drawerTitle}>historique</p>
-						{lastDecision?.status !== "waiting" && (
-							<button
-								className={styles.deleteButton}
-								onClick={() => setIsPopupOpen(true)}
-							>
-								<DeleteIcon />
-								<p>Effacer l'historique</p>
-							</button>
-						)}
+						{lastDecision?.status !== "waiting" &&
+							historyTable.length !== 0 && (
+								<button
+									className={styles.deleteButton}
+									onClick={() => setIsPopupOpen(true)}
+								>
+									<DeleteIcon />
+									<p>Effacer l'historique</p>
+								</button>
+							)}
 					</div>
 				}
 			>
