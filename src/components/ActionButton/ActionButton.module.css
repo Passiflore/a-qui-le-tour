@@ -21,14 +21,22 @@
 	--btn-fg: var(--color-secondary);
 }
 
+.small {
+	--fnt-size: var(--text-xs);
+	--padding: var(--space-2xs);
+	--min-width: 200px;
+}
+
 .medium {
 	--fnt-size: var(--text-sm);
 	--padding: var(--space-sm);
+	--min-width: 250px;
 }
 
 .large {
 	--fnt-size: var(--text-md);
 	--padding: var(--space-md) var(--space-sm);
+	--min-width: 250px;
 }
 
 .actionButton {
@@ -36,7 +44,7 @@
 	font-size: var(--fnt-size);
 	text-transform: uppercase;
 	padding: var(--padding);
-	min-width: 250px;
+	min-width: var(--min-width);
 	background-color: var(--btn-bg);
 	color: var(--btn-fg);
 	border: none;

@@ -6,7 +6,7 @@ interface ButtonProps {
 	type?: "button" | "submit";
 	disabled?: boolean;
 	color?: "orange" | "purple" | "white" | "green" | "red";
-	size?: "large" | "medium";
+	size?: "large" | "medium" | "small";
 }
 
 function ActionButton({
@@ -26,6 +26,7 @@ function ActionButton({
 	};
 
 	const sizeClasses = {
+		small: styles.small,
 		medium: styles.medium,
 		large: styles.large,
 	};
