@@ -8,9 +8,17 @@ interface DrawerProps {
 	title?: string;
 	children: React.ReactNode;
 	hero?: React.ReactNode;
+	isPopup?: boolean;
 }
 
-function Drawer({ isOpen, onClose, title, children, hero }: DrawerProps) {
+function Drawer({
+	isOpen,
+	onClose,
+	title,
+	children,
+	hero,
+	isPopup,
+}: DrawerProps) {
 	const drawerRef = useRef<HTMLDialogElement>(null);
 
 	useEffect(() => {
@@ -20,7 +28,7 @@ function Drawer({ isOpen, onClose, title, children, hero }: DrawerProps) {
 
 	return (
 		<dialog
-			className={styles.drawerDialog}
+			className={`${styles.drawerDialog} ${isPopup ? styles.popup : ""}`}
 			ref={drawerRef}
 			onClose={onClose}
 			onClick={(e) => {
@@ -29,11 +37,7 @@ function Drawer({ isOpen, onClose, title, children, hero }: DrawerProps) {
 		>
 			<div className={styles.drawerContainer}>
 				<div className={styles.heroContainer}>
-					{hero ? (
-						<div>{hero}</div>
-					) : (
-						<h2 className={styles.drawerTitle}>{title}</h2>
-					)}
+					{hero ? <>{hero}</> : <h2 className={styles.drawerTitle}>{title}</h2>}
 
 					<button
 						className={styles.closeButton}

@@ -68,13 +68,13 @@
 	letter-spacing: var(--tracking-tight);
 	line-height: var(--leading-tight);
 	margin: 0;
-	padding-bottom: var(--space-sm);
 }
 
 .heroContainer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding-bottom: var(--space-sm);
 }
 
 .closeButton {
@@ -87,5 +87,23 @@
 
 	&:hover {
 		color: var(--color-text);
+	}
+}
+
+.popup {
+	margin: auto;
+	width: min(100% - var(--space-xl), 560px);
+	border-radius: var(--radius-lg);
+	transform: scale(0.92);
+}
+
+.popup[open] {
+	transform: scale(1);
+}
+
+@starting-style {
+	.popup[open] {
+		transform: scale(0.92);
+		opacity: 0;
 	}
 }
