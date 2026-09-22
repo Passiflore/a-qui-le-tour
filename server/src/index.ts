@@ -342,9 +342,14 @@ app.post("/games/:gameId/reset", requireGame, (request, response) => {
 		return response.sendStatus(403);
 	}
 
-	if (lastDecision.status === "waiting") {
-		return response.sendStatus(403);
+	if (!lastDecision) {
+		return response.sendStatus(409);
 	}
+
+	if (lastDecision.status === "waiting") {
+		return response.sendStatus(409);
+	}
+
 	currentGame.decisionHistory = [];
 
 	const game = buildGameResponse(response.locals.game);
