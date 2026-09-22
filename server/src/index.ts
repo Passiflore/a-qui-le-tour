@@ -330,4 +330,30 @@ app.get("/games/:gameId", requireGame, (_, response) => {
 	return response.status(200).json({ game });
 });
 
+app.post("/games/:gameId/reset", requireGame, (request, response) => {
+	const currentGame = response.locals.game;
+	const playerId = getValidText(request.body?.playerId);
+	const isInGame =
+		playerId === currentGame.hostPlayerId ||
+		playerId === currentGame.guestPlayerId;
+	const lastDecision = currentGame.decisionHistory.at(-1);
+
+	if (!isInGame) {
+		return response.sendStatus(403);
+	}
+
+	if (lastDecision.status === "waiting") {
+		return response.sendStatus(403);
+	}
+	currentGame.decisionHistory = [];
+
+	const game = buildGameResponse(response.locals.game);
+
+	if (!game) {
+		return response.sendStatus(500);
+	}
+
+	return response.status(200).json({ game });
+});
+
 app.listen(port);
