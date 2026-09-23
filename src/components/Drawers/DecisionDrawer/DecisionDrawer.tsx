@@ -34,12 +34,13 @@ function DecisionDrawer({ firstName, isOpen, onClose }: DecisionDrawerProps) {
 
 		const difficulty = validDifficulties.find((d) => d === rawDifficulty);
 
-		if (!decision || !gameId) return;
+		if (!decision || !gameId || !playerId) return;
 
 		const decisionInfo = {
 			decision: decision,
 			comment: comment,
 			difficulty: difficulty,
+			playerId: playerId,
 		};
 
 		const result = await nextTurn(decisionInfo, gameId);

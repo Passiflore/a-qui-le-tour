@@ -234,6 +234,8 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 	const validComment = getValidText(comment);
 	const difficulty = request.body?.difficulty;
 	const lastDecision = currentGame.decisionHistory.at(-1);
+	const playerId = getValidText(request.body?.playerId);
+	const isDecider = playerId === currentGame.currentDeciderPlayerId;
 
 	if (lastDecision?.status === "waiting") {
 		return response.sendStatus(409);
@@ -241,6 +243,10 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 
 	if (!currentGame.currentDeciderPlayerId) {
 		return response.sendStatus(409);
+	}
+
+	if (!isDecider) {
+		return response.sendStatus(403);
 	}
 
 	if (!validDecision) {
