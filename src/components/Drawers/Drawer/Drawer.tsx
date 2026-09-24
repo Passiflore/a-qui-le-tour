@@ -37,8 +37,7 @@ function Drawer({
 		>
 			<div className={styles.drawerContainer}>
 				<div className={styles.heroContainer}>
-					{hero ? <>{hero}</> : <h2 className={styles.drawerTitle}>{title}</h2>}
-
+					{hero ? hero : <h2 className={styles.drawerTitle}>{title}</h2>}
 					<button
 						className={styles.closeButton}
 						aria-label="Fermer"

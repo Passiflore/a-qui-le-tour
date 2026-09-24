@@ -102,9 +102,9 @@ export async function reviewDecision(reviewBody: Review, gameId: string) {
 	});
 }
 
-export async function resetHistory(gameId: string, playerId: Reset) {
+export async function resetHistory(gameId: string, resetwBody: Reset) {
 	return request<{ game: GameResponse }>(`/games/${gameId}/reset`, {
 		method: "POST",
-		body: JSON.stringify(playerId),
+		body: JSON.stringify(resetwBody),
 	});
 }
