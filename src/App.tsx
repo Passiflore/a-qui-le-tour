@@ -9,6 +9,7 @@ import WaitingPage from "./pages/WaitingPage/WaitingPage";
 import JoinPage from "./pages/JoinPage/JoinPage";
 import ProtectedPage from "./pages/ProtectedPage";
 import Review from "./pages/ReviewPage/ReviewPage";
+import SubjectPage from "./pages/SubjectPage/SubjectPage";
 
 function App() {
 	return (
@@ -27,6 +28,7 @@ function App() {
 				<Route element={<ProtectedPage />}>
 					<Route path="/waiting" element={<WaitingPage />} />
 					<Route path="/review" element={<Review />} />
+					<Route path="/subject" element={<SubjectPage />} />
 				</Route>
 			</Route>
 

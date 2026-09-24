@@ -10,6 +10,7 @@ export interface Decision {
 	difficulty?: "easy" | "medium" | "hard";
 	createdAt: string;
 	status: "waiting" | "accepted" | "refused";
+	subject?: string;
 }
 
 export interface Game {
@@ -21,6 +22,8 @@ export interface Game {
 
 	currentDeciderPlayerId?: string;
 	decisionHistory: Decision[];
+	currentSubject?: string;
+	isSubjectChosen: boolean;
 }
 
 export interface GameResponse {
@@ -29,6 +32,8 @@ export interface GameResponse {
 	currentDeciderPlayerId: string | null;
 	decisionHistory: Decision[];
 	pendingReviewBy: string | null;
+	pendingSubjectBy: string | null;
+	currentSubject?: string;
 }
 
 export interface GameSessionResponse {
@@ -42,6 +47,11 @@ export interface Review {
 }
 
 export interface Reset {
+	playerId: string;
+}
+
+export interface Subject {
+	subject?: string;
 	playerId: string;
 }
 
@@ -106,5 +116,12 @@ export async function resetHistory(gameId: string, playerId: Reset) {
 	return request<{ game: GameResponse }>(`/games/${gameId}/reset`, {
 		method: "POST",
 		body: JSON.stringify(playerId),
+	});
+}
+
+export async function chooseSubject(gameId: string, subjectBody: Subject) {
+	return request<{ game: GameResponse }>(`/games/${gameId}/subject`, {
+		method: "POST",
+		body: JSON.stringify(subjectBody),
 	});
 }

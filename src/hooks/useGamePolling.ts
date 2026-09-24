@@ -10,6 +10,8 @@ function playBell() {
 }
 
 function getTargetPage(game: GameResponse, playerId: string | null) {
+	if (game.pendingSubjectBy === playerId) return "/subject";
+	if (game.pendingSubjectBy !== null) return "/waiting";
 	if (game.pendingReviewBy === playerId) return "/review";
 	if (game.pendingReviewBy !== null) return "/waiting";
 	if (game.currentDeciderPlayerId === playerId) return "/decision";

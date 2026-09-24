@@ -17,6 +17,7 @@ interface Decision {
 	difficulty?: "easy" | "medium" | "hard";
 	createdAt: Date;
 	status: "waiting" | "accepted" | "refused";
+	subject?: string;
 }
 
 interface Game {
@@ -28,6 +29,8 @@ interface Game {
 
 	currentDeciderPlayerId?: string;
 	decisionHistory: Decision[];
+	currentSubject?: string;
+	isSubjectChosen: boolean;
 }
 
 interface GameResponse {
@@ -36,6 +39,8 @@ interface GameResponse {
 	currentDeciderPlayerId: string | null;
 	decisionHistory: Decision[];
 	pendingReviewBy: string | null;
+	pendingSubjectBy: string | null;
+	currentSubject?: string;
 }
 
 const players: Player[] = [];
@@ -110,6 +115,16 @@ function getPendingReviewBy(game: Game): string | null {
 		: game.hostPlayerId;
 }
 
+function getPendingSubjectBy(game: Game): string | null {
+	if (game.isSubjectChosen) {
+		return null;
+	}
+
+	return game.currentDeciderPlayerId === game.hostPlayerId
+		? (game.guestPlayerId ?? null)
+		: game.hostPlayerId;
+}
+
 function buildGameResponse(game: Game): GameResponse | null {
 	const hostPlayer = findPlayer(game.hostPlayerId);
 
@@ -123,6 +138,8 @@ function buildGameResponse(game: Game): GameResponse | null {
 		currentDeciderPlayerId: game.currentDeciderPlayerId ?? null,
 		decisionHistory: game.decisionHistory,
 		pendingReviewBy: getPendingReviewBy(game),
+		pendingSubjectBy: getPendingSubjectBy(game),
+		currentSubject: game.currentSubject,
 	};
 }
 
@@ -190,6 +207,7 @@ app.post("/games", (request, response) => {
 		inviteToken: randomUUID(),
 		inviteUsed: false,
 		decisionHistory: [],
+		isSubjectChosen: false,
 	};
 
 	players.push(player);
@@ -253,6 +271,10 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 		return response.sendStatus(400);
 	}
 
+	if (currentGame.isSubjectChosen !== true) {
+		return response.sendStatus(409);
+	}
+
 	if (
 		difficulty !== undefined &&
 		difficulty !== "easy" &&
@@ -269,9 +291,44 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 		difficulty: difficulty,
 		createdAt: new Date(),
 		status: "waiting",
+		subject: currentGame.currentSubject,
 	};
 
 	currentGame.decisionHistory.push(decision);
+
+	const game = buildGameResponse(response.locals.game);
+
+	if (!game) {
+		return response.sendStatus(500);
+	}
+
+	return response.status(200).json({ game });
+});
+
+app.post("/games/:gameId/subject", requireGame, (request, response) => {
+	const currentGame = response.locals.game;
+	const playerId = getValidText(request.body?.playerId);
+	const subject = getValidText(request.body?.subject);
+
+	if (!playerId) {
+		return response.sendStatus(400);
+	}
+
+	const isInGame =
+		playerId === currentGame.hostPlayerId ||
+		playerId === currentGame.guestPlayerId;
+	const isDecider = playerId === currentGame.currentDeciderPlayerId;
+
+	if (!isInGame || isDecider) {
+		return response.sendStatus(403);
+	}
+
+	if (currentGame.isSubjectChosen) {
+		return response.sendStatus(409);
+	}
+
+	currentGame.currentSubject = subject ?? undefined;
+	currentGame.isSubjectChosen = true;
 
 	const game = buildGameResponse(response.locals.game);
 
@@ -311,6 +368,8 @@ app.post("/games/:gameId/decision/review", requireGame, (request, response) => {
 
 	if (accepted) {
 		lastDecision.status = "accepted";
+		currentGame.currentSubject = undefined;
+		currentGame.isSubjectChosen = false;
 		currentGame.currentDeciderPlayerId = chooseNextPlayer(currentGame);
 	} else {
 		lastDecision.status = "refused";
