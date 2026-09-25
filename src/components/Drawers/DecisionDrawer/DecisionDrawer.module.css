@@ -123,16 +123,3 @@
 .hard {
 	background-color: var(--color-error);
 }
-
-.link {
-	text-align: center;
-	text-decoration: none;
-	color: var(--color-description);
-	font-family: var(--font-body);
-	font-size: var(--text-2xs);
-	transition: var(--duration-base) ease-in;
-
-	&:hover {
-		color: var(--color-white);
-	}
-}
