@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import ActionButton from "../../ActionButton/ActionButton";
 import NameTag from "../../NameTag/NameTag";
 import styles from "./DecisionDrawer.module.css";
@@ -126,9 +126,6 @@ function DecisionDrawer({ firstName, isOpen, onClose }: DecisionDrawerProps) {
 					</div>
 				</div>
 				<ActionButton text="Confirmer" type="submit" size="medium" />
-				<Link to="/waiting" className={styles.link}>
-					Passer sans renseigner
-				</Link>
 			</form>
 		</Drawer>
 	);
