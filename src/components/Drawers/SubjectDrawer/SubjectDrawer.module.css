@@ -1,0 +1,43 @@
+.formContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xl);
+}
+
+.formContainer label,
+.formContainer {
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	font-size: var(--text-2xs);
+	letter-spacing: var(--tracking-caps);
+	color: var(--color-description);
+}
+
+.formContainer input {
+	border-radius: var(--radius-md);
+	border: 1px solid var(--color-white-transparent);
+	background-color: var(--color-surface-sunken);
+	color: var(--color-text);
+	padding: var(--space-sm);
+
+	&:focus {
+		border-color: var(--color-secondary);
+		outline: none;
+	}
+	&::placeholder {
+		color: var(--color-description); /* le texte d'invite */
+	}
+}
+
+.link {
+	text-align: center;
+	text-decoration: none;
+	color: var(--color-description);
+	font-family: var(--font-body);
+	font-size: var(--text-2xs);
+	transition: var(--duration-base) ease-in;
+
+	&:hover {
+		color: var(--color-white);
+	}
+}
