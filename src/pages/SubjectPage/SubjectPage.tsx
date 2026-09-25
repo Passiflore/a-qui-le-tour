@@ -11,7 +11,7 @@ function SubjectPage() {
 		<main className={styles.container}>
 			<HistoryDrawer game={game} />
 			<Sphere color={isHost ? "orange" : "purple"} />
-			<span className={styles.intro}>A toi de choisir</span>
+			<span className={styles.intro}>À toi de choisir</span>
 			<h1 className={styles.title}>Quel sujet ? </h1>
 
 			<p className={styles.subtitle}>a soumettre à {opponent?.firstName}</p>

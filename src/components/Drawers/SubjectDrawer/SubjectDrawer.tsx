@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ActionButton from "../../ActionButton/ActionButton";
 import NameTag from "../../NameTag/NameTag";
 import Drawer from "../Drawer/Drawer";
 import styles from "./SubjectDrawer.module.css";
-import { Link } from "react-router";
+import { chooseSubject } from "../../../api";
 
 interface SubjectDrawerProps {
 	firstName: string;
@@ -12,16 +12,42 @@ interface SubjectDrawerProps {
 
 function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
+	const formRef = useRef<HTMLFormElement>(null);
 	const gameId = localStorage.getItem("gameId");
 	const playerId = localStorage.getItem("playerId");
+
+	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const subject = String(formData.get("subject") ?? "");
+
+		if (!gameId || !playerId) return;
+
+		const subjectBody = {
+			subject,
+			playerId,
+		};
+
+		await chooseSubject(gameId, subjectBody);
+		onClose();
+	}
+
+	async function handlePass() {
+		if (!gameId || !playerId) return;
+
+		await chooseSubject(gameId, { playerId });
+		onClose();
+	}
 
 	function handleClick() {
 		setIsOpen(true);
 	}
 
 	function onClose() {
+		formRef.current?.reset();
 		setIsOpen(false);
 	}
+
 	return (
 		<div>
 			<ActionButton
@@ -36,34 +62,38 @@ function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
 				hero={<NameTag firstName={firstName} />}
 			>
 				<h2 className={styles.drawerTitle}>
-					Quel sujet <br /> a trancher ?
+					Quel sujet <br /> à trancher ?
 				</h2>
 				<p className={styles.drawerSubtitle}>
 					Choisis ce que {opponentName} doit décider
 				</p>
-				<div className={styles.decisionContainer}>
-					<form
-						className={styles.formContainer}
-						// onSubmit={handleSubmit}
-						// ref={formRef}
-					>
-						<div className={styles.inputContainer}>
-							<label htmlFor={"decision"} className={styles.primaryInputTitle}>
-								Le sujet *
-							</label>
-							<input
-								id="subject"
-								name="subject"
-								placeholder="ex. Où on mange ce soir ?"
-								required
-							/>
-						</div>
-					</form>
-					<ActionButton text="Confirmer" type="submit" size="medium" />
-					<Link to="/waiting" className={styles.link}>
-						Passer sans renseigner
-					</Link>
-				</div>
+
+				<form
+					className={styles.formContainer}
+					onSubmit={handleSubmit}
+					ref={formRef}
+				>
+					<div className={styles.inputContainer}>
+						<label htmlFor={"subject"} className={styles.primaryInputTitle}>
+							Le sujet *
+						</label>
+						<input
+							id="subject"
+							name="subject"
+							placeholder="ex. Où on mange ce soir ?"
+							required
+						/>
+					</div>
+					<ActionButton
+						text="Soumettre le sujet"
+						type="submit"
+						size="medium"
+						color={"purple"}
+					/>
+					<button onClick={handlePass} className={styles.pass} type="button">
+						Passer sans sujet
+					</button>
+				</form>
 			</Drawer>
 		</div>
 	);

@@ -1,16 +1,35 @@
+.drawerTitle {
+	font-family: var(--font-display);
+	color: var(--color-white);
+	text-transform: uppercase;
+	font-size: var(--text-lg);
+	letter-spacing: var(--tracking-tight);
+	line-height: var(--leading-tight);
+	margin: 0;
+}
+
+.drawerSubtitle {
+	color: var(--color-description);
+}
+
 .formContainer {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-xl);
 }
 
-.formContainer label,
-.formContainer {
+.formContainer label {
 	font-family: var(--font-display);
 	text-transform: uppercase;
 	font-size: var(--text-2xs);
 	letter-spacing: var(--tracking-caps);
-	color: var(--color-description);
+	color: var(--color-terciary);
+}
+
+.inputContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
 }
 
 .formContainer input {
@@ -25,19 +44,30 @@
 		outline: none;
 	}
 	&::placeholder {
-		color: var(--color-description); /* le texte d'invite */
+		color: var(--color-description);
 	}
 }
 
-.link {
+.pass {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+
 	text-align: center;
 	text-decoration: none;
 	color: var(--color-description);
 	font-family: var(--font-body);
 	font-size: var(--text-2xs);
-	transition: var(--duration-base) ease-in;
+	transition: color var(--duration-base) ease-in;
 
 	&:hover {
 		color: var(--color-white);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-text);
+		outline-offset: 3px;
+		border-radius: var(--radius-sm);
 	}
 }
