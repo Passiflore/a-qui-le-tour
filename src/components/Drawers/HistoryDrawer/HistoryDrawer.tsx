@@ -148,6 +148,9 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 						return (
 							<div key={decision.createdAt}>
 								<div className={styles.decisionsContainer}>
+									{decision.subject && (
+										<p className={styles.subject}>Sujet : {decision.subject}</p>
+									)}
 									<div className={styles.decisionText}>
 										<div
 											className={`${styles.circle} ${isGuest ? styles.guest : styles.host}`}

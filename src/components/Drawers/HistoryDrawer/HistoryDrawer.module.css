@@ -32,9 +32,18 @@
 
 .decisionsContainer {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+	gap: var(--space-xs);
 	margin: var(--space-xl) 0;
 	color: var(--color-white);
+}
+
+.subject {
+	font-family: var(--font-display);
+	color: var(--color-description);
+	text-transform: uppercase;
+	font-size: var(--text-3xs);
+	margin: 0;
 }
 
 .decision {

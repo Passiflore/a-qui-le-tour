@@ -67,6 +67,8 @@ function DecisionDrawer({ firstName, isOpen, onClose }: DecisionDrawerProps) {
 			<h2 className={styles.drawerTitle}>
 				Qu'est-ce que <br /> tu as décidé ?
 			</h2>
+
+			<p>hello</p>
 			<form
 				className={styles.formContainer}
 				onSubmit={handleSubmit}
