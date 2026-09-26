@@ -47,6 +47,8 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 	const guest = game?.guest;
 	const gameId = localStorage.getItem("gameId");
 	const playerId = localStorage.getItem("playerId");
+	const canDelete =
+		lastDecision?.status !== "waiting" && historyTable.length !== 0;
 
 	function handleClick() {
 		setIsOpen(true);
@@ -87,7 +89,7 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 			<div onClick={handleClick} className={styles.iconHistory}>
 				<HistoryIcon />
 			</div>
-			{lastDecision?.status !== "waiting" && historyTable.length !== 0 && (
+			{canDelete && (
 				<Drawer
 					isOpen={isPopupOpen}
 					onClose={onPopupClose}
@@ -122,16 +124,15 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 				hero={
 					<div className={styles.drawerHeroContainer}>
 						<p className={styles.drawerTitle}>historique</p>
-						{lastDecision?.status !== "waiting" &&
-							historyTable.length !== 0 && (
-								<button
-									className={styles.deleteButton}
-									onClick={() => setIsPopupOpen(true)}
-								>
-									<DeleteIcon />
-									<p>Effacer l'historique</p>
-								</button>
-							)}
+						{canDelete && (
+							<button
+								className={styles.deleteButton}
+								onClick={() => setIsPopupOpen(true)}
+							>
+								<DeleteIcon />
+								<p>Effacer l'historique</p>
+							</button>
+						)}
 					</div>
 				}
 			>
