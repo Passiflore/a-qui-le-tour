@@ -62,13 +62,23 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 					Sa décision <br /> est prise
 				</h2>
 				<p className={styles.drawerSubtitle}>Acceptes-tu cette décision ?</p>
+				{decision.subject && (
+					<div className={styles.subjectContainer}>
+						<p className={styles.subjectIntro}>Le sujet</p>
+						<p className={styles.subjectText}>{decision.subject}</p>
+					</div>
+				)}
+
 				<div className={styles.decisionContainer}>
 					<p className={styles.decisionIntro}>Décision</p>
 					<p className={styles.title}>{decision.decision}</p>
 					<hr />
-					{decision.comment && (
+					{decision.comment ? (
 						<p className={styles.subtitle}>{decision.comment}</p>
+					) : (
+						<p className={styles.subtitle}>Aucun commentaire.</p>
 					)}
+
 					{decision.difficulty && (
 						<div className={styles.difficultyContainer}>
 							<div

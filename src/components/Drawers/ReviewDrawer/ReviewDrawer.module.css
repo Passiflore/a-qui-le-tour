@@ -17,6 +17,31 @@
 .drawerSubtitle {
 	color: var(--color-description);
 }
+.subjectContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3xs);
+	padding: var(--space-sm) var(--space-md);
+	margin-bottom: var(--space-sm);
+
+	border-left: 3px solid var(--color-secondary);
+	border-radius: var(--radius-md);
+	background-color: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+}
+
+.subjectIntro {
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	font-size: var(--text-2xs);
+	letter-spacing: var(--tracking-caps);
+	color: var(--color-secondary);
+	margin: 0;
+}
+
+.subjectText {
+	color: var(--color-description);
+	margin: 0;
+}
 
 .decisionContainer {
 	border: 1px solid var(--color-description-secondary);
