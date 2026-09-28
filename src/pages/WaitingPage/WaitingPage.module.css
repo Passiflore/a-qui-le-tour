@@ -66,6 +66,8 @@
 .description {
 	text-align: center;
 	margin: var(--space-xs);
+	max-width: 24ch;
+	margin-inline: auto;
 }
 
 .scoreContainer {
@@ -114,7 +116,8 @@
 	}
 }
 
-.lastDecisionContainer {
+.lastDecisionContainer,
+.subjectContainer {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -124,7 +127,8 @@
 	gap: var(--space-2xs);
 }
 
-.lastDecisionTitle {
+.lastDecisionTitle,
+.subjectTitle {
 	color: var(--color-terciary);
 	font-family: var(--font-display);
 	font-size: var(--text-xs);

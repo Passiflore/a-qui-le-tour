@@ -83,7 +83,7 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 						<div className={styles.difficultyContainer}>
 							<div
 								className={`${styles.circle} ${difficultyClasses[decision.difficulty]}`}
-							></div>
+							/>
 							<p className={styles.difficulty}>
 								{difficultyText[decision.difficulty]}
 							</p>

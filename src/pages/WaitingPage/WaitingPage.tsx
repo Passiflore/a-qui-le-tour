@@ -13,6 +13,9 @@ function Waiting() {
 
 	const myScore = acceptedHistory.filter((d) => d.playerId === me?.id).length;
 	const opponentScore = acceptedHistory.length - myScore;
+	const isWaitingSubject = game?.pendingSubjectBy === opponent?.id;
+	const isWaitingReview = game?.pendingReviewBy === opponent?.id;
+	const isWaitingDecision = !isWaitingSubject && !isWaitingReview;
 
 	const elapsedTime = useElapsedSince(lastCheck);
 	const lastDecision = game?.decisionHistory.at(-1);
@@ -36,6 +39,14 @@ function Waiting() {
 		};
 	}
 
+	if (isWaitingSubject) {
+		waitingText = {
+			intro: "en attente",
+			title: "choisit le sujet",
+			subtitle: `${opponent?.firstName} va choisir ce que tu dois trancher`,
+		};
+	}
+
 	return (
 		<div className={styles.container}>
 			<HistoryDrawer game={game} />
@@ -52,28 +63,39 @@ function Waiting() {
 				<span className={styles.playerName}>{opponent?.firstName}</span>
 				<span className={styles.turnAction}>{waitingText.title}</span>
 			</h1>
+
+			{game?.currentSubject && isWaitingDecision && (
+				<div className={styles.subjectContainer}>
+					<p className={styles.subjectTitle}>le sujet</p>
+					<p>"{game?.currentSubject}"</p>
+				</div>
+			)}
+
 			<p className={styles.description}>{waitingText.subtitle}</p>
-			<div className={styles.scoreContainer}>
-				<div className={styles.score}>
-					<span
-						key={myScore}
-						className={`${styles.scoreNumber} ${styles.myScore}`}
-					>
-						{myScore}
-					</span>
-					<span className={styles.scoreText}>{me?.firstName}</span>
+			{isWaitingDecision && (
+				<div className={styles.scoreContainer}>
+					<div className={styles.score}>
+						<span
+							key={myScore}
+							className={`${styles.scoreNumber} ${styles.myScore}`}
+						>
+							{myScore}
+						</span>
+						<span className={styles.scoreText}>{me?.firstName}</span>
+					</div>
+					<div className={styles.score}>
+						<span
+							key={opponentScore}
+							className={`${styles.scoreNumber} ${styles.opponentScore}`}
+						>
+							{opponentScore}
+						</span>
+						<span className={styles.scoreText}>{opponent?.firstName}</span>
+					</div>
 				</div>
-				<div className={styles.score}>
-					<span
-						key={opponentScore}
-						className={`${styles.scoreNumber} ${styles.opponentScore}`}
-					>
-						{opponentScore}
-					</span>
-					<span className={styles.scoreText}>{opponent?.firstName}</span>
-				</div>
-			</div>
-			{lastDecision && (
+			)}
+
+			{lastDecision && !isWaitingDecision && (
 				<div className={styles.lastDecisionContainer}>
 					<p className={styles.lastDecisionTitle}>Dernière décision</p>
 					<p key={lastDecision?.createdAt} className={styles.lastDecisionText}>
