@@ -3,6 +3,7 @@ import { useGamePolling } from "../../hooks/useGamePolling";
 import { useElapsedSince } from "../../hooks/useElapsedSince";
 import Sphere from "../../components/Sphere/Sphere";
 import HistoryDrawer from "../../components/Drawers/HistoryDrawer/HistoryDrawer";
+import InfoCard from "../../components/InfoCard/InfoCard";
 
 function Waiting() {
 	const { game, lastCheck, me, opponent, isHost } = useGamePolling();
@@ -65,10 +66,11 @@ function Waiting() {
 			</h1>
 
 			{game?.currentSubject && isWaitingDecision && (
-				<div className={styles.subjectContainer}>
-					<p className={styles.subjectTitle}>le sujet</p>
-					<p>"{game?.currentSubject}"</p>
-				</div>
+				<InfoCard
+					title={"Le sujet"}
+					text={`"${game?.currentSubject}"`}
+					color={"purple"}
+				/>
 			)}
 
 			<p className={styles.description}>{waitingText.subtitle}</p>
@@ -96,12 +98,11 @@ function Waiting() {
 			)}
 
 			{lastDecision && !isWaitingDecision && (
-				<div className={styles.lastDecisionContainer}>
-					<p className={styles.lastDecisionTitle}>Dernière décision</p>
-					<p key={lastDecision?.createdAt} className={styles.lastDecisionText}>
-						{lastDecision?.decision}
-					</p>
-				</div>
+				<InfoCard
+					title={"Dernière décision"}
+					text={lastDecision?.decision}
+					color={"purple"}
+				/>
 			)}
 		</div>
 	);

@@ -4,6 +4,7 @@ import Drawer from "../Drawer/Drawer";
 import styles from "./ReviewDrawer.module.css";
 import NameTag from "../../NameTag/NameTag";
 import { reviewDecision, type Decision } from "../../../api";
+import SubjectCard from "../../SubjectCard/SubjectCard";
 
 interface ReviewDrawerProps {
 	firstName: string;
@@ -62,34 +63,34 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 					Sa décision <br /> est prise
 				</h2>
 				<p className={styles.drawerSubtitle}>Acceptes-tu cette décision ?</p>
-				{decision.subject && (
-					<div className={styles.subjectContainer}>
-						<p className={styles.subjectIntro}>Le sujet</p>
-						<p className={styles.subjectText}>{decision.subject}</p>
+				<div className={styles.drawerContentContainer}>
+					{decision.subject && (
+						<SubjectCard title={"Le sujet"} text={decision.subject} />
+					)}
+
+					<div className={styles.decisionContainer}>
+						<p className={styles.decisionIntro}>Décision</p>
+						<p className={styles.title}>{decision.decision}</p>
+						<hr />
+						{decision.comment ? (
+							<p className={styles.subtitle}>{decision.comment}</p>
+						) : (
+							<p className={styles.subtitle}>Aucun commentaire.</p>
+						)}
+
+						{decision.difficulty && (
+							<div className={styles.difficultyContainer}>
+								<div
+									className={`${styles.circle} ${difficultyClasses[decision.difficulty]}`}
+								/>
+								<p className={styles.difficulty}>
+									{difficultyText[decision.difficulty]}
+								</p>
+							</div>
+						)}
 					</div>
-				)}
-
-				<div className={styles.decisionContainer}>
-					<p className={styles.decisionIntro}>Décision</p>
-					<p className={styles.title}>{decision.decision}</p>
-					<hr />
-					{decision.comment ? (
-						<p className={styles.subtitle}>{decision.comment}</p>
-					) : (
-						<p className={styles.subtitle}>Aucun commentaire.</p>
-					)}
-
-					{decision.difficulty && (
-						<div className={styles.difficultyContainer}>
-							<div
-								className={`${styles.circle} ${difficultyClasses[decision.difficulty]}`}
-							/>
-							<p className={styles.difficulty}>
-								{difficultyText[decision.difficulty]}
-							</p>
-						</div>
-					)}
 				</div>
+
 				<div className={styles.buttonsContainer}>
 					<ActionButton
 						text="Refuser"
