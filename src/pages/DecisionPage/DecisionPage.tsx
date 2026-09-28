@@ -5,6 +5,7 @@ import DecisionDrawer from "../../components/Drawers/DecisionDrawer/DecisionDraw
 import { useEffect, useState } from "react";
 import { useGamePolling } from "../../hooks/useGamePolling";
 import HistoryDrawer from "../../components/Drawers/HistoryDrawer/HistoryDrawer";
+import InfoCard from "../../components/InfoCard/InfoCard";
 
 function DecisionPage() {
 	const game = useGamePolling().game;
@@ -39,6 +40,14 @@ function DecisionPage() {
 		<main className={styles.decisionContainer}>
 			<HistoryDrawer game={game} />
 			<NameTag firstName={currentDecider ?? ""} color="white" />
+			{game?.currentSubject && (
+				<InfoCard
+					title={"Le sujet à trancher"}
+					text={game?.currentSubject ?? ""}
+					color={"white"}
+				/>
+			)}
+
 			<div className={styles.decisionTextContainer}>
 				<h1 className={styles.decisionTitle}>C'est ton tour</h1>
 				<p className={styles.decisionDescription}>
@@ -50,6 +59,7 @@ function DecisionPage() {
 				firstName={currentDecider ?? ""}
 				isOpen={isOpen}
 				onClose={onClose}
+				subject={game?.currentSubject}
 			/>
 			{showAnnounce && (
 				<div className={styles.announce} role="status">

@@ -5,11 +5,13 @@ import styles from "./DecisionDrawer.module.css";
 import { useRef } from "react";
 import { nextTurn } from "../../../api";
 import Drawer from "../Drawer/Drawer";
+import SubjectCard from "../../SubjectCard/SubjectCard";
 
 interface DecisionDrawerProps {
 	firstName: string;
 	isOpen: boolean;
 	onClose: () => void;
+	subject?: string;
 }
 
 const Difficulties = [
@@ -18,7 +20,12 @@ const Difficulties = [
 	{ value: "hard", label: "Difficile" },
 ];
 
-function DecisionDrawer({ firstName, isOpen, onClose }: DecisionDrawerProps) {
+function DecisionDrawer({
+	firstName,
+	isOpen,
+	onClose,
+	subject,
+}: DecisionDrawerProps) {
 	const navigate = useNavigate();
 	const formRef = useRef<HTMLFormElement>(null);
 	const gameId = localStorage.getItem("gameId");
@@ -67,14 +74,14 @@ function DecisionDrawer({ firstName, isOpen, onClose }: DecisionDrawerProps) {
 			<h2 className={styles.drawerTitle}>
 				Qu'est-ce que <br /> tu as décidé ?
 			</h2>
-
-			<p>hello</p>
-
 			<form
 				className={styles.formContainer}
 				onSubmit={handleSubmit}
 				ref={formRef}
 			>
+				{subject && (
+					<SubjectCard title={"Le sujet à trancher"} text={subject} />
+				)}
 				<div className={styles.inputContainer}>
 					<label htmlFor={"decision"} className={styles.primaryInputTitle}>
 						La décision *

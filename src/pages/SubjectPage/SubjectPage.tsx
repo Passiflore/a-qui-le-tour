@@ -14,7 +14,9 @@ function SubjectPage() {
 			<span className={styles.intro}>À toi de choisir</span>
 			<h1 className={styles.title}>Quel sujet ? </h1>
 
-			<p className={styles.subtitle}>a soumettre à {opponent?.firstName}</p>
+			<p className={styles.subtitle}>
+				a soumettre à <span>{opponent?.firstName}</span>
+			</p>
 
 			<p className={styles.text}>
 				Choisis ce que {opponent?.firstName} doit trancher

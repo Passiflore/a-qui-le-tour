@@ -23,13 +23,17 @@
 	font-family: var(--font-display);
 	text-transform: uppercase;
 	font-size: var(--text-lg);
-	color: var(--color-description);
+	color: var(--color-text);
 	text-align: center;
 	margin: 0;
+
+	span {
+		color: var(--color-terciary);
+	}
 }
 
 .text {
-	color: var(--color-description);
+	color: var(--color-text);
 	text-align: center;
 	margin: var(--space-md);
 }
