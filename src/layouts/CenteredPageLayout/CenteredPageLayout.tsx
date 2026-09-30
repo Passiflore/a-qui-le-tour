@@ -9,6 +9,7 @@ function CenteredPageLayout({ tone = "dark" }: LayoutProps) {
 	return (
 		<div className="layoutContainer" data-tone={tone}>
 			<div className="layoutContent">
+				<div className="logo">À qui le tour</div>
 				<Outlet />
 			</div>
 		</div>

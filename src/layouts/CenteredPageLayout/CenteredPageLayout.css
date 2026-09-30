@@ -17,6 +17,7 @@
 	--color-text: var(--color-white);
 	--grad-center: color-mix(in srgb, var(--color-secondary) 72%, white);
 	--grad-edge: var(--color-secondary);
+	--logo-color: var(--color-text);
 }
 
 .layoutContainer[data-tone="purple"] {
@@ -27,6 +28,7 @@
 		var(--color-terciary)
 	);
 	--grad-edge: var(--color-background);
+	--logo-color: var(--color-description);
 }
 
 .layoutContainer[data-tone="dark"] {
@@ -36,4 +38,15 @@
 
 .layoutContent {
 	width: min(calc(100% - var(--space-xl)), 500px);
+}
+
+.logo {
+	position: fixed;
+	top: 30px;
+	left: 30px;
+	font-family: var(--font-display);
+	text-transform: uppercase;
+	font-size: var(--text-xs);
+	letter-spacing: var(--tracking-caps);
+	color: var(--logo-color);
 }
