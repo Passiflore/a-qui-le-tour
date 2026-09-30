@@ -1,11 +1,12 @@
 import express, { Response, Request, NextFunction } from "express";
 import { pinoHttp } from "pino-http";
 import { randomUUID } from "node:crypto";
+import { loadData, saveData } from "./storage.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 
-interface Player {
+export interface Player {
 	id: string;
 	firstName: string;
 }
@@ -20,7 +21,7 @@ interface Decision {
 	subject?: string;
 }
 
-interface Game {
+export interface Game {
 	id: string;
 	hostPlayerId: string;
 	guestPlayerId?: string;
@@ -212,6 +213,7 @@ app.post("/games", (request, response) => {
 
 	players.push(player);
 	games.push(game);
+	saveData(players, games);
 	response.status(201).json({ player, game });
 });
 
@@ -239,6 +241,8 @@ app.post("/invite/:token", requireValidInvite, (request, response) => {
 	players.push(player);
 	game.currentDeciderPlayerId = chooseNextPlayer(game);
 	game.inviteUsed = true;
+
+	saveData(players, games);
 
 	return response.status(201).json({ player, game });
 });
@@ -302,6 +306,8 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 		return response.sendStatus(500);
 	}
 
+	saveData(players, games);
+
 	return response.status(200).json({ game });
 });
 
@@ -335,6 +341,8 @@ app.post("/games/:gameId/subject", requireGame, (request, response) => {
 	if (!game) {
 		return response.sendStatus(500);
 	}
+
+	saveData(players, games);
 
 	return response.status(200).json({ game });
 });
@@ -382,6 +390,8 @@ app.post("/games/:gameId/decision/review", requireGame, (request, response) => {
 		return response.sendStatus(500);
 	}
 
+	saveData(players, games);
+
 	return response.status(200).json({ game });
 });
 
@@ -423,7 +433,11 @@ app.post("/games/:gameId/reset", requireGame, (request, response) => {
 		return response.sendStatus(500);
 	}
 
+	saveData(players, games);
+
 	return response.status(200).json({ game });
 });
+
+loadData(players, games);
 
 app.listen(port);
