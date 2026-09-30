@@ -1,3 +1,4 @@
+import { getGameId, getPlayerId } from "../session";
 import { useEffect, useState } from "react";
 import { getGame, type GameResponse } from "../api";
 import { useLocation, useNavigate } from "react-router";
@@ -21,8 +22,8 @@ function getTargetPage(game: GameResponse, playerId: string | null) {
 export function useGamePolling() {
 	const [game, setGame] = useState<GameResponse | null>(null);
 	const navigate = useNavigate();
-	const playerId = localStorage.getItem("playerId");
-	const gameId = localStorage.getItem("gameId");
+	const playerId = getPlayerId();
+	const gameId = getGameId();
 	const currentPage = useLocation().pathname;
 	const [lastCheck, setLastCheck] = useState<Date | null>(null);
 	const pendingReviewBy = game?.pendingReviewBy;

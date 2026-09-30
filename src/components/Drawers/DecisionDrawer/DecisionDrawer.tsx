@@ -1,3 +1,4 @@
+import { getGameId, getPlayerId } from "../../../session";
 import { useNavigate } from "react-router";
 import ActionButton from "../../ActionButton/ActionButton";
 import NameTag from "../../NameTag/NameTag";
@@ -29,11 +30,11 @@ function DecisionDrawer({
 }: DecisionDrawerProps) {
 	const navigate = useNavigate();
 	const formRef = useRef<HTMLFormElement>(null);
-	const gameId = localStorage.getItem("gameId");
+	const gameId = getGameId();
 
 	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
-		const playerId = localStorage.getItem("playerId");
+		const playerId = getPlayerId();
 		const formData = new FormData(e.currentTarget);
 		const decision = String(formData.get("decision") ?? "");
 		const comment = String(formData.get("comment") ?? "");

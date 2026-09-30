@@ -1,10 +1,11 @@
+import { getInviteToken } from "../../session";
 import NameTag from "../../components/NameTag/NameTag";
 import "./InvitePage.css";
 import CopyButton from "../../components/CopyButton/CopyButton";
 import { useGamePolling } from "../../hooks/useGamePolling";
 
 function InvitePage() {
-	const inviteToken = localStorage.getItem("inviteToken");
+	const inviteToken = getInviteToken();
 	const invitationLink = `${window.location.origin}/join/${inviteToken}`;
 
 	const game = useGamePolling().game;

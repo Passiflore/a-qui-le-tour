@@ -1,3 +1,4 @@
+import { getGameId, getPlayerId } from "../../../session";
 import { useState } from "react";
 import Drawer from "../Drawer/Drawer";
 import styles from "./HistoryDrawer.module.css";
@@ -40,8 +41,8 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 	const historyTable = history.filter((d) => d.status !== "waiting");
 	const host = game?.host;
 	const guest = game?.guest;
-	const gameId = localStorage.getItem("gameId");
-	const playerId = localStorage.getItem("playerId");
+	const gameId = getGameId();
+	const playerId = getPlayerId();
 	const canDelete =
 		lastDecision?.status !== "waiting" && historyTable.length !== 0;
 

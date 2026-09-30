@@ -1,3 +1,4 @@
+import { saveSession } from "../../session";
 import { useState } from "react";
 import { createGame } from "../../api";
 import ActionButton from "../../components/ActionButton/ActionButton";
@@ -17,9 +18,7 @@ function HomePage() {
 		setIsLoading(true);
 		try {
 			const data = await createGame(firstName);
-			localStorage.setItem("playerId", data.player.id);
-			localStorage.setItem("gameId", data.game.id);
-			localStorage.setItem("inviteToken", data.game.inviteToken);
+			saveSession(data.player.id, data.game.id, data.game.inviteToken);
 			navigate("/invite", { viewTransition: true });
 		} catch {
 			setError("Impossible de créer la partie");

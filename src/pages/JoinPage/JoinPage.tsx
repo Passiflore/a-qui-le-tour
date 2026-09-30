@@ -1,3 +1,4 @@
+import { saveSession } from "../../session";
 import { useParams, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { getInvite, joinGame } from "../../api";
@@ -31,8 +32,7 @@ function JoinPage() {
 		try {
 			const data = await joinGame(token, firstName);
 
-			localStorage.setItem("playerId", data.player.id);
-			localStorage.setItem("gameId", data.game.id);
+			saveSession(data.player.id, data.game.id);
 
 			if (data.game.currentDeciderPlayerId === data.player.id) {
 				navigate("/decision", { viewTransition: true });

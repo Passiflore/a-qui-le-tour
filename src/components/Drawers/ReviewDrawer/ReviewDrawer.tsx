@@ -1,3 +1,4 @@
+import { getGameId, getPlayerId } from "../../../session";
 import { useState } from "react";
 import ActionButton from "../../ActionButton/ActionButton";
 import Drawer from "../Drawer/Drawer";
@@ -20,8 +21,8 @@ const difficultyText = {
 
 function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const gameId = localStorage.getItem("gameId");
-	const playerId = localStorage.getItem("playerId");
+	const gameId = getGameId();
+	const playerId = getPlayerId();
 
 	function handleClick() {
 		setIsOpen(true);

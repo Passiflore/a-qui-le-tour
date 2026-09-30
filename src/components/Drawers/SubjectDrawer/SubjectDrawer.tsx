@@ -1,3 +1,4 @@
+import { getGameId, getPlayerId } from "../../../session";
 import { useRef, useState } from "react";
 import ActionButton from "../../ActionButton/ActionButton";
 import NameTag from "../../NameTag/NameTag";
@@ -13,8 +14,8 @@ interface SubjectDrawerProps {
 function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const formRef = useRef<HTMLFormElement>(null);
-	const gameId = localStorage.getItem("gameId");
-	const playerId = localStorage.getItem("playerId");
+	const gameId = getGameId();
+	const playerId = getPlayerId();
 
 	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
