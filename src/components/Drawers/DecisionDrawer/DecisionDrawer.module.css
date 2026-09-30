@@ -105,21 +105,3 @@
 	outline: 2px solid var(--color-text);
 	outline-offset: 2px;
 }
-
-.buttonBadge {
-	width: var(--space-xs);
-	height: var(--space-xs);
-	border-radius: var(--radius-round);
-}
-
-.easy {
-	background-color: var(--color-success);
-}
-
-.medium {
-	background-color: var(--color-warning);
-}
-
-.hard {
-	background-color: var(--color-error);
-}

@@ -6,6 +6,7 @@ import { resetHistory, type GameResponse } from "../../../api";
 import SparklesIcon from "../../Icons/SparklesIcon";
 import DeleteIcon from "../../Icons/DeleteIcon";
 import ActionButton from "../../ActionButton/ActionButton";
+import Dot from "../../Dot/Dot";
 interface HistoryDrawerProps {
 	game: GameResponse | null;
 }
@@ -14,12 +15,6 @@ const rtf = new Intl.RelativeTimeFormat("fr-FR", {
 	numeric: "auto",
 	style: "short",
 });
-
-const difficultiesClasses = {
-	easy: styles.easy,
-	medium: styles.medium,
-	hard: styles.hard,
-};
 
 const UNITS = [
 	["year", 31536000],
@@ -153,9 +148,8 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 										<p className={styles.subject}>Sujet : {decision.subject}</p>
 									)}
 									<div className={styles.decisionText}>
-										<div
-											className={`${styles.circle} ${isGuest ? styles.guest : styles.host}`}
-										/>
+										<Dot color={isGuest ? "guest" : "host"} size="small" />
+
 										<div className={styles.decision}>
 											<span className={isGuest ? styles.guest : styles.host}>
 												{player?.firstName}
@@ -175,9 +169,7 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 											)}
 										</div>
 										{decision.difficulty && decision.status !== "refused" && (
-											<div
-												className={`${styles.circle} ${difficultiesClasses[decision.difficulty]} ${styles.difficulty}`}
-											/>
+											<Dot color={decision.difficulty} size="small" />
 										)}
 
 										{decision.status === "refused" && (

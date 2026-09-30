@@ -5,6 +5,7 @@ import styles from "./ReviewDrawer.module.css";
 import NameTag from "../../NameTag/NameTag";
 import { reviewDecision, type Decision } from "../../../api";
 import SubjectCard from "../../SubjectCard/SubjectCard";
+import Dot from "../../Dot/Dot";
 
 interface ReviewDrawerProps {
 	firstName: string;
@@ -15,12 +16,6 @@ const difficultyText = {
 	easy: "Évident à décider",
 	medium: "Hésitant à décider",
 	hard: "Dur à décider",
-};
-
-const difficultyClasses = {
-	easy: styles.easy,
-	medium: styles.medium,
-	hard: styles.hard,
 };
 
 function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
@@ -80,9 +75,7 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 
 						{decision.difficulty && (
 							<div className={styles.difficultyContainer}>
-								<div
-									className={`${styles.circle} ${difficultyClasses[decision.difficulty]}`}
-								/>
+								<Dot color={decision.difficulty} size="small" />
 								<p className={styles.difficulty}>
 									{difficultyText[decision.difficulty]}
 								</p>

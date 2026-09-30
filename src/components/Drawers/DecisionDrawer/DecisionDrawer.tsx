@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { nextTurn } from "../../../api";
 import Drawer from "../Drawer/Drawer";
 import SubjectCard from "../../SubjectCard/SubjectCard";
+import Dot from "../../Dot/Dot";
 
 interface DecisionDrawerProps {
 	firstName: string;
@@ -18,7 +19,7 @@ const Difficulties = [
 	{ value: "easy", label: "Évident" },
 	{ value: "medium", label: "Hésitant" },
 	{ value: "hard", label: "Difficile" },
-];
+] as const;
 
 function DecisionDrawer({
 	firstName,
@@ -126,9 +127,7 @@ function DecisionDrawer({
 									htmlFor={`difficulty-${difficulty.value}`}
 									className={styles.difficultyLabel}
 								>
-									<span
-										className={`${styles.buttonBadge} ${styles[difficulty.value]}`}
-									/>
+									<Dot color={difficulty.value} size="medium" />
 									{difficulty.label}
 								</label>
 							</div>

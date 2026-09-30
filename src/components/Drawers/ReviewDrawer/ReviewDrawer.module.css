@@ -62,23 +62,6 @@ hr {
 	gap: var(--space-2xs);
 }
 
-.circle {
-	height: var(--space-2xs);
-	width: var(--space-2xs);
-	border-radius: var(--radius-round);
-	&.easy {
-		background-color: var(--color-success);
-	}
-
-	&.medium {
-		background-color: var(--color-warning);
-	}
-
-	&.hard {
-		background-color: var(--color-error);
-	}
-}
-
 .difficulty {
 	font-size: var(--text-2xs);
 	margin: 0;
