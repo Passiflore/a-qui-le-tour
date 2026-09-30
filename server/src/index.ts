@@ -189,6 +189,10 @@ app.get("/healthz", (request, response) => {
 	response.sendStatus(200);
 });
 
+function getCurrentGame(response: Response): Game {
+	return response.locals.game;
+}
+
 //Create a game
 app.post("/games", (request, response) => {
 	const firstName = request.body?.firstName;
@@ -226,7 +230,7 @@ app.get("/invite/:token", requireValidInvite, (request, response) => {
 app.post("/invite/:token", requireValidInvite, (request, response) => {
 	const firstName = request.body?.firstName;
 	const validFirstName = getValidText(firstName, "firstName");
-	const game = response.locals.game;
+	const game = getCurrentGame(response);
 
 	if (validFirstName === null) {
 		return response.sendStatus(400);
@@ -249,7 +253,7 @@ app.post("/invite/:token", requireValidInvite, (request, response) => {
 
 //Next turn
 app.post("/games/:gameId/decision", requireGame, (request, response) => {
-	const currentGame = response.locals.game;
+	const currentGame = getCurrentGame(response);
 	const decisionInfo = request.body?.decision;
 	const validDecision = getValidText(decisionInfo);
 	const comment = request.body?.comment;
@@ -300,7 +304,7 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 
 	currentGame.decisionHistory.push(decision);
 
-	const game = buildGameResponse(response.locals.game);
+	const game = buildGameResponse(currentGame);
 
 	if (!game) {
 		return response.sendStatus(500);
@@ -312,7 +316,7 @@ app.post("/games/:gameId/decision", requireGame, (request, response) => {
 });
 
 app.post("/games/:gameId/subject", requireGame, (request, response) => {
-	const currentGame = response.locals.game;
+	const currentGame = getCurrentGame(response);
 	const playerId = getValidText(request.body?.playerId);
 	const subject = getValidText(request.body?.subject);
 
@@ -336,7 +340,7 @@ app.post("/games/:gameId/subject", requireGame, (request, response) => {
 	currentGame.currentSubject = subject ?? undefined;
 	currentGame.isSubjectChosen = true;
 
-	const game = buildGameResponse(response.locals.game);
+	const game = buildGameResponse(currentGame);
 
 	if (!game) {
 		return response.sendStatus(500);
@@ -348,7 +352,7 @@ app.post("/games/:gameId/subject", requireGame, (request, response) => {
 });
 
 app.post("/games/:gameId/decision/review", requireGame, (request, response) => {
-	const currentGame = response.locals.game;
+	const currentGame = getCurrentGame(response);
 	const playerId = getValidText(request.body?.playerId);
 	const accepted = request.body?.accepted;
 	const lastDecision = currentGame.decisionHistory.at(-1);
@@ -384,7 +388,7 @@ app.post("/games/:gameId/decision/review", requireGame, (request, response) => {
 		currentGame.currentDeciderPlayerId = lastDecision.playerId;
 	}
 
-	const game = buildGameResponse(response.locals.game);
+	const game = buildGameResponse(currentGame);
 
 	if (!game) {
 		return response.sendStatus(500);
@@ -396,7 +400,8 @@ app.post("/games/:gameId/decision/review", requireGame, (request, response) => {
 });
 
 app.get("/games/:gameId", requireGame, (_, response) => {
-	const game = buildGameResponse(response.locals.game);
+	const currentGame = getCurrentGame(response);
+	const game = buildGameResponse(currentGame);
 
 	if (!game) {
 		return response.sendStatus(500);
@@ -406,7 +411,7 @@ app.get("/games/:gameId", requireGame, (_, response) => {
 });
 
 app.post("/games/:gameId/reset", requireGame, (request, response) => {
-	const currentGame = response.locals.game;
+	const currentGame = getCurrentGame(response);
 	const playerId = getValidText(request.body?.playerId);
 	const isInGame =
 		playerId === currentGame.hostPlayerId ||
@@ -427,7 +432,7 @@ app.post("/games/:gameId/reset", requireGame, (request, response) => {
 
 	currentGame.decisionHistory = [];
 
-	const game = buildGameResponse(response.locals.game);
+	const game = buildGameResponse(currentGame);
 
 	if (!game) {
 		return response.sendStatus(500);
