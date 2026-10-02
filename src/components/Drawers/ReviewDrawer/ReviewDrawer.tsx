@@ -1,5 +1,5 @@
+import { useDrawer } from "../../../hooks/useDrawer";
 import { getGameId, getPlayerId } from "../../../session";
-import { useState } from "react";
 import ActionButton from "../../ActionButton/ActionButton";
 import Drawer from "../Drawer/Drawer";
 import styles from "./ReviewDrawer.module.css";
@@ -20,17 +20,9 @@ const difficultyText = {
 };
 
 function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
-	const [isOpen, setIsOpen] = useState(false);
+	const { isOpen, open, close } = useDrawer();
 	const gameId = getGameId();
 	const playerId = getPlayerId();
-
-	function handleClick() {
-		setIsOpen(true);
-	}
-
-	function onClose() {
-		setIsOpen(false);
-	}
 
 	function handleReview(review: boolean) {
 		if (!playerId || !gameId) {
@@ -39,7 +31,7 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 		const reviewBody = { playerId: playerId, accepted: review };
 
 		reviewDecision(reviewBody, gameId);
-		setIsOpen(false);
+		close();
 	}
 
 	return (
@@ -48,10 +40,10 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 				text="Voir la décision"
 				color="purple"
 				size="medium"
-				onClick={handleClick}
+				onClick={open}
 			/>
 			<Drawer
-				onClose={onClose}
+				onClose={close}
 				isOpen={isOpen}
 				hero={<NameTag firstName={firstName} />}
 			>

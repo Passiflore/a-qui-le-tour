@@ -1,5 +1,6 @@
+import { useDrawer } from "../../../hooks/useDrawer";
 import { getGameId, getPlayerId } from "../../../session";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import ActionButton from "../../ActionButton/ActionButton";
 import NameTag from "../../NameTag/NameTag";
 import Drawer from "../Drawer/Drawer";
@@ -12,7 +13,7 @@ interface SubjectDrawerProps {
 }
 
 function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
-	const [isOpen, setIsOpen] = useState(false);
+	const { isOpen, open, close } = useDrawer();
 	const formRef = useRef<HTMLFormElement>(null);
 	const gameId = getGameId();
 	const playerId = getPlayerId();
@@ -30,23 +31,19 @@ function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
 		};
 
 		await chooseSubject(gameId, subjectBody);
-		onClose();
+		handleClose();
 	}
 
 	async function handlePass() {
 		if (!gameId || !playerId) return;
 
 		await chooseSubject(gameId, { playerId });
-		onClose();
+		handleClose();
 	}
 
-	function handleClick() {
-		setIsOpen(true);
-	}
-
-	function onClose() {
+	function handleClose() {
 		formRef.current?.reset();
-		setIsOpen(false);
+		close();
 	}
 
 	return (
@@ -55,10 +52,10 @@ function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
 				text="Choisir le sujet"
 				color="orange"
 				size="large"
-				onClick={handleClick}
+				onClick={open}
 			/>
 			<Drawer
-				onClose={onClose}
+				onClose={handleClose}
 				isOpen={isOpen}
 				hero={<NameTag firstName={firstName} />}
 			>

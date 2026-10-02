@@ -1,5 +1,5 @@
+import { useDrawer } from "../../../hooks/useDrawer";
 import { getGameId, getPlayerId } from "../../../session";
-import { useState } from "react";
 import Drawer from "../Drawer/Drawer";
 import styles from "./HistoryDrawer.module.css";
 import HistoryIcon from "../../Icons/HistoryIcon";
@@ -34,8 +34,12 @@ function calcDate(isoDate: string) {
 }
 
 function HistoryDrawer({ game }: HistoryDrawerProps) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [isPopupOpen, setIsPopupOpen] = useState(false);
+	const { isOpen, open, close } = useDrawer();
+	const {
+		isOpen: isPopupOpen,
+		open: openPopup,
+		close: closePopup,
+	} = useDrawer();
 	const history = game?.decisionHistory ?? [];
 	const lastDecision = history.at(-1);
 	const historyTable = history.filter((d) => d.status !== "waiting");
@@ -46,25 +50,13 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 	const canDelete =
 		lastDecision?.status !== "waiting" && historyTable.length !== 0;
 
-	function handleClick() {
-		setIsOpen(true);
-	}
-
-	function onClose() {
-		setIsOpen(false);
-	}
-
-	function onPopupClose() {
-		setIsPopupOpen(false);
-	}
-
 	async function handleDelete() {
 		if (!playerId || !gameId) {
 			return;
 		}
 
 		const result = await resetHistory(gameId, { playerId });
-		onPopupClose();
+		closePopup();
 
 		return result;
 	}
@@ -82,13 +74,13 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 
 	return (
 		<div>
-			<div onClick={handleClick} className={styles.iconHistory}>
+			<div onClick={open} className={styles.iconHistory}>
 				<HistoryIcon />
 			</div>
 			{canDelete && (
 				<Drawer
 					isOpen={isPopupOpen}
-					onClose={onPopupClose}
+					onClose={closePopup}
 					title={"Effacer l'historique ?"}
 					isPopup={true}
 				>
@@ -102,7 +94,7 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 								text="Annuler"
 								color="orange"
 								size="small"
-								onClick={onPopupClose}
+								onClick={closePopup}
 							/>
 							<ActionButton
 								text="Effacer"
@@ -116,14 +108,14 @@ function HistoryDrawer({ game }: HistoryDrawerProps) {
 			)}
 			<Drawer
 				isOpen={isOpen}
-				onClose={onClose}
+				onClose={close}
 				hero={
 					<div className={styles.drawerHeroContainer}>
 						<p className={styles.drawerTitle}>historique</p>
 						{canDelete && (
 							<button
 								className={styles.deleteButton}
-								onClick={() => setIsPopupOpen(true)}
+								onClick={openPopup}
 							>
 								<DeleteIcon />
 								<p>Effacer l'historique</p>

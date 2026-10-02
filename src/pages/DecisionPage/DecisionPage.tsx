@@ -1,3 +1,4 @@
+import { useDrawer } from "../../hooks/useDrawer";
 import ActionButton from "../../components/ActionButton/ActionButton";
 import NameTag from "../../components/NameTag/NameTag";
 import styles from "./DecisionPage.module.css";
@@ -12,10 +13,7 @@ function DecisionPage() {
 	const historyLength = game?.decisionHistory.length ?? 0;
 	const [dismissedAt, setDismissedAt] = useState<number | null>(null);
 	const lastDecision = game?.decisionHistory.at(-1);
-	const [isOpen, setIsOpen] = useState(false);
-	function onClose() {
-		setIsOpen(false);
-	}
+	const { isOpen, open, close } = useDrawer();
 
 	const showAnnounce = dismissedAt !== historyLength;
 
@@ -23,10 +21,6 @@ function DecisionPage() {
 		game?.currentDeciderPlayerId === game?.host.id
 			? game?.host.firstName
 			: game?.guest?.firstName;
-
-	function handleClick() {
-		setIsOpen(true);
-	}
 
 	useEffect(() => {
 		const timeout = setTimeout(() => setDismissedAt(historyLength), 3000);
@@ -54,11 +48,11 @@ function DecisionPage() {
 					À toi de trancher. Une fois décidé appuie ci-dessous
 				</p>
 			</div>
-			<ActionButton text={"J'ai décidé!"} color="white" onClick={handleClick} />
+			<ActionButton text={"J'ai décidé!"} color="white" onClick={open} />
 			<DecisionDrawer
 				firstName={currentDecider ?? ""}
 				isOpen={isOpen}
-				onClose={onClose}
+				onClose={close}
 				subject={game?.currentSubject}
 			/>
 			{showAnnounce && (
