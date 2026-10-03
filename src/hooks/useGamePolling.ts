@@ -33,20 +33,24 @@ export function useGamePolling() {
 	const isHost = game?.host.id === playerId;
 	const me = isHost ? game?.host : game?.guest;
 	const opponent = isHost ? game?.guest : game?.host;
+	const [isOffline, setIsOffline] = useState(false);
 
 	useEffect(() => {
 		function loadGame() {
 			if (!gameId) return;
-			getGame(gameId).then((data) => {
-				setGame(data.game);
-				setLastCheck(new Date());
-				const targetPage = getTargetPage(data.game, playerId);
-				if (data.game.guest) {
-					if (targetPage !== currentPage) {
-						navigate(targetPage, { viewTransition: true });
+			getGame(gameId)
+				.then((data) => {
+					setIsOffline(false);
+					setGame(data.game);
+					setLastCheck(new Date());
+					const targetPage = getTargetPage(data.game, playerId);
+					if (data.game.guest) {
+						if (targetPage !== currentPage) {
+							navigate(targetPage, { viewTransition: true });
+						}
 					}
-				}
-			});
+				})
+				.catch(() => setIsOffline(true));
 		}
 
 		loadGame();
@@ -70,5 +74,5 @@ export function useGamePolling() {
 		}
 	}, [isMyTurn, historyLength]);
 
-	return { game, lastCheck, me, opponent, isHost };
+	return { game, lastCheck, me, opponent, isHost, isOffline };
 }

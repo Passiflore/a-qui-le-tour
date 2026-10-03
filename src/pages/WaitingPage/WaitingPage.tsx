@@ -6,7 +6,7 @@ import HistoryDrawer from "../../components/Drawers/HistoryDrawer/HistoryDrawer"
 import InfoCard from "../../components/InfoCard/InfoCard";
 
 function Waiting() {
-	const { game, lastCheck, me, opponent, isHost } = useGamePolling();
+	const { game, lastCheck, me, opponent, isHost, isOffline } = useGamePolling();
 
 	const history = game?.decisionHistory ?? [];
 
@@ -27,6 +27,7 @@ function Waiting() {
 	};
 
 	function getSyncLabel() {
+		if (isOffline) return "connexion perdue";
 		if (!lastCheck) return "connexion…";
 		if (elapsedTime === 0) return "synchro à l'instant";
 		return `synchro il y a ${elapsedTime} s`;
