@@ -79,6 +79,7 @@
 
 .closeButton {
 	display: flex;
+	flex-shrink: 0;
 	padding: var(--space-xs);
 	color: var(--color-description);
 	background: none;

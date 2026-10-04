@@ -1,5 +1,7 @@
 .layoutContainer {
-	min-height: 100vh;
+	min-height: 100dvh;
+	padding-block: calc(env(safe-area-inset-top, 0px) + var(--space-2xl))
+		calc(env(safe-area-inset-bottom, 0px) + var(--space-2xl));
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -42,8 +44,8 @@
 
 .logo {
 	position: fixed;
-	top: 30px;
-	left: 30px;
+	top: calc(30px + env(safe-area-inset-top, 0px));
+	left: calc(30px + env(safe-area-inset-left, 0px));
 	font-family: var(--font-display);
 	text-transform: uppercase;
 	font-size: var(--text-xs);

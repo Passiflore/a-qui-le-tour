@@ -44,7 +44,7 @@
 	font-size: var(--fnt-size);
 	text-transform: uppercase;
 	padding: var(--padding);
-	min-width: var(--min-width);
+	min-width: min(var(--min-width), 100%);
 	background-color: var(--btn-bg);
 	color: var(--btn-fg);
 	border: none;

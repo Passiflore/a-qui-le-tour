@@ -12,6 +12,7 @@
 	--text-sm: 16px;
 	--text-md: 18px;
 	--text-lg: 28px;
+	/* Valeurs de la maquette, réduites sous 390px (voir plus bas) */
 	--text-xl: 56px;
 	--text-2xl: 88px;
 	--text-3xl: 110px;
@@ -74,6 +75,26 @@
 	--color-error: #ef4444;
 }
 
+/* Sous 390px, les très gros titres ne tiennent plus dans la largeur */
+@media (max-width: 389px) {
+	:root {
+		--text-xl: 44px;
+		--text-2xl: 68px;
+		--text-3xl: 86px;
+		--text-4xl: 118px;
+	}
+}
+
+/* Sous 360px, un mot long comme « L'AUTRE » ne tient toujours pas */
+@media (max-width: 359px) {
+	:root {
+		--text-xl: 36px;
+		--text-2xl: 54px;
+		--text-3xl: 68px;
+		--text-4xl: 92px;
+	}
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -87,7 +108,7 @@ body,
 
 body {
 	min-width: 320px;
-	min-height: 100vh;
+	min-height: 100dvh;
 	background-color: var(--color-surface-sunken);
 	color: var(--color-text);
 }
@@ -95,6 +116,8 @@ body {
 h1 {
 	font-family: var(--font-display);
 	text-transform: uppercase;
+	/* Dernier filet : un mot trop long se coupe au lieu de déborder */
+	overflow-wrap: break-word;
 }
 
 p {

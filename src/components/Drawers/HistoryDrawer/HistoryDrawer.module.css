@@ -1,13 +1,15 @@
 .iconHistory {
 	position: fixed;
-	top: 30px;
-	right: 30px;
+	top: calc(30px + env(safe-area-inset-top, 0px));
+	right: calc(30px + env(safe-area-inset-right, 0px));
 }
 
 .drawerHeroContainer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: var(--space-2xs) var(--space-sm);
 	width: 100%;
 }
 
@@ -144,9 +146,14 @@ hr {
 	display: flex;
 	align-items: center;
 	gap: var(--space-2xs);
+	padding: 0;
 	color: var(--color-description);
 	background: none;
 	border: none;
+
+	& p {
+		margin: 0;
+	}
 
 	&:hover {
 		color: var(--color-text);

@@ -69,7 +69,11 @@ hr {
 
 .buttonsContainer {
 	display: flex;
-	justify-content: space-between;
 	flex-wrap: wrap;
+	gap: var(--space-xs);
 	margin-top: var(--space-lg);
+}
+
+.buttonsContainer button {
+	flex: 1;
 }

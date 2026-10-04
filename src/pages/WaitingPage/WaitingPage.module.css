@@ -7,7 +7,8 @@
 
 .synchro {
 	position: fixed;
-	top: var(--space-2xl);
+	/* Une ligne sous le logo, qui est fixe lui aussi */
+	top: calc(var(--space-2xl) + var(--space-xl) + env(safe-area-inset-top, 0px));
 	display: flex;
 	align-items: center;
 	gap: var(--space-2xs);
