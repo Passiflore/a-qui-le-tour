@@ -53,7 +53,7 @@ function JoinPage() {
 		<main className="joinContent">
 			<Logo />
 			<div>
-				<h1 className="joinTitle">Rejoindre la partie</h1>
+				<h1 className="joinTitle">Joindre la partie</h1>
 				<p className="joinDescription">
 					Entre ton prénom. L'appli désignera ensuite qui décide, à chaque fois.
 				</p>

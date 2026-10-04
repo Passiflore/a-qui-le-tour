@@ -1,7 +1,8 @@
 .layoutContainer {
 	min-height: 100dvh;
-	padding-block: calc(env(safe-area-inset-top, 0px) + var(--space-2xl))
-		calc(env(safe-area-inset-bottom, 0px) + var(--space-2xl));
+	/* La bande du haut est réservée au logo, qui est en position fixed */
+	padding-block: calc(env(safe-area-inset-top, 0px) + var(--space-2xl) + var(--space-xl))
+		calc(env(safe-area-inset-bottom, 0px) + var(--space-2xl) + var(--space-xl));
 	display: flex;
 	align-items: center;
 	justify-content: center;

@@ -49,9 +49,10 @@
 }
 
 .decision {
-	display: flex;
 	font-family: var(--font-body);
 	font-size: var(--text-xs);
+	min-width: 0;
+	overflow-wrap: break-word;
 }
 
 .nameContainer {
@@ -69,6 +70,7 @@
 }
 
 .refusedContainer {
+	display: inline;
 	color: var(--color-description);
 }
 .refusedText {

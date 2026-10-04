@@ -5,7 +5,7 @@
 }
 
 .homeTitle {
-	font-size: var(--text-2xl);
+	font-size: var(--text-xl);
 	line-height: var(--leading-display);
 	letter-spacing: var(--tracking-display);
 	margin: 0;
