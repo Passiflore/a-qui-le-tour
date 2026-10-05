@@ -1,6 +1,6 @@
 import { useDrawer } from "../../../hooks/useDrawer";
 import { getGameId, getPlayerId } from "../../../session";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import ActionButton from "../../ActionButton/ActionButton";
 import NameTag from "../../NameTag/NameTag";
 import Drawer from "../Drawer/Drawer";
@@ -17,28 +17,30 @@ function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
 	const formRef = useRef<HTMLFormElement>(null);
 	const gameId = getGameId();
 	const playerId = getPlayerId();
+	const [error, setError] = useState<string | null>(null);
+	const [isSending, setIsSending] = useState(false);
+
+	async function sendSubject(subject?: string) {
+		if (!gameId || !playerId) return;
+
+		setError(null);
+		setIsSending(true);
+		try {
+			await chooseSubject(gameId, { subject, playerId });
+			handleClose();
+		} catch {
+			setError("Impossible d'envoyer le sujet.");
+		} finally {
+			setIsSending(false);
+		}
+	}
 
 	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const subject = String(formData.get("subject") ?? "");
 
-		if (!gameId || !playerId) return;
-
-		const subjectBody = {
-			subject,
-			playerId,
-		};
-
-		await chooseSubject(gameId, subjectBody);
-		handleClose();
-	}
-
-	async function handlePass() {
-		if (!gameId || !playerId) return;
-
-		await chooseSubject(gameId, { playerId });
-		handleClose();
+		await sendSubject(subject);
 	}
 
 	function handleClose() {
@@ -87,10 +89,22 @@ function SubjectDrawer({ firstName, opponentName }: SubjectDrawerProps) {
 						type="submit"
 						size="medium"
 						color={"purple"}
+						disabled={isSending}
 					/>
-					<button onClick={handlePass} className={styles.pass} type="button">
+					<button
+						onClick={() => sendSubject()}
+						className={styles.pass}
+						type="button"
+						disabled={isSending}
+					>
 						Passer sans sujet
 					</button>
+
+					{error && (
+						<div className="errorContainer">
+							<p className="errorText">{error}</p>
+						</div>
+					)}
 				</form>
 			</Drawer>
 		</div>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import ActionButton from "../../ActionButton/ActionButton";
 import NameTag from "../../NameTag/NameTag";
 import styles from "./DecisionDrawer.module.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { nextTurn } from "../../../api";
 import Drawer from "../Drawer/Drawer";
 import SubjectCard from "../../SubjectCard/SubjectCard";
@@ -31,6 +31,8 @@ function DecisionDrawer({
 	const navigate = useNavigate();
 	const formRef = useRef<HTMLFormElement>(null);
 	const gameId = getGameId();
+	const [error, setError] = useState<string | null>(null);
+	const [isSending, setIsSending] = useState(false);
 
 	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -52,13 +54,21 @@ function DecisionDrawer({
 			playerId: playerId,
 		};
 
-		const result = await nextTurn(decisionInfo, gameId);
-		handleClose();
+		setError(null);
+		setIsSending(true);
+		try {
+			const result = await nextTurn(decisionInfo, gameId);
+			handleClose();
 
-		if (playerId !== result.game.currentDeciderPlayerId) {
-			navigate("/waiting", { viewTransition: true });
-		} else {
-			navigate("/decision", { viewTransition: true });
+			if (playerId !== result.game.currentDeciderPlayerId) {
+				navigate("/waiting", { viewTransition: true });
+			} else {
+				navigate("/decision", { viewTransition: true });
+			}
+		} catch {
+			setError("Impossible d'enregistrer ta décision.");
+		} finally {
+			setIsSending(false);
 		}
 	}
 
@@ -135,7 +145,18 @@ function DecisionDrawer({
 						))}
 					</div>
 				</div>
-				<ActionButton text="Confirmer" type="submit" size="medium" />
+				<ActionButton
+					text="Confirmer"
+					type="submit"
+					size="medium"
+					disabled={isSending}
+				/>
+
+				{error && (
+					<div className="errorContainer">
+						<p className="errorText">{error}</p>
+					</div>
+				)}
 			</form>
 		</Drawer>
 	);

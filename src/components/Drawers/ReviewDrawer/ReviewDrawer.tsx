@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDrawer } from "../../../hooks/useDrawer";
 import { getGameId, getPlayerId } from "../../../session";
 import ActionButton from "../../ActionButton/ActionButton";
@@ -23,15 +24,25 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 	const { isOpen, open, close } = useDrawer();
 	const gameId = getGameId();
 	const playerId = getPlayerId();
+	const [error, setError] = useState<string | null>(null);
+	const [isSending, setIsSending] = useState(false);
 
-	function handleReview(review: boolean) {
+	async function handleReview(review: boolean) {
 		if (!playerId || !gameId) {
 			return;
 		}
 		const reviewBody = { playerId: playerId, accepted: review };
 
-		reviewDecision(reviewBody, gameId);
-		close();
+		setError(null);
+		setIsSending(true);
+		try {
+			await reviewDecision(reviewBody, gameId);
+			close();
+		} catch {
+			setError("Impossible d'envoyer ta réponse.");
+		} finally {
+			setIsSending(false);
+		}
 	}
 
 	return (
@@ -82,15 +93,23 @@ function ReviewDrawer({ firstName, decision }: ReviewDrawerProps) {
 						text="Refuser"
 						color="red"
 						size="medium"
+						disabled={isSending}
 						onClick={() => handleReview(false)}
 					/>
 					<ActionButton
 						text="Accepter"
 						color="green"
 						size="medium"
+						disabled={isSending}
 						onClick={() => handleReview(true)}
 					/>
 				</div>
+
+				{error && (
+					<div className="errorContainer">
+						<p className="errorText">{error}</p>
+					</div>
+				)}
 			</Drawer>
 		</div>
 	);
